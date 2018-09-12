@@ -10,6 +10,9 @@ var path = require('path');
 
 //load customers route
 var customers = require('./routes/customers'); 
+//load usuarios route
+var usuarios = require('./routes/usuarios');
+
 var app = express();
 
 var connection  = require('express-myconnection'); 
@@ -45,7 +48,7 @@ app.use(
         user: 'root',
         password : '1234',
         port : 3306, //port mysql
-        database:'sampledb'
+        database:'prueba'
 
     },'pool') //or single
 
@@ -54,12 +57,23 @@ app.use(
 
 
 app.get('/', routes.index);
+
+// ------- Servicios de customer ------- //
 app.get('/customers', customers.list);
-app.get('/customers/addnose', customers.addnose);
 app.post('/customers/add', customers.save);
+app.post('/customers/addlogin', customers.savelogin);
 app.get('/customers/delete/:id', customers.delete_customer);
-app.get('/customers/search/:id', customers.edit);
+app.get('/customers/search/:id', customers.search);
 app.post('/customers/edit/',customers.save_edit);
+
+// ------- Servicios de usuario ------- //
+app.get('/usuarios', usuarios.list);
+app.get('/usuarios/search/:id', usuarios.search);
+app.post('/usuarios/edit/',usuarios.edit);
+app.get('/usuarios/delete/:id', usuarios.delete_usuario);
+app.post('/usuarios/addlogin', usuarios.savelogin);
+
+
 
 
 app.use(app.router);

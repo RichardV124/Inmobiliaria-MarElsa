@@ -1,3 +1,6 @@
+import { RespuestaDTO } from './../../modelo/respuestaDTO';
+import { UsuarioService } from './../../services/login/usuario.service';
+import { Login } from './../../modelo/login';
 import { OnInit, Component} from '@angular/core';
 import { Usuario } from './../../modelo/usuario';
 
@@ -8,33 +11,33 @@ import { Usuario } from './../../modelo/usuario';
 })
 export class RegistroUsuarioComponent implements OnInit {
 
-  listaUsuarios: Usuario[] = [
-    {id: 1 , nombre: 'Alfredo' , apellido: 'Martinez' , email: 'alfredo@gmail.com' },
-    {id: 2 , nombre: 'Pepinos' , apellido: 'Rios' , email: 'pepinos@gmail.com'},
-    {id: 3 , nombre: 'Didi' , apellido: 'Soplapollas' , email: 'didi@gmail.com'},
-  ];
+listaUsuarios: Usuario[];
 
   selectedUsuario: Usuario = new Usuario();
+  selectedLogin: Login = new Login();
+  respuesta: RespuestaDTO = new RespuestaDTO();
 
-  constructor() {
+  constructor(private usuarioService: UsuarioService) {
   }
 
   ngOnInit() {
   }
 
-  agregarOEditar() {
+  registrar() {
 
-    if (this.selectedUsuario.id === 0) {
       if (this.selectedUsuario.nombre == null || this.selectedUsuario.apellido == null
         || this.selectedUsuario.email == null) {
 
       } else {
-     this.selectedUsuario.id = this.listaUsuarios.length + 1 ;
-     this.listaUsuarios.push(this.selectedUsuario);
+        this.selectedUsuario.login = this.selectedLogin;
+        this.usuarioService.registrarUsuario(this.selectedUsuario)
+        .subscribe(customer => {
+          this.respuesta = JSON.parse(JSON.stringify(customer));
+          console.log(this.respuesta.msj + ' ASDADSFFFFFFFF');
+          this.selectedUsuario = new Usuario();
+          this.selectedLogin = new Login();
+        });
       }
-    }
-
-     this.selectedUsuario = new Usuario();
   }
 
   openForEdit(usuario: Usuario) {
@@ -46,6 +49,13 @@ export class RegistroUsuarioComponent implements OnInit {
      this.listaUsuarios = this.listaUsuarios.filter(x => x !== this.selectedUsuario);
      this.selectedUsuario = new Usuario();
     }
+  }
+
+  listarUsuarios() {
+    this.usuarioService.listarUsuarios()
+    .subscribe(usuarios => {
+      this.listaUsuarios = usuarios;
+    });
   }
 
 }

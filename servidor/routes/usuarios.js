@@ -7,7 +7,7 @@ exports.list = function(req, res){
 
   req.getConnection(function(err,connection){
        
-        var query = connection.query('SELECT * FROM customer',function(err,rows)
+        var query = connection.query('SELECT * FROM usuario',function(err,rows)
         {
             
             if(err)
@@ -28,7 +28,7 @@ exports.search = function(req, res){
     var id = req.params.id;
     req.getConnection(function(err,connection){
        
-        var query = connection.query('SELECT * FROM customer WHERE id = ?',[id],function(err,rows)
+        var query = connection.query('SELECT * FROM usuario WHERE cedula = ?',[id],function(err,rows)
         {
             
             if(err)
@@ -43,38 +43,7 @@ exports.search = function(req, res){
     }); 
 };
 
-/*Save the customer*/
-exports.save = function(req,res){
-    
-    var input = JSON.parse(JSON.stringify(req.body));
-    
-    req.getConnection(function (err, connection) {
-        
-        var data = {
-            
-            name    : input.name,
-            address : input.address,
-            email   : input.email,
-            phone   : input.phone 
-        
-        };
-        
-        var query = connection.query("INSERT INTO customer set ? ",data, function(err, rows)
-        {
-  
-          if (err)
-              console.log("Error inserting : %s ",err );
-         
-          res.send('{"id": 505,"msj": "Se registro correctamente"}');
-          
-        });
-        
-        console.log(query.sql); //get raw query
-    
-    });
-};
-
-exports.save_edit = function(req,res){
+exports.edit = function(req,res){
     
     console.log(req.body);
     var input = JSON.parse(JSON.stringify(req.body));
@@ -83,10 +52,9 @@ exports.save_edit = function(req,res){
     req.getConnection(function (err, connection) {
         
         var data = {
-            name    : input.name,
-            address : input.address,
+            nombre    : input.nombre,
+            apellido : input.apellido,
             email   : input.email,
-            phone   : input.phone 
         
         };
         
@@ -104,13 +72,13 @@ exports.save_edit = function(req,res){
 };
 
 
-exports.delete_customer = function(req,res){
+exports.delete_usuario = function(req,res){
           
      var id = req.params.id;
     
      req.getConnection(function (err, connection) {
         
-        connection.query("DELETE FROM customer  WHERE id = ? ",[id], function(err, rows)
+        connection.query("DELETE FROM usuario  WHERE id = ? ",[id], function(err, rows)
         {
             
              if(err)
@@ -132,12 +100,12 @@ console.log(input);
 
     req.getConnection(function (err, connection) {
         
-        var customer = {
+        var usuario = {
             
-            name    : input.name,
-            address : input.address,
+            cedula : input.cedula,
+            nombre    : input.nombre,
+            apellido : input.apellido,
             email   : input.email,
-            phone   : input.phone,
             username : input.login.username
         
         };
@@ -145,7 +113,7 @@ console.log(input);
         var login = {
             
             username    : input.login.username,
-            contraseña : input.login.contraseña
+            contrasenia : input.login.contrasenia
         
         };
         console.log(login);
@@ -159,7 +127,7 @@ console.log(input);
         
       });
 
-        var query2 = connection.query("INSERT INTO customer set ? ",customer, function(err, rows)
+        var query2 = connection.query("INSERT INTO usuario set ? ",usuario, function(err, rows)
         {
   
           if (err)
