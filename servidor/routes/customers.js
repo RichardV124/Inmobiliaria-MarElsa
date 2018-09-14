@@ -34,6 +34,8 @@ exports.search = function(req, res){
             if(err)
                 console.log("Error Selecting : %s ",err );
      
+                console.log(query.sql);
+                console.log({data:rows[0]})
             res.send({data:rows[0]});
                 
            

@@ -1,3 +1,14 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<app-navbar></app-navbar>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+    <div>
+      <a  href="inicio"><img [src]=foto class="navbar-brand"></a>
+    </div> 
+    <ul class="nav navbar-nav">
+      <li> 
+      <li> <a [routerLink]="['login']"> Login</a> </li>
+      <li> <a [routerLink]="['/gestion-personal']"> Gestion de empleados</a></li>
+    </ul> 
+    </div>
+    </nav>
 <router-outlet></router-outlet>

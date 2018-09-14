@@ -21,7 +21,7 @@ export class UsuarioService {
  * @param newUsuario, el usuario (con los datos del login ) que se va a registrar en la BD
  */
 registrarUsuario(newUsuario: Usuario) {
-  return this.http.post<any>(`${this.domain}/usuarios/addlogin`, newUsuario)
+  return this.http.post<any>(`${this.domain}/usuarios/save`, newUsuario)
     .map(res => res);
 }
 
@@ -39,12 +39,30 @@ listarUsuarios() {
  * Metodo para buscar un usuario
  * @param id, id por el cual se buscara el usuario, se envia por la ruta
  */
-buscarUsuario(id: string) {
-  return this.http.get<any>(`${this.domain}/usuarios/search/${id}`)
+buscarUsuario(cedula: string) {
+  return this.http.get<any>(`${this.domain}/usuarios/search/${cedula}`)
   .map(res => {
     return res.data;
 });
 
+}
+
+/**
+ * Metodo que edita un usuario en la BD
+ * @param newUsuario, el usuario que se va a editar en la BD
+ */
+editarUsuario(newUsuario: Usuario) {
+  return this.http.post<any>(`${this.domain}/usuarios/edit`, newUsuario)
+    .map(res => res);
+}
+
+/**
+ * Metodo que elimina un usuario en la BD
+ * @param newUsuario, el usuario que se va a eliminar en la BD
+ */
+eliminarUsuario(newUsuario: Usuario) {
+  return this.http.post<any>(`${this.domain}/usuarios/delete`, newUsuario)
+    .map(res => res);
 }
 
 }

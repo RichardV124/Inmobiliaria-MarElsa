@@ -8,10 +8,13 @@ var routes = require('./routes');
 var http = require('http');
 var path = require('path');
 
-//load customers route
+//cargamos el route de customers
 var customers = require('./routes/customers'); 
-//load usuarios route
-var usuarios = require('./routes/usuarios');
+//cargamos el route de personal
+var personal = require('./routes/personal');
+//cargamos el route de login
+var login = require('./routes/login');
+
 
 var app = express();
 
@@ -48,7 +51,7 @@ app.use(
         user: 'root',
         password : '1234',
         port : 3306, //port mysql
-        database:'prueba'
+        database:'inmobiliaria'
 
     },'pool') //or single
 
@@ -66,12 +69,16 @@ app.get('/customers/delete/:id', customers.delete_customer);
 app.get('/customers/search/:id', customers.search);
 app.post('/customers/edit/',customers.save_edit);
 
-// ------- Servicios de usuario ------- //
-app.get('/usuarios', usuarios.list);
-app.get('/usuarios/search/:id', usuarios.search);
-app.post('/usuarios/edit/',usuarios.edit);
-app.get('/usuarios/delete/:id', usuarios.delete_usuario);
-app.post('/usuarios/addlogin', usuarios.savelogin);
+// ------- Servicios de personal ------- //
+app.get('/personal', personal.list);
+app.get('/personal/search/:cedula', personal.search);
+app.post('/personal/edit/',personal.edit);
+app.post('/personal/delete/', personal.delete);
+app.post('/personal/save', personal.save);
+app.get('/tipopersonal', personal.listTipoPersonal);
+
+// ------- Servicios de login ------- //
+app.post('/login/search', login.search);
 
 
 

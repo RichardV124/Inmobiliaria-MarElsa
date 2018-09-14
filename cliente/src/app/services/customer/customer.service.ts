@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Customer } from '../modelo/customer';
-import { RespuestaDTO } from '../modelo/respuestaDTO';
+import { Customer } from '../../modelo/customer';
+import { RespuestaDTO } from '../../modelo/respuestaDTO';
 import 'rxjs/add/operator/map';
 
 @Injectable({

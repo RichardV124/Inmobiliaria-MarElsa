@@ -23,18 +23,20 @@
                     <div class="form-group">
                          <input type="text" [(ngModel)]="selectedLogin.contrasenia" placeholder="Ingrese contraseña" class="form-control">
                     </div>
-                    <button *ngIf="selectedUsuario.cedula==0"
-                    (click)="registrar()" class="btn btn-primary"> 
+                    <button (click)="registrar()" class="btn btn-success"> 
                       Registrar
                     </button>
-                    <button *ngIf="selectedUsuario.cedula!=0"
-                    (click)="registrar()" class="btn btn-primary"> 
-                       Registrar
+                    <button (click)="buscar()" class="btn btn-warning"> 
+                        Buscar
+                     </button>
+                    <button (click)="editar()" class="btn btn-info"> 
+                       Editar
                     </button>
     
-                    <button *ngIf="selectedUsuario.cedula !== 0" (click)=" eliminar()" class="btn btn-danger"> 
+                    <button (click)=" eliminar()" class="btn btn-danger"> 
                             Eliminar
                         </button>
+                        
                 </div>
             </div>
 

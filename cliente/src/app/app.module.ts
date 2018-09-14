@@ -1,35 +1,32 @@
+import { Globals } from './modelo/global/globals';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './pages/login/login.component';
-import { RegistroUsuarioComponent } from './pages/registro-usuario/registro-usuario.component';
-import { NavbarComponent } from './pages/navbar/navbar.component';
+import { LoginComponent } from './pages/publico/login/login.component';
+import { RegistroUsuarioComponent } from './pages/publico/registro-usuario/registro-usuario.component';
 import { HttpClientModule } from '@angular/common/http';
 
-
-import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-const appRoutes: Routes = [
-  {path: 'login', component: LoginComponent},
-  {path: 'registro-usuario', component: RegistroUsuarioComponent}
-];
+import { AppRoutingModule } from './/app-routing.module';
+import { InicioComponent } from './pages/publico/inicio/inicio.component';
+import { GestionPersonalComponent } from './pages/seguro/administrador/empleados/gestion-personal/gestion-personal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistroUsuarioComponent,
-    NavbarComponent
+    InicioComponent,
+    GestionPersonalComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes),
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
-  providers: [],
+  providers: [ Globals ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

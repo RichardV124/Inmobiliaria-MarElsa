@@ -1,0 +1,78 @@
+<h2>Registrar usuario</h2>
+
+<div class="container">
+<div class="row">
+
+        <div class="card mt-4">
+                <div class="card-body">
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="selectedPersonal.cedula" placeholder="Ingrese cedula" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="selectedPersonal.nombre" placeholder="Ingrese nombre" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="selectedPersonal.apellido" placeholder="Ingrese apellido" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <input type="date" [(ngModel)]="selectedPersonal.fecha_nacimiento" placeholder="Ingrese fecha de nacimiento yyyy-dd-mm" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" [(ngModel)]="selectedPersonal.experiencia" placeholder="Ingrese experiencia" class="form-control">
+                </div>
+                    <div class="form-group">
+                      <input type="text" [(ngModel)]="selectedPersonal.formacion" placeholder="Ingrese formacion" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" [(ngModel)]="selectedPersonal.direccion" placeholder="Ingrese direccion" class="form-control">
+                </div>
+                <div class="form-group">
+                        <select  [(ngModel)]="selectedTipoPersonal.id" class="form-control">
+                                <option [ngValue]="0" selected disabled hidden>Seleccione el tipo de usuario</option>
+                                <option *ngFor="let tp of listaTipoPersonal" [value]="tp.id">{{tp.descripcion}}</option>
+                          </select>
+                </div>
+
+                    <div class="form-group">
+                         <input type="text" [(ngModel)]="selectedLogin.username" placeholder="Ingrese username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                         <input type="password" [(ngModel)]="selectedLogin.contrasenia" placeholder="Ingrese contraseña" class="form-control">
+                    </div>
+                    <button (click)="registrar()" class="btn btn-success"> 
+                      Registrar
+                    </button>
+                    <button (click)="buscar()" class="btn btn-warning"> 
+                        Buscar
+                     </button>
+                    <button (click)="editar()" class="btn btn-info"> 
+                       Editar
+                    </button>
+    
+                    <button (click)=" eliminar()" class="btn btn-danger"> 
+                            Eliminar
+                        </button>
+                        
+                </div>
+            </div>
+
+            <br><br>
+
+            <h2>Lista de usuarios</h2>
+            
+    <div class="col-md-8 mt-8">
+        <ul class="list-group">
+            <li *ngFor="let personal of listaPersonal" 
+            class="list-group-item  list-group-item-action"
+            (click)="openForEdit(personal)"
+            [class.active]="personal == selectedPersonal">     
+            <span class="badge badge-primary">{{personal.cedula}}</span>  
+                {{personal.nombre}} - {{personal.apellido}}
+            </li>
+        </ul>
+
+    </div>
+</div> 
+</div>
+
+
