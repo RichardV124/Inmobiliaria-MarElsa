@@ -39,12 +39,12 @@ iniciarSesion() {
 
 
   this.loginService.iniciarSesion(this.loginBuscar)
-  .subscribe(customer => {
-    this.usuarioLogin = customer;
-    const rol = JSON.stringify(customer['ROL']);
-    this.rolBuscado.id = rol;
+  .subscribe(usuario => {
+    this.usuarioLogin = usuario;
+    const rol = JSON.stringify(usuario['ROL']);
+  //  this.rolBuscado.id = rol;
     this.usuarioLogin.rol = this.rolBuscado;
-    console.log(JSON.parse(JSON.stringify(customer)));
+    console.log(JSON.parse(JSON.stringify(usuario)));
     console.log(this.usuarioLogin.nombre  + 'GGG');
     this.changedRole();
   });

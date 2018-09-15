@@ -18,7 +18,9 @@ export class RegistroInmuebleComponent implements OnInit {
   selectedTipoInmueble: TipoInmueble = new TipoInmueble();
   respuesta: RespuestaDTO = new RespuestaDTO();
 
-  constructor(private inmuebleServie: InmuebleService, private router: Router) { }
+  constructor(private inmuebleServie: InmuebleService, private router: Router) {
+    this.listarTiposInmueble();
+   }
 
   ngOnInit() {
   }
@@ -48,6 +50,7 @@ export class RegistroInmuebleComponent implements OnInit {
     this.inmuebleServie.listarTiposInmueble()
     .subscribe(tipoInmueble => {
       this.listaTiposInmueble = tipoInmueble;
+      console.log(tipoInmueble);
     });
   }
 

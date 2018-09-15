@@ -14,7 +14,7 @@
                     <div class="form-group">
                         <select  [(ngModel)]="selectedTipoInmueble.id" class="form-control">
                                 <option [ngValue]="0" selected disabled hidden>Seleccione el tipo de inmueble</option>
-                                <option *ngFor="let tp of listaTiposInmueble" [value]="tp.id">{{tp.descripcion}}</option>
+                                <option *ngFor="let tp of listaTiposInmueble" [value]="tp.id">{{tp.nombre}}</option>
                           </select>
                      </div>
                     <div class="form-group">
