@@ -14,7 +14,8 @@ var customers = require('./routes/customers');
 var personal = require('./routes/personal');
 //cargamos el route de login
 var login = require('./routes/login');
-
+//Cargamos el route de inmuebles
+var inmueble = require('./routes/inmueble');
 
 var app = express();
 
@@ -80,6 +81,13 @@ app.get('/tipopersonal', personal.listTipoPersonal);
 // ------- Servicios de login ------- //
 app.post('/login/search', login.search);
 
+// ------- Servicios de inmuebles ------- //
+app.get('/inmueble', inmueble.list);
+app.get('/inmueble/search/:id', inmueble.search);
+app.get('/tipoinmueble', inmueble.listTipoInmueble);
+app.post('/inmueble/add', inmueble.save);
+app.post('/inmueble/delete/:id', inmueble.delete_inmueble);
+app.post('/inmueble/edit/:id', inmueble.save_edit);
 
 
 

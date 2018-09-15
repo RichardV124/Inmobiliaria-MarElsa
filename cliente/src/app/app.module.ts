@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './/app-routing.module';
 import { InicioComponent } from './pages/publico/inicio/inicio.component';
 import { GestionPersonalComponent } from './pages/seguro/administrador/empleados/gestion-personal/gestion-personal.component';
+import { RegistroInmuebleComponent } from './pages/seguro/empleado/registro-inmueble/registro-inmueble.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { GestionPersonalComponent } from './pages/seguro/administrador/empleados
     RegistroUsuarioComponent,
     InicioComponent,
     GestionPersonalComponent,
+    RegistroInmuebleComponent,
   ],
   imports: [
     BrowserModule,

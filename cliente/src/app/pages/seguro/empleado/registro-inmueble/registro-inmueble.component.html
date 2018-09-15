@@ -1,0 +1,74 @@
+<h2>Registro de Inmuebles</h2>
+
+<div class="container">
+<div class="row"> 
+
+        <div class="card mt-4">
+                <div class="card-body">
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="selectedInmueble.id" placeholder="Ingrese id del inmueble" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="selectedInmueble.direccion" placeholder="Ingrese la dirección" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <select  [(ngModel)]="selectedTipoInmueble.id" class="form-control">
+                                <option [ngValue]="0" selected disabled hidden>Seleccione el tipo de inmueble</option>
+                                <option *ngFor="let tp of listaTiposInmueble" [value]="tp.id">{{tp.descripcion}}</option>
+                          </select>
+                     </div>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="selectedInmueble.area" placeholder="Ingrese el área en m^2" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="selectedInmueble.valor" placeholder="Ingrese el valor" class="form-control">
+                    </div>
+                    <div class="form-group">
+                         <input type="text" [(ngModel)]="selectedInmueble.promocion" placeholder="Ingrese el porcentaje de la promoción" class="form-control">
+                    </div>
+                    <div class="form-group">
+                         <input type="text" [(ngModel)]="selectedInmueble.numeroHabitaciones" placeholder="Ingrese el número de habitaciones" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" [(ngModel)]="selectedInmueble.numeroBanios" placeholder="Ingrese el número de baños" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" [(ngModel)]="selectedInmueble.pisos" placeholder="Ingrese la cantidad de pisos del inmueble" class="form-control">
+                    </div>
+
+                    <button (click)="registrar()" class="btn btn-success"> 
+                      Registrar
+                    </button>
+                    <button (click)="buscar()" class="btn btn-warning"> 
+                        Buscar
+                     </button>
+                    <button (click)="editar()" class="btn btn-info"> 
+                       Editar
+                    </button>
+    
+                    <button (click)=" eliminar()" class="btn btn-danger"> 
+                            Eliminar
+                        </button>
+                        
+                </div>
+            </div>
+
+            <br><br>
+
+            <h2>Lista de inmuebles</h2>
+            
+    <div class="col-md-8 mt-8">
+        <ul class="list-group">
+            <li *ngFor="let inmueble of listaInmuebles" 
+            class="list-group-item  list-group-item-action"
+            (click)="openForEdit(inmueble)"
+            [class.active]="inmueble == selectedInmueble">     
+            <span class="badge badge-primary">{{inmueble.direccion}}</span>  
+                {{inmueble.valor}} - {{inmueble.area}} - {{inmueble.numeroHabitaciones}}
+            </li>
+        </ul>
+
+    </div>
+</div> 
+</div>
+
