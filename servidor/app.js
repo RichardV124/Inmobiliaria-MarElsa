@@ -8,6 +8,8 @@ var routes = require('./routes');
 var http = require('http');
 var path = require('path');
 
+// ------ SERVICIOS ------ //
+
 //cargamos el route de customers
 var customers = require('./routes/customers'); 
 //cargamos el route de personal
@@ -16,6 +18,10 @@ var personal = require('./routes/personal');
 var login = require('./routes/login');
 //Cargamos el route de inmuebles
 var inmueble = require('./routes/inmueble');
+//Cargamos el route de roles
+var roles = require('./routes/rol');
+
+// ------ SERVICIOS ------ //
 
 var app = express();
 
@@ -31,8 +37,21 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function (req, res, next) {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    // Pass to next layer of middleware
+    next();
+});
 
 // development only
 if ('development' == app.get('env')) {
@@ -88,6 +107,13 @@ app.get('/tipoinmueble', inmueble.listTipoInmueble);
 app.post('/inmueble/add', inmueble.save);
 app.post('/inmueble/delete/:id', inmueble.delete_inmueble);
 app.post('/inmueble/edit/:id', inmueble.save_edit);
+
+// ------- Servicios de roles y accesos ------- //
+app.get('/rol/listar', roles.listar);
+app.get('/rol-accesos/listar', roles.listarRolAccesos);
+app.get('/rol/rol-by-id/:id', roles.rolById);
+app.get('/acceso/listar', roles.listarAccesos);
+app.get('/acceso/por-rol/:rol', roles.accesosPorRol);
 
 
 

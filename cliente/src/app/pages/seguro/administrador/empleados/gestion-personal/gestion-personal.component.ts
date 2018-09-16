@@ -13,6 +13,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestionPersonalComponent implements OnInit {
 
+  show = 0;
+
 
   listaPersonal: Personal[];
   listaTipoPersonal: TipoPersonal[];
@@ -91,6 +93,7 @@ export class GestionPersonalComponent implements OnInit {
         console.log(this.respuesta.msj + ' DELETE');
         this.selectedPersonal = new Personal();
         this.selectedLogin = new Login();
+        this.show = 2;
       });
     }
   }
@@ -106,6 +109,8 @@ export class GestionPersonalComponent implements OnInit {
       this.personalService.buscarPersonal(this.selectedPersonal.cedula)
       .subscribe(personal => {
         if (personal === undefined ) {
+          this.show = 1;
+          this.respuesta.msj = 'No se encuentra ningun empleado con la cedula ' +  this.selectedPersonal.cedula;
           console.log('NO SE ENCUENTRA');
         } else {
         this.selectedPersonal = JSON.parse(JSON.stringify(personal));

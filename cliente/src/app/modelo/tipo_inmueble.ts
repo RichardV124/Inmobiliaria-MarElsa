@@ -1,4 +1,4 @@
 export class TipoInmueble {
     id;
-    nombre: string;
+    descripcion: string;
     }
