@@ -103,6 +103,7 @@ app.get('/tipopersonal', personal.listTipoPersonal);
 app.post('/login/login', login.login);
 app.get('/login/personal-by-login/:username', login.personalByLogin);
 app.get('/login/cliente-by-login/:username', login.clienteByLogin);
+app.get('/login/search2/:username', login.search2);
 
 // ------- Servicios de cliente ------- //
 app.get('/cliente', cliente.list);

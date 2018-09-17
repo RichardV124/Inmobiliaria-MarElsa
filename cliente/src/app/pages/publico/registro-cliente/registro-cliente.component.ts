@@ -1,3 +1,4 @@
+import { Rol } from './../../../modelo/rol';
 import { RespuestaDTO } from './../../../modelo/respuestaDTO';
 import { Login } from './../../../modelo/login';
 import { Cliente } from './../../../modelo/cliente';
@@ -14,6 +15,7 @@ export class RegistroClienteComponent implements OnInit {
 
   selectedCliente: Cliente = new Cliente();
   selectedLogin: Login = new Login();
+  rol: Rol = new Rol();
   respuesta: RespuestaDTO = new RespuestaDTO();
 
   constructor(private clienteService: ClienteService, private router: Router) { }
@@ -29,7 +31,9 @@ export class RegistroClienteComponent implements OnInit {
       || this.selectedCliente.correo == null) {
 
     } else {
+      this.rol.id = 1;
       this.selectedCliente.login_username = this.selectedLogin;
+      this.selectedCliente.rol_id = this.rol;
       this.clienteService.registrarCliente(this.selectedCliente)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
@@ -39,5 +43,5 @@ export class RegistroClienteComponent implements OnInit {
         this.selectedLogin = new Login();
       });
     }
-}
+  }
 }

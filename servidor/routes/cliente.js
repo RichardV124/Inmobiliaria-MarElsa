@@ -111,8 +111,9 @@ exports.list = function(req, res){
               direccion : input.direccion,
               telefono : input.telefono,
               correo   : input.correo,
-              login_username : input.login_username.username
-          
+              login_username : input.login_username.username,
+              rol_id : input.rol_id.id
+
           };
   
           var login = {

@@ -1,0 +1,48 @@
+<h2>Busqueda de Cliente</h2>
+
+<div class="container">
+<div class="row">
+
+        <div class="card mt-4">
+                <div class="card-body">     
+                    <div class="form-group">
+                                <input type="number" [(ngModel)]="selectedCliente.cedula" placeholder="Ingrese cedula" class="form-control">
+                    </div>        
+                    <div class="form-group">
+                        <input disabled type="text" [(ngModel)]="selectedCliente.nombre" placeholder="Nombre" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input disabled type="text" [(ngModel)]="selectedCliente.apellido" placeholder="Apellido" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <input disabled type="date" [(ngModel)]="selectedCliente.fecha_nacimiento" placeholder="Fecha de nacimiento yyyy-dd-mm" class="form-control">
+                    </div>
+                  
+                    <div class="form-group">
+                        <input disabled type="text" [(ngModel)]="selectedCliente.direccion" placeholder="Direccion" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <input disabled type="number" [(ngModel)]="selectedCliente.telefono" placeholder="Telefono" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input disabled type="text" [(ngModel)]="selectedCliente.correo" placeholder="Correo" class="form-control">
+                    </div>
+
+                <h3>Datos de Inicio de sesion</h3>
+                    <div class="form-group">
+                         <input disabled type="text" [(ngModel)]="selectedLogin.username" placeholder="Ingrese username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                         <input disabled type="password" [(ngModel)]="selectedLogin.contrasenia" placeholder="Ingrese contraseña" class="form-control">
+                    </div>
+                    <button (click)="buscar()" class="btn btn-success"> 
+                      Buscar
+                    </button>                       
+                </div>
+            </div>
+
+            <br><br>
+
+            
+</div> 
+</div>
