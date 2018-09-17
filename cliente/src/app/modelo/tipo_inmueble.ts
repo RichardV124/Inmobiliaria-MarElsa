@@ -1,4 +1,4 @@
 export class TipoInmueble {
-    id;
+    id: number;
     nombre: string;
     }

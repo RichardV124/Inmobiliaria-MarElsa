@@ -3,10 +3,10 @@ export class Inmueble {
 id: number;
 direccion: string;
 area: number;
-tipoInmueble: TipoInmueble;
+tipo_inmueble_id: TipoInmueble;
 valor: number;
 promocion: number;
-numeroHabitaciones: number;
-numeroBanios: number;
+num_habitaciones: number;
+num_banios: number;
 pisos: number;
 }

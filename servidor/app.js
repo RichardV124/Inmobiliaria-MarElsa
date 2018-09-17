@@ -17,6 +17,8 @@ var login = require('./routes/login');
 //Cargamos el route de inmuebles
 var inmueble = require('./routes/inmueble');
 
+var fileRoutes = require('./routes/file');
+
 var app = express();
 
 var connection  = require('express-myconnection'); 
@@ -32,6 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 
+app.use('/file', fileRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
@@ -88,6 +91,9 @@ app.get('/tipoinmueble', inmueble.listTipoInmueble);
 app.post('/inmueble/add', inmueble.save);
 app.post('/inmueble/delete/:id', inmueble.delete_inmueble);
 app.post('/inmueble/edit/:id', inmueble.save_edit);
+
+// agregar archivos (foto, video)
+app.post('file/add', inmueble.addFile);
 
 
 

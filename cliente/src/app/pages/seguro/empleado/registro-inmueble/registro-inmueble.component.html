@@ -5,6 +5,12 @@
 
         <div class="card mt-4">
                 <div class="card-body">
+                        <!--<div class="form-group">
+                                <input type="file" [(ngModel)]="foto" class="form-control" (change)="onFileSelected($event)" >
+                                <input style="display: none" type="file" (change)="onFileSelected($event)" #fileInput>
+                                <button (click)="fileInput.click()" class="btn btn-info">Select File</button>
+                                <button (click)="addFile()" class="btn btn-success">Upload!</button>
+                            </div> -->
                     <div class="form-group">
                         <input type="text" [(ngModel)]="selectedInmueble.id" placeholder="Ingrese id del inmueble" class="form-control">
                     </div>
@@ -27,10 +33,10 @@
                          <input type="text" [(ngModel)]="selectedInmueble.promocion" placeholder="Ingrese el porcentaje de la promoción" class="form-control">
                     </div>
                     <div class="form-group">
-                         <input type="text" [(ngModel)]="selectedInmueble.numeroHabitaciones" placeholder="Ingrese el número de habitaciones" class="form-control">
+                         <input type="text" [(ngModel)]="selectedInmueble.num_habitaciones" placeholder="Ingrese el número de habitaciones" class="form-control">
                     </div>
                     <div class="form-group">
-                      <input type="text" [(ngModel)]="selectedInmueble.numeroBanios" placeholder="Ingrese el número de baños" class="form-control">
+                      <input type="text" [(ngModel)]="selectedInmueble.num_banios" placeholder="Ingrese el número de baños" class="form-control">
                     </div>
                     <div class="form-group">
                       <input type="text" [(ngModel)]="selectedInmueble.pisos" placeholder="Ingrese la cantidad de pisos del inmueble" class="form-control">
@@ -57,7 +63,7 @@
 
             <h2>Lista de inmuebles</h2>
             
-    <div class="col-md-8 mt-8">
+    <!--<div class="col-md-8 mt-8">
         <ul class="list-group">
             <li *ngFor="let inmueble of listaInmuebles" 
             class="list-group-item  list-group-item-action"
@@ -68,7 +74,7 @@
             </li>
         </ul>
 
-    </div>
+    </div> -->
 </div> 
 </div>
 
