@@ -44,14 +44,9 @@ iniciarSesion() {
     this.usuarioLogin.rol = this.rolBuscado;
     console.log(JSON.parse(JSON.stringify(usuario)));
     console.log(this.usuarioLogin.nombre  + 'GGG');
-    this.changedRole();
   });
   this.loginBuscar = new Login();
   this.router.navigate(['']);
-}
-
-private changedRole() {
-  this.global.role = this.usuarioLogin.rol.id;
 }
 
 }

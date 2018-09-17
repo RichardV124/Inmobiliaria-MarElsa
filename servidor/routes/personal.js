@@ -90,7 +90,7 @@ exports.delete = function(req,res){
     var personal = {
             
         cedula : input.cedula,
-        login_username : input.username,
+        login_username : input.login.username,
 
     };
     
@@ -139,11 +139,11 @@ console.log(input);
             apellido : input.apellido,
             fecha_nacimiento : input.fecha_nacimiento,
             experiencia : input.experiencia,
-            tipo_id : input.tipo_id,
+            tipo_id : input.tipo_id.id,
             formacion   : input.formacion,
             direccion : input.direccion,
             login_username : input.login.username,
-            rol_id : input.rol_id
+            rol_id : input.rol.id
         
         };
 

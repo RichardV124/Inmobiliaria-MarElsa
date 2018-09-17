@@ -1,7 +1,26 @@
-<h2>Registrar usuario</h2>
+<h2>Gestion del personal</h2>
 
 <div class="container">
 <div class="row">
+
+        <div class="container">
+                <div class="section_subtitle"> Buscar persona </div><br>
+                  <div class="row">
+                    <div class="col-lg-8">
+                            <div class="form-group">
+                                    <input type="text" [(ngModel)]="selectedPersonal.cedula" placeholder="Ingrese cedula" class="form-control">
+                                </div> </div>
+                    <div class="col-lg-4" style="padding-left: 0">
+                            <button (click)="buscar()" class="btn btn-warning"> 
+                                    Buscar
+                                 </button>
+                    </div>
+                  </div>
+            </div>
+
+            <br><br>
+
+            <h4>Registrar empleado</h4>
 
         <div class="card mt-4">
                 <div class="card-body">
@@ -38,19 +57,12 @@
                     <div class="form-group">
                          <input type="password" [(ngModel)]="selectedLogin.contrasenia" placeholder="Ingrese contraseña" class="form-control">
                     </div>
-                    <button (click)="registrar()" class="btn btn-success"> 
+                    <button (click)="registrar()" class="btn btn-success" > 
                       Registrar
                     </button>
-                    <button (click)="buscar()" class="btn btn-warning"> 
-                        Buscar
-                     </button>
-                    <button (click)="editar()" class="btn btn-info"> 
+                    <button (click)="editar()" class="btn btn-info" style="padding-left: 5px"> 
                        Editar
                     </button>
-    
-                    <button (click)=" eliminar()" class="btn btn-danger"> 
-                            Eliminar
-                        </button>
                         <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
                         <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
                         
@@ -60,20 +72,44 @@
 
             <br><br>
 
-            <h2>Lista de usuarios</h2>
-            
-    <div class="col-md-8 mt-8">
-        <ul class="list-group">
-            <li *ngFor="let personal of listaPersonal" 
-            class="list-group-item  list-group-item-action"
-            (click)="openForEdit(personal)"
-            [class.active]="personal == selectedPersonal">     
-            <span class="badge badge-primary">{{personal.cedula}}</span>  
-                {{personal.nombre}} - {{personal.apellido}}
-            </li>
-        </ul>
-
-    </div>
+            <div class="col-lg-8">
+                <br>
+                <div class="section_subtitle"> Lista de empleados </div><br>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Cedula</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Fecha de nacimiento</th>
+                        <th scope="col">Experiencia</th>
+                        <th scope="col">Formacion</th>
+                        <th scope="col">Direccion</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Eliminar</th>
+                        <th scope="col">Ver</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let p of listaPersonal">
+                        <th scope="row">{{p.cedula}}</th>
+                        <td>{{p.nombre}}</td>
+                        <td>{{p.apellido}}</td>
+                        <td>{{p.fecha_nacimiento}}</td>
+                        <td>{{p.experiencia}}</td>
+                        <td>{{p.formacion}}</td>
+                        <td>{{p.direccion}}</td>
+                        <td>{{p.rol}}</td>
+                        <td><button (click)=" eliminar()" class="btn btn-danger"> 
+                                Eliminar
+                            </button></td>
+                            <td><button (click)="ver(p)" class="btn btn-warning"> 
+                                    Ver empleado
+                                </button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
 </div> 
 </div>
 

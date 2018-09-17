@@ -100,7 +100,9 @@ app.post('/personal/save', personal.save);
 app.get('/tipopersonal', personal.listTipoPersonal);
 
 // ------- Servicios de login ------- //
-app.post('/login/search', login.search);
+app.post('/login/login', login.login);
+app.get('/login/personal-by-login/:username', login.personalByLogin);
+app.get('/login/cliente-by-login/:username', login.clienteByLogin);
 
 // ------- Servicios de cliente ------- //
 app.get('/cliente', cliente.list);
