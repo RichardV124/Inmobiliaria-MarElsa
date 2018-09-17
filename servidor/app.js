@@ -101,6 +101,7 @@ app.get('/tipopersonal', personal.listTipoPersonal);
 
 // ------- Servicios de login ------- //
 app.post('/login/search', login.search);
+app.get('/login/search2/:username', login.search2);
 
 // ------- Servicios de cliente ------- //
 app.get('/cliente', cliente.list);

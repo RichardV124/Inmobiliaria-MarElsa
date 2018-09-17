@@ -51,7 +51,7 @@ iniciarSesion() {
 }
 
 private changedRole() {
-  this.global.role = this.usuarioLogin.rol.id;
+  // this.global.role = this.usuarioLogin.rol.id;
 }
 
 }

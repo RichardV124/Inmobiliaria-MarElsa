@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Globals } from '../../../modelo/global/globals';
 
 @Component({
   selector: 'app-inicio',
@@ -8,13 +7,10 @@ import { Globals } from '../../../modelo/global/globals';
 })
 export class InicioComponent implements OnInit {
 
-  
-  
 
   role: number;
 
-  constructor(private global: Globals) {
-    this.role = global.role;
+  constructor() {
     console.log(this.role + 'NAVBARRR');
        }
 
