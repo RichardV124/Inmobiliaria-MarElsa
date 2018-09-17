@@ -14,6 +14,8 @@ var customers = require('./routes/customers');
 var personal = require('./routes/personal');
 //cargamos el route de login
 var login = require('./routes/login');
+//cargamos el route de personal
+var cliente = require('./routes/cliente');
 
 
 var app = express();
@@ -79,6 +81,13 @@ app.get('/tipopersonal', personal.listTipoPersonal);
 
 // ------- Servicios de login ------- //
 app.post('/login/search', login.search);
+
+// ------- Servicios de personal ------- //
+app.get('/cliente', cliente.list);
+app.get('/cliente/search/:cedula', cliente.search);
+app.post('/cliente/edit/',cliente.edit);
+app.post('/cliente/delete/', cliente.delete);
+app.post('/cliente/save', cliente.save);
 
 
 
