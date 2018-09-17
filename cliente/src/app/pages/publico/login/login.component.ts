@@ -1,5 +1,4 @@
 import { Rol } from './../../../modelo/rol';
-import { Globals } from './../../../modelo/global/globals';
 import { Customer } from './../../../modelo/customer';
 import { CustomerService } from './../../../services/customer/customer.service';
 import { Prueba } from './../../../modelo/prueba';
@@ -24,8 +23,7 @@ usuarioLogin: Usuario = new Usuario();
 loginBuscar: Login = new Login();
 rolBuscado: Rol = new Rol();
 
-  constructor(private loginService: LoginService, private customerService: CustomerService, private global: Globals,
-  private router: Router) {
+  constructor(private loginService: LoginService, private customerService: CustomerService, private router: Router) {
 
     this.loginBuscar.username = 'kuro';
     this.loginBuscar.contrasenia = '1234';
@@ -46,14 +44,9 @@ iniciarSesion() {
     this.usuarioLogin.rol = this.rolBuscado;
     console.log(JSON.parse(JSON.stringify(usuario)));
     console.log(this.usuarioLogin.nombre  + 'GGG');
-    this.changedRole();
   });
   this.loginBuscar = new Login();
   this.router.navigate(['']);
-}
-
-private changedRole() {
-  this.global.role = this.usuarioLogin.rol.id;
 }
 
 }

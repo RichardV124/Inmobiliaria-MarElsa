@@ -1,3 +1,4 @@
+import { Rol } from './../../../../../modelo/rol';
 import { TipoPersonal } from './../../../../../modelo/tipo_personal';
 import { PersonalService } from './../../../../../services/personal/personal.service';
 import { Personal } from './../../../../../modelo/personal';
@@ -13,6 +14,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestionPersonalComponent implements OnInit {
 
+  show = 0;
+
 
   listaPersonal: Personal[];
   listaTipoPersonal: TipoPersonal[];
@@ -20,7 +23,7 @@ export class GestionPersonalComponent implements OnInit {
   selectedPersonal: Personal = new Personal();
   selectedLogin: Login = new Login();
   selectedTipoPersonal: TipoPersonal = new TipoPersonal();
-  // selectedRol: Rol = new Rol();
+  selectedRol: Rol = new Rol();
   respuesta: RespuestaDTO = new RespuestaDTO();
 
   constructor(private personalService: PersonalService, private router: Router) {
@@ -33,6 +36,11 @@ export class GestionPersonalComponent implements OnInit {
   ngOnInit() {
   }
 
+  ver(personal: Personal) {
+    this.selectedPersonal = personal;
+    this.buscar();
+  }
+
   registrar() {
 
       if (this.selectedPersonal.nombre == null || this.selectedPersonal.apellido == null
@@ -43,8 +51,8 @@ export class GestionPersonalComponent implements OnInit {
       } else {
         this.selectedPersonal.login = this.selectedLogin;
         this.selectedPersonal.tipo_id = this.selectedTipoPersonal;
-       // this.selectedRol.id = 1;
-       // this.selectedUsuario.rol = this.selectedRol;
+        this.selectedRol.id = 2;
+       this.selectedPersonal.rol = this.selectedRol;
         this.personalService.registrarPersonal(this.selectedPersonal)
         .subscribe(res => {
           this.respuesta = JSON.parse(JSON.stringify(res));
@@ -52,12 +60,9 @@ export class GestionPersonalComponent implements OnInit {
           console.log(this.selectedPersonal.nombre);
           this.selectedPersonal = new Personal();
           this.selectedLogin = new Login();
+          this.show = 2;
         });
       }
-  }
-
-  openForEdit(personal: Personal) {
-     this.selectedPersonal = personal;
   }
 
   editar() {
@@ -71,8 +76,6 @@ export class GestionPersonalComponent implements OnInit {
       this.selectedPersonal.login = this.selectedLogin;
       this.selectedPersonal.tipo_id = this.selectedTipoPersonal;
       console.log(JSON.parse(JSON.stringify(this.selectedPersonal)));
-    //  this.selectedRol.id = 1;
-     // this.selectedUsuario.rol = this.selectedRol;
       this.personalService.editarPersonal(this.selectedPersonal)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
@@ -83,14 +86,15 @@ export class GestionPersonalComponent implements OnInit {
     }
 }
 
-  eliminar() {
+  eliminar(personal: Personal) {
     if (confirm('¿ Estas seguro que quieres eliminarlo ?')) {
-      this.personalService.eliminarPersonal(this.selectedPersonal)
+      this.personalService.eliminarPersonal(personal)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
         console.log(this.respuesta.msj + ' DELETE');
         this.selectedPersonal = new Personal();
         this.selectedLogin = new Login();
+        this.show = 2;
       });
     }
   }
@@ -99,13 +103,14 @@ export class GestionPersonalComponent implements OnInit {
 
     if (this.selectedPersonal.cedula == null) {
 
+      this.show = 1;
+          this.respuesta.msj = 'Debe ingresar la cedula a buscar ';
     } else {
-      this.selectedPersonal.login = this.selectedLogin;
-   //   this.selectedRol.id = 1;
-    //  this.selectedUsuario.rol = this.selectedRol;
       this.personalService.buscarPersonal(this.selectedPersonal.cedula)
       .subscribe(personal => {
         if (personal === undefined ) {
+          this.show = 1;
+          this.respuesta.msj = 'No se encuentra ningun empleado con la cedula ' +  this.selectedPersonal.cedula;
           console.log('NO SE ENCUENTRA');
         } else {
         this.selectedPersonal = JSON.parse(JSON.stringify(personal));

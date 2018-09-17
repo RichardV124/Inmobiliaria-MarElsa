@@ -11,5 +11,5 @@ tipo_id: TipoPersonal;
 formacion: string;
 direccion: string;
 login: Login;
-// rol: Rol;
+rol: Rol;
 }

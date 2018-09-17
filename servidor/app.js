@@ -8,14 +8,22 @@ var routes = require('./routes');
 var http = require('http');
 var path = require('path');
 
+// ------ SERVICIOS ------ //
+
 //cargamos el route de customers
 var customers = require('./routes/customers'); 
 //cargamos el route de personal
 var personal = require('./routes/personal');
 //cargamos el route de login
 var login = require('./routes/login');
+//cargamos el route de personal
+var cliente = require('./routes/cliente');
 //Cargamos el route de inmuebles
 var inmueble = require('./routes/inmueble');
+//Cargamos el route de roles
+var roles = require('./routes/rol');
+
+// ------ SERVICIOS ------ //
 
 var fileRoutes = require('./routes/file');
 
@@ -36,6 +44,20 @@ app.use(express.methodOverride());
 
 app.use('/file', fileRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function (req, res, next) {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    // Pass to next layer of middleware
+    next();
+});
 
 // development only
 if ('development' == app.get('env')) {
@@ -82,7 +104,17 @@ app.post('/personal/save', personal.save);
 app.get('/tipopersonal', personal.listTipoPersonal);
 
 // ------- Servicios de login ------- //
-app.post('/login/search', login.search);
+app.post('/login/login', login.login);
+app.get('/login/personal-by-login/:username', login.personalByLogin);
+app.get('/login/cliente-by-login/:username', login.clienteByLogin);
+app.get('/login/search2/:username', login.search2);
+
+// ------- Servicios de cliente ------- //
+app.get('/cliente', cliente.list);
+app.get('/cliente/search/:cedula', cliente.search);
+app.post('/cliente/edit/',cliente.edit);
+app.post('/cliente/delete/', cliente.delete);
+app.post('/cliente/save', cliente.save);
 
 // ------- Servicios de inmuebles ------- //
 app.get('/inmueble', inmueble.list);
@@ -94,7 +126,12 @@ app.post('/inmueble/edit/:id', inmueble.save_edit);
 
 // agregar archivos (foto, video)
 app.post('file/add', inmueble.addFile);
-
+// ------- Servicios de roles y accesos ------- //
+app.get('/rol/listar', roles.listar);
+app.get('/rol-accesos/listar', roles.listarRolAccesos);
+app.get('/rol/rol-by-id/:id', roles.rolById);
+app.get('/acceso/listar', roles.listarAccesos);
+app.get('/acceso/por-rol/:rol', roles.accesosPorRol);
 
 
 app.use(app.router);

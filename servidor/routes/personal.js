@@ -11,10 +11,9 @@ exports.list = function(req, res){
         {
             
             if(err)
-            res.send('{"id": 404,"msj": "Hubo un error al listar el personal"}');
+             res.send('{"id": 404,"msj": "Hubo un error al listar el personal"}');
      
             res.send({data:rows});
-                
            
          });
          
@@ -59,10 +58,10 @@ exports.edit = function(req,res){
             apellido : input.apellido,
             fecha_nacimiento : input.fecha_nacimiento,
             experiencia : input.experiencia,
-            tipo_id : input.tipo_id.tipo_id,
+          //  tipo_id : input.tipo_id.tipo_id,
             formacion   : input.formacion,
             direccion : input.direccion,
-            login_username : input.login_username
+          //  login_username : input.login_username
 //            rol : input.rol      
         };
 
@@ -86,11 +85,12 @@ exports.edit = function(req,res){
 exports.delete = function(req,res){
           
     var input = JSON.parse(JSON.stringify(req.body));
+    console.log(input);
 
     var personal = {
             
         cedula : input.cedula,
-        login_username : input.login_username,
+        login_username : input.login.username,
 
     };
     
@@ -108,9 +108,10 @@ exports.delete = function(req,res){
 
         var query2= connection.query("DELETE FROM login  WHERE username = ? ",[personal.login_username], function(err, rows)
         {
-            
-             if(err)
+             if(err){
+                 connection.rollback();
                  res.send('{"id": 404,"msj": "Hubo un error al eliminar el login"}');
+                }
             
                  res.send('{"id": 505,"msj": "Se elimino correctamente"}');
              
@@ -141,8 +142,8 @@ console.log(input);
             tipo_id : input.tipo_id.id,
             formacion   : input.formacion,
             direccion : input.direccion,
-            login_username : input.login.username
-        //    rol : input.rol.id
+            login_username : input.login.username,
+            rol_id : input.rol.id
         
         };
 
@@ -168,6 +169,7 @@ console.log(input);
         {
   
           if (err)
+          connection.
           res.send('{"id": 404,"msj": "Hubo un error al insertar el personal"}');
          
           res.send('{"id": 505,"msj": "Se registro correctamente el personal"}');

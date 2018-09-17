@@ -1,0 +1,47 @@
+
+------ Subir cambios al GitHub ----------
+
+//Registrar los cambios a subir
+git add -A
+
+//Para hacer commit
+git commit -m "Nombre del commit"
+
+//Agregar el proyecto al git en la nube
+git remote add origin https://github.com/RichardV124/Inmobiliaria-MarElsa
+
+//Push en la nube
+git push -u origin master
+
+//Para bajar los cambios del git
+git pull
+
+------ Crear archivos ----------
+
+//crear proyecto nuevo
+ng new nombreProyecto
+
+//crear una directiva
+ng g d nombreDirectiva
+
+//crear un pipe
+ng g p nombrePipe
+
+//crear servicio con ruta especifica
+ng g service services/clientes
+
+//crear pagina con ruta espeficica
+ng generate c pages/customer
+
+------ Correr servidor ----------
+
+**-- Cliente --**
+
+1) cd cliente
+2) ng serve
+
+**-- Servidor--**
+
+1) cd servidor
+2) node app.js
+
