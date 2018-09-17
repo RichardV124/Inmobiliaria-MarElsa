@@ -32,7 +32,6 @@
                                 <option *ngFor="let tp of listaTipoPersonal" [value]="tp.id">{{tp.descripcion}}</option>
                           </select>
                 </div>
-
                     <div class="form-group">
                          <input type="text" [(ngModel)]="selectedLogin.username" placeholder="Ingrese username" class="form-control">
                     </div>
@@ -52,6 +51,9 @@
                     <button (click)=" eliminar()" class="btn btn-danger"> 
                             Eliminar
                         </button>
+                        <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                        <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                        
                         
                 </div>
             </div>

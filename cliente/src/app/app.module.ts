@@ -1,4 +1,3 @@
-import { Globals } from './modelo/global/globals';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 
@@ -12,6 +11,7 @@ import { AppRoutingModule } from './/app-routing.module';
 import { InicioComponent } from './pages/publico/inicio/inicio.component';
 import { GestionPersonalComponent } from './pages/seguro/administrador/empleados/gestion-personal/gestion-personal.component';
 import { RegistroClienteComponent } from './pages/publico/registro-cliente/registro-cliente.component';
+import { RegistroInmuebleComponent } from './pages/seguro/empleado/registro-inmueble/registro-inmueble.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,8 @@ import { RegistroClienteComponent } from './pages/publico/registro-cliente/regis
     RegistroUsuarioComponent,
     InicioComponent,
     GestionPersonalComponent,
-    RegistroClienteComponent
+    RegistroClienteComponent,
+    RegistroInmuebleComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +29,6 @@ import { RegistroClienteComponent } from './pages/publico/registro-cliente/regis
     FormsModule,
     AppRoutingModule
   ],
-  providers: [ Globals ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

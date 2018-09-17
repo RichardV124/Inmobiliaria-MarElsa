@@ -18,7 +18,6 @@ exports.search = function(req, res){
             console.log({data:rows[0]});
             res.send({data:rows[0]});
                 
-           
          });
          
          //console.log(query.sql);
