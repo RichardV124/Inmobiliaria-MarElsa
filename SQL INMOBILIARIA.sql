@@ -103,7 +103,7 @@ CREATE TABLE INMUEBLE
     pisos            INTEGER ,
     seguridad        CHAR (1) ,
     zonas_verdes     CHAR (1) ,
-    garaje           CHAR (1) ,
+    garajes          INTEGER ,
     salon_comunal    CHAR (1) ,
     conjunto_cerrado CHAR (1) ,
     cocina_integral  CHAR (1) ,
@@ -113,6 +113,7 @@ CREATE TABLE INMUEBLE
     terraza          CHAR (1) ,
     gimnasio         CHAR (1) ,
     balcon           CHAR (1) ,
+    piscina          CHAR (1) ,
     num_closets      INTEGER ,
     municipio_id     INTEGER NOT NULL,
 	PRIMARY KEY ( id )
