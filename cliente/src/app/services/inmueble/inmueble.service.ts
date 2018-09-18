@@ -1,3 +1,4 @@
+import { Archivo } from './../../modelo/archivo';
 import { Inmueble } from './../../modelo/inmueble';
 import { Injectable } from '@angular/core';
 import { RespuestaDTO } from '../../modelo/respuestaDTO';
@@ -43,6 +44,10 @@ listarTiposInmueble() {
   registrarInmueble(newInmueble: Inmueble) {
    return this.http.post<any>(`${this.domain}/inmueble/add`, newInmueble)
     .map(res => res);
+  }
+
+  addFile(newFile: Archivo) {
+    return this.http.post<any>(`${this.domain}/file/add`, newFile).map(res => res);
   }
 
   /**

@@ -25,6 +25,8 @@ var roles = require('./routes/rol');
 
 // ------ SERVICIOS ------ //
 
+var fileRoutes = require('./routes/file');
+
 var app = express();
 
 var connection  = require('express-myconnection'); 
@@ -39,6 +41,8 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+
+app.use('/file', fileRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
@@ -120,6 +124,8 @@ app.post('/inmueble/add', inmueble.save);
 app.post('/inmueble/delete/:id', inmueble.delete_inmueble);
 app.post('/inmueble/edit/:id', inmueble.save_edit);
 
+// agregar archivos (foto, video)
+app.post('file/add', inmueble.addFile);
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);
 app.get('/rol-accesos/listar', roles.listarRolAccesos);
@@ -129,7 +135,6 @@ app.get('/acceso/por-rol/:rol', roles.accesosPorRol);
 app.post('/acceso-rol/save', roles.saveAccesoRol);
 app.post('/acceso-rol/delete', roles.deleteAccesoRol);
 app.post('/acceso-rol/search', roles.searchAccesoRol);
-
 
 
 app.use(app.router);

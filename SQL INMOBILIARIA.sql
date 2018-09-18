@@ -1,13 +1,16 @@
 -- Generado por Oracle SQL Developer Data Modeler 4.1.5.907
---   en:        2018-09-16 00:19:11 COT
+--   en:        2018-09-18 10:05:06 COT
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
+
+
+
 
 CREATE TABLE ACCESO
   (
     id     INTEGER NOT NULL AUTO_INCREMENT,
     nombre VARCHAR (40) NOT NULL ,
-    url    VARCHAR (40) NOT NULL,
+    url    VARCHAR (100) NOT NULL,
 	PRIMARY KEY ( id )
   ) ;
 
@@ -22,7 +25,7 @@ CREATE TABLE ACCESO_ROL
 CREATE TABLE ARCHIVO
   (
     id          INTEGER NOT NULL AUTO_INCREMENT,
-    url         VARCHAR (80) NOT NULL ,
+    url         VARCHAR (100) NOT NULL ,
     inmueble_id INTEGER NOT NULL,
 	PRIMARY KEY ( id ) 
   ) ;
@@ -31,7 +34,7 @@ CREATE TABLE ARCHIVO
 CREATE TABLE ARRIENDO
   (
     id              INTEGER NOT NULL AUTO_INCREMENT,
-    descripcion     VARCHAR (30) ,
+    descripcion     VARCHAR (100) ,
     inmueble_id     INTEGER NOT NULL ,
     cliente_cedula  INTEGER NOT NULL ,
     personal_cedula INTEGER NOT NULL,
@@ -74,14 +77,13 @@ CREATE TABLE DEPARTAMENTO
     nombre VARCHAR (40) NOT NULL,
 	PRIMARY KEY ( id )
   ) ;
-ALTER TABLE DEPARTAMENTO ADD CONSTRAINT DEPARTAMENTO_PK PRIMARY KEY ( id ) ;
 
 
 CREATE TABLE FACTURA
   (
     id              INTEGER NOT NULL AUTO_INCREMENT,
     fecha           DATE NOT NULL ,
-    descripcion     VARCHAR (30) NOT NULL ,
+    descripcion     VARCHAR (100) NOT NULL ,
     cliente_cedula  INTEGER NOT NULL ,
     personal_cedula INTEGER NOT NULL,
 	PRIMARY KEY ( id ) 
@@ -91,26 +93,27 @@ CREATE TABLE FACTURA
 CREATE TABLE INMUEBLE
   (
     id               INTEGER NOT NULL AUTO_INCREMENT,
-    direccion        VARCHAR (30) NOT NULL ,
+    direccion        VARCHAR (50) NOT NULL ,
     area             INTEGER NOT NULL ,
     tipo_inmueble_id INTEGER NOT NULL ,
     valor            DOUBLE NOT NULL ,
     promocion        DOUBLE ,
     num_habitaciones INTEGER ,
-    num_baños        INTEGER ,
+    num_banios        INTEGER ,
     pisos            INTEGER ,
     seguridad        CHAR (1) ,
     zonas_verdes     CHAR (1) ,
-    garaje           CHAR (1) ,
+    garajes          INTEGER ,
     salon_comunal    CHAR (1) ,
     conjunto_cerrado CHAR (1) ,
     cocina_integral  CHAR (1) ,
     gas              CHAR (1) ,
     alarma           CHAR (1) ,
-    zona_para_niños  CHAR (1) ,
+    zona_para_ninios  CHAR (1) ,
     terraza          CHAR (1) ,
     gimnasio         CHAR (1) ,
     balcon           CHAR (1) ,
+    piscina          CHAR (1) ,
     num_closets      INTEGER ,
     municipio_id     INTEGER NOT NULL,
 	PRIMARY KEY ( id )
@@ -163,7 +166,7 @@ CREATE TABLE ROL
 
 CREATE TABLE TIPO_INMUEBLE
   ( id INTEGER NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR (30),
+  descripcion VARCHAR (30),
   PRIMARY KEY ( id )
   ) ;
 
@@ -253,13 +256,11 @@ ALTER TABLE VISITA ADD CONSTRAINT VISITA_INMUEBLE_FK FOREIGN KEY ( inmueble_id )
 ALTER TABLE VISITA ADD CONSTRAINT VISITA_PERSONAL_FK FOREIGN KEY ( personal_cedula ) REFERENCES PERSONAL ( cedula ) ;
 
 
-
-
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
--- CREATE TABLE                            16
+-- CREATE TABLE                            17
 -- CREATE INDEX                             0
--- ALTER TABLE                             38
+-- ALTER TABLE                             46
 -- CREATE VIEW                              0
 -- ALTER VIEW                               0
 -- CREATE PACKAGE                           0
