@@ -55,7 +55,7 @@ exports.listarAccesos = function(req, res){
  */
 exports.listarRolAccesos = function(req, res){
     req.getConnection(function(err,connection){
-          var query = connection.query('SELECT * FROM rol_acceso',function(err,rows)
+          var query = connection.query('SELECT * FROM acceso_rol',function(err,rows)
           {
                 if(err)
                    res.send('{"id": 404,"msj": "Hubo un error al listar los roles de los accesos"}');   
@@ -74,7 +74,7 @@ exports.accesosPorRol = function(req, res){
     // Obtenemos los parametro
     var rol = req.params.rol;
     req.getConnection(function(err,connection){
-          var query = connection.query('SELECT a.* FROM rol_acceso ra JOIN accesos a ON a.id = ra.acceso WHERE rol = ?',[rol],function(err,rows)
+          var query = connection.query('SELECT a.* FROM acceso_rol ar JOIN acceso a ON a.id = ar.acceso_id WHERE ar.rol_id = ?',[rol],function(err,rows)
           {
                  if(err)
                    res.send('{"id": 404,"msj": "Hubo un error al listar los accesos por rol"}');   
@@ -85,3 +85,93 @@ exports.accesosPorRol = function(req, res){
       console.log(query.sql);
      });
  };
+
+ /*Asigna un acceso a un rol*/
+exports.saveAccesoRol = function(req,res){
+
+    var input = JSON.parse(JSON.stringify(req.body));
+
+    req.getConnection(function (err, connection) {
+
+        var acceso_rol = {
+
+            rol_id : input.rol_id,
+            acceso_id : input.acceso_id
+        
+        };
+        console.log(acceso_rol);
+        
+        var query = connection.query("INSERT INTO acceso_rol set ? ",acceso_rol, function(err, rows)
+        {
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al asignar el acceso"}');
+       
+        res.send('{"id": 505,"msj": "Se asigno correctamente el acceso"}');
+        
+      });
+
+        console.log(query.sql); //get raw query
+    
+    });
+};
+
+ /*Elimina un acceso a un rol*/
+ exports.deleteAccesoRol = function(req,res){
+
+    var input = JSON.parse(JSON.stringify(req.body));
+
+    req.getConnection(function (err, connection) {
+
+        var acceso_rol = {
+
+            rol_id : input.rol_id,
+            acceso_id : input.acceso_id
+        
+        };
+        console.log(acceso_rol);
+        
+        var query= connection.query("DELETE FROM acceso_rol  WHERE acceso_id = ? AND rol_id = ? ",[acceso_rol.acceso_id,acceso_rol.rol_id], 
+        function(err, rows)
+        {
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al eliminar el acceso"}');
+       
+        res.send('{"id": 505,"msj": "Se elimino correctamente el acceso al rol"}');
+        
+      });
+
+        console.log(query.sql); //get raw query
+    
+    });
+};
+
+
+ /*Buscar un acceso a un rol*/
+ exports.searchAccesoRol = function(req,res){
+
+    var input = JSON.parse(JSON.stringify(req.body));
+
+    req.getConnection(function (err, connection) {
+
+        var acceso_rol = {
+
+            rol_id : input.rol_id,
+            acceso_id : input.acceso_id
+        
+        };
+        console.log(acceso_rol);
+        
+        var query= connection.query("SELECT * FROM acceso_rol  WHERE acceso_id = ? AND rol_id = ? ",[acceso_rol.acceso_id,acceso_rol.rol_id], 
+        function(err, rows)
+        {
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al buscar el acceso"}');
+       
+            res.send({data:rows[0]});  
+        
+      });
+
+        console.log(query.sql); //get raw query
+    
+    });
+};

@@ -126,6 +126,9 @@ app.get('/rol-accesos/listar', roles.listarRolAccesos);
 app.get('/rol/rol-by-id/:id', roles.rolById);
 app.get('/acceso/listar', roles.listarAccesos);
 app.get('/acceso/por-rol/:rol', roles.accesosPorRol);
+app.post('/acceso-rol/save', roles.saveAccesoRol);
+app.post('/acceso-rol/delete', roles.deleteAccesoRol);
+app.post('/acceso-rol/search', roles.searchAccesoRol);
 
 
 
