@@ -22,6 +22,10 @@ var cliente = require('./routes/cliente');
 var inmueble = require('./routes/inmueble');
 //Cargamos el route de roles
 var roles = require('./routes/rol');
+//Cargamos el route de roles
+var municipio = require('./routes/municipio');
+//Cargamos el route de roles
+var departamento = require('./routes/departamento');
 
 // ------ SERVICIOS ------ //
 
@@ -126,6 +130,7 @@ app.post('/inmueble/edit/:id', inmueble.save_edit);
 
 // agregar archivos (foto, video)
 app.post('file/add', inmueble.addFile);
+
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);
 app.get('/rol-accesos/listar', roles.listarRolAccesos);
@@ -135,6 +140,10 @@ app.get('/acceso/por-rol/:rol', roles.accesosPorRol);
 app.post('/acceso-rol/save', roles.saveAccesoRol);
 app.post('/acceso-rol/delete', roles.deleteAccesoRol);
 app.post('/acceso-rol/search', roles.searchAccesoRol);
+
+// ------- Servicios de departamento y municipio ------- //
+app.get('/departamento/list', departamento.list);
+app.get('/municipio/list/:id', municipio.list);
 
 
 app.use(app.router);
