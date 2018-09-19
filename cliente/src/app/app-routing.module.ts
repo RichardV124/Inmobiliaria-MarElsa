@@ -10,8 +10,7 @@ import { BusquedaClienteComponent } from './pages/seguro/cliente/busqueda-client
 
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/inicio', pathMatch: 'full' },
-  {path: 'inicio', component: InicioComponent},
+  {path: '', component: InicioComponent},
   {path: 'login', component: LoginComponent},
   {path: 'gestion-personal', component: GestionPersonalComponent},
   {path: 'registro-cliente', component: RegistroClienteComponent},

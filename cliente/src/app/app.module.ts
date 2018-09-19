@@ -13,6 +13,7 @@ import { GestionPersonalComponent } from './pages/seguro/administrador/empleados
 import { RegistroClienteComponent } from './pages/publico/registro-cliente/registro-cliente.component';
 import { RegistroInmuebleComponent } from './pages/seguro/empleado/registro-inmueble/registro-inmueble.component';
 import { BusquedaClienteComponent } from './pages/seguro/cliente/busqueda-cliente/busqueda-cliente.component';
+import { HeaderComponent } from './pages/publico/header/header.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { BusquedaClienteComponent } from './pages/seguro/cliente/busqueda-client
     GestionPersonalComponent,
     RegistroClienteComponent,
     RegistroInmuebleComponent,
-    BusquedaClienteComponent
+    BusquedaClienteComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
