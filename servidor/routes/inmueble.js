@@ -89,7 +89,22 @@ exports.save = function (req, res) {
             promocion: input.promocion,
             num_habitaciones: input.num_habitaciones,
             num_banios: input.num_banios,
-            pisos: input.pisos
+            pisos: input.pisos,
+            seguridad: input.seguridad,
+            zonas_verdes: input.zonas_verdes,
+            garajes: input.garajes,
+            salon_comunal: input.salon_comunal,
+            conjunto_cerrado: input.conjunto_cerrado,
+            cocina_integral: input.cocina_integral,
+            gas: inpu.gas,
+            alarma: input.alarma,
+            zona_para_ninios: input.zona_para_ninios,
+            terraza: input.terraza,
+            gimnasio: input.gimnasio,
+            piscina: input.piscina,
+            balcon: input.balcon,
+            num_closets: input.num_closets,
+            municipio_id: input.municipio_id.id
         };
 
         var query = connection.query("INSERT INTO inmueble set ? ", data, function (err, rows) {
@@ -122,7 +137,22 @@ exports.save_edit = function (req, res) {
             promocion: input.promocion,
             num_habitaciones: input.num_habitaciones,
             num_banios: input.num_banios,
-            pisos: input.pisos
+            pisos: input.pisos,
+            seguridad: input.seguridad,
+            zonas_verdes: input.zonas_verdes,
+            garajes: input.garajes,
+            salon_comunal: input.salon_comunal,
+            conjunto_cerrado: input.conjunto_cerrado,
+            cocina_integral: input.cocina_integral,
+            gas: inpu.gas,
+            alarma: input.alarma,
+            zona_para_ninios: input.zona_para_ninios,
+            terraza: input.terraza,
+            gimnasio: input.gimnasio,
+            piscina: input.piscina,
+            balcon: input.balcon,
+            num_closets: input.num_closets,
+            municipio_id: input.municipio_id.id
 
         };
 
