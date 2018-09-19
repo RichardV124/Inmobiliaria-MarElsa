@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <select  [(ngModel)]="selectedTipoInmueble.id" class="form-control">
                                 <option [ngValue]="0" selected disabled hidden>Seleccione el tipo de inmueble</option>
-                                <option *ngFor="let tp of listaTiposInmueble" [value]="tp.id">{{tp.nombre}}</option>
+                                <option *ngFor="let tp of listaTiposInmueble" [value]="tp.id">{{tp.descripcion}}</option>
                           </select>
                      </div>
                     <div class="form-group">
@@ -42,13 +42,13 @@
                       <input type="number" [(ngModel)]="selectedInmueble.pisos" placeholder="Ingrese la cantidad de pisos del inmueble" class="form-control">
                     </div>
                     <div class="form-group">
+                        <input type="number" [(ngModel)]="selectedInmueble.garajes" placeholder="Ingrese la cantidad de garajes del inmueble" class="form-control">
+                      </div>
+                    <div class="form-group">
                         <input type="checkbox" [(ngModel)]="selectedInmueble.seguridad" value="selectedInmueble.seguridad">Seguridad Privada<br>
                       </div>
                       <div class="form-group">
                         <input type="checkbox" [(ngModel)]="selectedInmueble.zonas_verdes" value="selectedInmueble.zonas_verdes">Zonas Verdes<br>
-                      </div>
-                      <div class="form-group">
-                        <input type="number" [(ngModel)]="selectedInmueble.garajes" placeholder="Ingrese la cantidad de garajes del inmueble" class="form-control">
                       </div>
                       <div class="form-group">
                         <input type="checkbox" [(ngModel)]="selectedInmueble.salon_comunal" name="" value="selectedInmueble.salon_comunal">Salon Comunal<br>
@@ -84,11 +84,17 @@
                         <input type="number" [(ngModel)]="selectedInmueble.num_closets" placeholder="Ingrese la cantidad de closets del inmueble" class="form-control">
                       </div>
                       <div class="form-group">
-                        <select  [(ngModel)]="selectedMunicipio.id" class="form-control">
-                                <option [ngValue]="0" selected disabled hidden>Seleccione un municipio</option>
-                                <option *ngFor="let ms of listaMunicipios" [value]="ms.id">{{ms.nombre}}</option>
+                        <select  [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
+                                <option [ngValue]="0" selected disabled hidden>Seleccione un Departamento</option>
+                                <option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
                           </select>
                      </div>
+                     <div class="form-group">
+                      <select  [(ngModel)]="selectedMunicipio.id" class="form-control">
+                              <option [ngValue]="0" selected disabled hidden>Seleccione un Municipio</option>
+                              <option *ngFor="let ms of listaMunicipios" [value]="ms.id">{{ms.nombre}}</option>
+                        </select>
+                   </div>
 
 
                     <button (click)="registrar()" class="btn btn-success"> 

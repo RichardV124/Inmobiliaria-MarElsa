@@ -2,7 +2,7 @@
  * Lista de municipios por departamentos
  */
 exports.list = function(req, res){
-    var depto = req.params.departmento;
+    var depto = req.params.id;
     req.getConnection(function(err,connection){
        
         var query = connection.query('SELECT * FROM municipio WHERE departamento_id = ?',[depto],function(err,rows)
