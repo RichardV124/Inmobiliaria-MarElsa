@@ -1,3 +1,6 @@
+import { MunicipioService } from './../../../../services/municipio/municipio.service';
+import { Departamento } from './../../../../modelo/departamento';
+import { Municipio } from './../../../../modelo/municipio';
 import { element } from 'protractor';
 import { RespuestaDTO } from './../../../../modelo/respuestaDTO';
 import { Inmueble } from './../../../../modelo/inmueble';
@@ -5,7 +8,6 @@ import { InmuebleService } from './../../../../services/inmueble/inmueble.servic
 import { TipoInmueble } from './../../../../modelo/tipo_inmueble';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Archivo } from '../../../../modelo/archivo';
 
 const uri = 'http://localhost:3000/file/upload';
 
@@ -18,17 +20,25 @@ export class RegistroInmuebleComponent implements OnInit {
 
   listaInmuebles: Inmueble[];
   listaTiposInmueble: TipoInmueble[];
+  listaMunicipios: Municipio[];
+  listaDepartamentos: Departamento[];
+  selectedMunicipio: Municipio = new Municipio();
+  selectedDepartamento: Departamento = new Departamento();
   selectedInmueble: Inmueble = new Inmueble();
   selectedTipoInmueble: TipoInmueble = new TipoInmueble();
   respuesta: RespuestaDTO = new RespuestaDTO();
   selectedFile: File = null;
-  archivo: Archivo = new Archivo();
   attachmentList: any = [];
 
-  constructor(private inmuebleServie: InmuebleService, private router: Router) {
+  constructor(private inmuebleServie: InmuebleService,
+    private municipioService: MunicipioService, private router: Router) {
     this.listarTiposInmueble();
+    this.listarDepartamentos();
     this.selectedTipoInmueble.id = 0;
+    this.selectedDepartamento.id = 0;
+    this.selectedMunicipio.id = 0;
     this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
+    this.selectedInmueble.municipio_id = this.selectedMunicipio;
 
    }
 
@@ -44,6 +54,7 @@ export class RegistroInmuebleComponent implements OnInit {
 
     } else {
       this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
+      this.selectedInmueble.municipio_id = this.selectedMunicipio;
       this.inmuebleServie.registrarInmueble(this.selectedInmueble)
       .subscribe(inmueble => {
         this.respuesta = JSON.parse(JSON.stringify(inmueble));
@@ -66,9 +77,6 @@ export class RegistroInmuebleComponent implements OnInit {
 
   addFile() {
     console.log('guardando foto ' + this.selectedFile.name);
-    this.archivo.id = 1;
-    this.archivo.archivo = this.selectedFile;
-    this.inmuebleServie.addFile(this.archivo);
   }
 
   listarTiposInmueble() {
@@ -76,6 +84,21 @@ export class RegistroInmuebleComponent implements OnInit {
     .subscribe(tipoInmueble => {
       this.listaTiposInmueble = tipoInmueble;
       console.log(tipoInmueble);
+    });
+  }
+
+  listarDepartamentos() {
+    this.municipioService.listarDepartamentos().
+    subscribe(departamento => {
+      this.listaDepartamentos = departamento;
+    });
+  }
+
+  listarMunicipios() {
+    this.selectedMunicipio.id = 0;
+    this.municipioService.listarMunicipios(this.selectedDepartamento.id).
+    subscribe(municipio => {
+      this.listaMunicipios = municipio;
     });
   }
 

@@ -12,7 +12,7 @@
                                 <button (click)="addFile()" class="btn btn-success">Upload!</button>
                             </div> -->
                     <div class="form-group">
-                        <input type="text" [(ngModel)]="selectedInmueble.id" placeholder="Ingrese id del inmueble" class="form-control">
+                        <input type="number" [(ngModel)]="selectedInmueble.id" placeholder="Ingrese id del inmueble" class="form-control">
                     </div>
                     <div class="form-group">
                         <input type="text" [(ngModel)]="selectedInmueble.direccion" placeholder="Ingrese la dirección" class="form-control">
@@ -20,27 +20,82 @@
                     <div class="form-group">
                         <select  [(ngModel)]="selectedTipoInmueble.id" class="form-control">
                                 <option [ngValue]="0" selected disabled hidden>Seleccione el tipo de inmueble</option>
-                                <option *ngFor="let tp of listaTiposInmueble" [value]="tp.id">{{tp.nombre}}</option>
+                                <option *ngFor="let tp of listaTiposInmueble" [value]="tp.id">{{tp.descripcion}}</option>
                           </select>
                      </div>
                     <div class="form-group">
-                        <input type="text" [(ngModel)]="selectedInmueble.area" placeholder="Ingrese el área en m^2" class="form-control">
+                        <input type="number" [(ngModel)]="selectedInmueble.area" placeholder="Ingrese el área en m^2" class="form-control">
                     </div>
                     <div class="form-group">
-                        <input type="text" [(ngModel)]="selectedInmueble.valor" placeholder="Ingrese el valor" class="form-control">
+                        <input type="number" [(ngModel)]="selectedInmueble.valor" placeholder="Ingrese el valor" class="form-control">
                     </div>
                     <div class="form-group">
-                         <input type="text" [(ngModel)]="selectedInmueble.promocion" placeholder="Ingrese el porcentaje de la promoción" class="form-control">
+                         <input type="number" [(ngModel)]="selectedInmueble.promocion" placeholder="Ingrese el porcentaje de la promoción" class="form-control">
                     </div>
                     <div class="form-group">
-                         <input type="text" [(ngModel)]="selectedInmueble.num_habitaciones" placeholder="Ingrese el número de habitaciones" class="form-control">
+                         <input type="number" [(ngModel)]="selectedInmueble.num_habitaciones" placeholder="Ingrese el número de habitaciones" class="form-control">
                     </div>
                     <div class="form-group">
-                      <input type="text" [(ngModel)]="selectedInmueble.num_banios" placeholder="Ingrese el número de baños" class="form-control">
+                      <input type="number" [(ngModel)]="selectedInmueble.num_banios" placeholder="Ingrese el número de baños" class="form-control">
                     </div>
                     <div class="form-group">
-                      <input type="text" [(ngModel)]="selectedInmueble.pisos" placeholder="Ingrese la cantidad de pisos del inmueble" class="form-control">
+                      <input type="number" [(ngModel)]="selectedInmueble.pisos" placeholder="Ingrese la cantidad de pisos del inmueble" class="form-control">
                     </div>
+                    <div class="form-group">
+                        <input type="number" [(ngModel)]="selectedInmueble.garajes" placeholder="Ingrese la cantidad de garajes del inmueble" class="form-control">
+                      </div>
+                    <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.seguridad" value="selectedInmueble.seguridad">Seguridad Privada<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.zonas_verdes" value="selectedInmueble.zonas_verdes">Zonas Verdes<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.salon_comunal" name="" value="selectedInmueble.salon_comunal">Salon Comunal<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.conjunto_cerrado" name="" value="selectedInmueble.conjunto_cerrado">Conjunto cerrado<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.cocina_integral" name="" value="selectedInmueble.cocina_integral">Cocina integral<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.gas" name="" value="selectedInmueble.gas">Gas residencial<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.alarma" name="" value="selectedInmueble.alarma">Alarma<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.zona_para_ninios" name="" value="selectedInmueble.zona_para_ninios">Zona para niños<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.terraza" name="" value="selectedInmueble.terraza">Terraza<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.gimnasio" name="" value="selectedInmueble.gimnasio">Gimnasio<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.piscina" name="" value="selectedInmueble.piscina">Piscina<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="selectedInmueble.balcon" name="" value="selectedInmueble.balcon">Balcon<br>
+                      </div>
+                      <div class="form-group">
+                        <input type="number" [(ngModel)]="selectedInmueble.num_closets" placeholder="Ingrese la cantidad de closets del inmueble" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <select  [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
+                                <option [ngValue]="0" selected disabled hidden>Seleccione un Departamento</option>
+                                <option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
+                          </select>
+                     </div>
+                     <div class="form-group">
+                      <select  [(ngModel)]="selectedMunicipio.id" class="form-control">
+                              <option [ngValue]="0" selected disabled hidden>Seleccione un Municipio</option>
+                              <option *ngFor="let ms of listaMunicipios" [value]="ms.id">{{ms.nombre}}</option>
+                        </select>
+                   </div>
+
 
                     <button (click)="registrar()" class="btn btn-success"> 
                       Registrar
