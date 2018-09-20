@@ -1,15 +1,15 @@
 import { Rol } from './rol';
 import { Login } from './login';
 import { TipoPersonal } from './tipo_personal';
-export class Personal {
+import { Municipio } from './municipio';
+export class Persona {
 cedula: string;
 nombre: string;
 apellido: string;
 fecha_nacimiento: Date;
-experiencia: string;
-tipo_id: TipoPersonal;
-formacion: string;
 direccion: string;
-login: Login;
+telefono: number;
+correo: string;
 rol: Rol;
+municipio: Municipio;
 }

@@ -1,7 +1,7 @@
 import { Rol } from './../../../../../modelo/rol';
 import { TipoPersonal } from './../../../../../modelo/tipo_personal';
-import { PersonalService } from './../../../../../services/personal/personal.service';
-import { Personal } from './../../../../../modelo/personal';
+import { PersonaService } from './../../../../../services/persona/persona.service';
+import { Persona } from './../../../../../modelo/persona';
 import { Router } from '@angular/router';
 import { RespuestaDTO } from './../../../../../modelo/respuestaDTO';
 import { Login } from './../../../../../modelo/login';
@@ -15,7 +15,7 @@ import { Component, OnInit } from '@angular/core';
 export class GestionPersonalComponent implements OnInit {
 
   show = 0;
-
+/** 
 
   listaPersonal: Personal[];
   listaTipoPersonal: TipoPersonal[];
@@ -25,16 +25,19 @@ export class GestionPersonalComponent implements OnInit {
   selectedTipoPersonal: TipoPersonal = new TipoPersonal();
   selectedRol: Rol = new Rol();
   respuesta: RespuestaDTO = new RespuestaDTO();
-
-  constructor(private personalService: PersonalService, private router: Router) {
-    this.listarEmpleados();
+*/
+  constructor(private personalService: PersonaService, private router: Router) {
+  /**  this.listarEmpleados();
         this.listarTipoPersonal();
         this.selectedTipoPersonal.id = 0;
         this.selectedPersonal.tipo_id = this.selectedTipoPersonal;
+        */
   }
 
   ngOnInit() {
   }
+
+  /** 
 
   ver(personal: Personal) {
     this.selectedPersonal = personal;
@@ -140,6 +143,5 @@ export class GestionPersonalComponent implements OnInit {
       this.listaTipoPersonal = tipoPersonal;
     });
   }
-
+*/
 }
-

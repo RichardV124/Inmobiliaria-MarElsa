@@ -1,3 +1,4 @@
+import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acceso/asignar-acceso.component';
 import { RegistroInmuebleComponent } from './pages/seguro/empleado/registro-inmueble/registro-inmueble.component';
 import { GestionPersonalComponent } from './pages/seguro/administrador/empleados/gestion-personal/gestion-personal.component';
 import { InicioComponent } from './pages/publico/inicio/inicio.component';
@@ -15,6 +16,7 @@ const appRoutes: Routes = [
   {path: 'gestion-personal', component: GestionPersonalComponent},
   {path: 'registro-cliente', component: RegistroClienteComponent},
   {path: 'busqueda-cliente', component: BusquedaClienteComponent},
+  {path: 'asignar-acceso', component: AsignarAccesoComponent},
   {path: 'registro-inmueble', component: RegistroInmuebleComponent}
 ];
 

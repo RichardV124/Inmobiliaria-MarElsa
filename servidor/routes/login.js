@@ -1,57 +1,14 @@
-exports.search2 = function(req, res){
-      
+/**
+ * Iniciar sesion en la aplicacion
+ */
+exports.login = function(req, res){
+    // Obtenemos los parametro
     var username = req.params.username;
+    var contrasenia = req.params.contrasenia
     req.getConnection(function(err,connection){
-       
-        var query = connection.query('SELECT * FROM login WHERE username = ?',[username],function(err,rows)
-        {
-            
+        var query = connection.query('SELECT * FROM login WHERE username = ? and contrasenia = ?',[username,contrasenia],function(err,rows){
             if(err)
                 console.log("Error Selecting : %s ",err );
-     
-            res.send({data:rows[0]});
-                
-           
-         });
-         
-         console.log(query.sql);
-    }); 
-};
-
-exports.login = function(req, res){
-    
-    var input = JSON.parse(JSON.stringify(req.body));
-    var username = input.username;
-    var contrasenia = input.contrasenia;
-    console.log('USER:' + username);
-    console.log('PASS:' + contrasenia);
-    req.getConnection(function(err,connection){
-       
-        var query = connection.query('SELECT * FROM login l WHERE l.username = ? AND l.contrasenia = ?',[username,contrasenia],function(err,rows)
-        {
-            
-            if(err)
-            res.send('{"id": 404,"msj": "Hubo un error al logearse"}');
-     
-            console.log(query.sql);
-            console.log({data:rows[0]});
-            res.send({data:rows[0]});
-                
-         });
-         
-         console.log(query.sql);
-    }); 
-};
-
-/**
- * Buscar personal por login
- */
-exports.personalByLogin = function(req, res){
-    var username = req.params.username;
-    req.getConnection(function(err,connection){
-        var query = connection.query('SELECT * FROM personal WHERE login_username = ?',[username],function(err,rows){
-            if(err)
-            res.send('{"id": 404,"msj": "Hubo un error al logearse"}');
                 res.send({data:rows[0]});
          });
 
@@ -60,17 +17,57 @@ exports.personalByLogin = function(req, res){
 };
 
 /**
- * Buscar cliente por login
+ * Buscar login por persona
  */
-exports.clienteByLogin = function(req, res){
-    var username = req.params.username;
+exports.loginByPersona = function(req, res){
+    var persona = req.params.persona;
     req.getConnection(function(err,connection){
-        var query = connection.query('SELECT * FROM cliente WHERE login_username = ?',[username],function(err,rows){
+        var query = connection.query('SELECT * FROM login WHERE persona_cedula = ?',[persona],function(err,rows){
             if(err)
-            res.send('{"id": 404,"msj": "Hubo un error al logearse"}');
+                console.log("Error Selecting : %s ",err );
                 res.send({data:rows[0]});
          });
-
-         console.log(query.sql);
     });
 };
+
+/**
+ * Lista de login
+ */
+exports.listar = function(req, res){
+    req.getConnection(function(err,connection){
+          var query = connection.query('SELECT * FROM login',function(err,rows){
+                if(err)
+                    console.log("Error Selecting : %s ",err );
+                    res.send({data:rows});  
+                    console.log(rows);
+           });
+      });
+};
+
+/**
+ * Buscar persona por cedula
+ */
+exports.personaByCedula = function(req, res){
+    var cedula = req.params.cedula;
+    req.getConnection(function(err,connection){
+        var query = connection.query('SELECT * FROM persona WHERE cedula = ?',[cedula],function(err,rows){
+            if(err)
+                console.log("Error Selecting : %s ",err );
+                res.send({data:rows[0]});
+         });
+    });
+};
+
+/**
+ * Lista de personas
+ */
+exports.listarPersonas = function(req, res){
+    req.getConnection(function(err,connection){
+          var query = connection.query('SELECT * FROM persona',function(err,rows){
+                if(err)
+                    console.log("Error Selecting : %s ",err );
+                    res.send({data:rows});  
+           });
+      });
+};
+  

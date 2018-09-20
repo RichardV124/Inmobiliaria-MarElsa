@@ -1,11 +1,11 @@
-import { Personal } from './../../modelo/personal';
+import { Persona } from './../../modelo/persona';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PersonalService {
+export class PersonaService {
 
 /**
    * Ruta en la que se encuentran los servicios
@@ -19,7 +19,7 @@ export class PersonalService {
  * Metodo que inserta un empleado y login en la BD
  * @param newPersonal, el personal (con los datos del login ) que se va a registrar en la BD
  */
-registrarPersonal(newPersonal: Personal) {
+registrarPersonal(newPersonal: Persona) {
   return this.http.post<any>(`${this.domain}/personal/save`, newPersonal)
     .map(res => res);
 }
@@ -50,7 +50,7 @@ buscarPersonal(cedula: string) {
  * Metodo que edita un empleado en la BD
  * @param newPersonal, el empleado que se va a editar en la BD
  */
-editarPersonal(newPersonal: Personal) {
+editarPersonal(newPersonal: Persona) {
   return this.http.post<any>(`${this.domain}/personal/edit/`, newPersonal)
     .map(res => res);
 }
@@ -59,7 +59,7 @@ editarPersonal(newPersonal: Personal) {
  * Metodo que elimina un empleado en la BD
  * @param newUsuario, el empleado que se va a eliminar en la BD
  */
-eliminarPersonal(newPersonal: Personal) {
+eliminarPersonal(newPersonal: Persona) {
   return this.http.post<any>(`${this.domain}/personal/delete/`, newPersonal)
     .map(res => res);
 }

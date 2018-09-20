@@ -3,7 +3,6 @@ import { NgModule} from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/publico/login/login.component';
-import { RegistroUsuarioComponent } from './pages/publico/registro-usuario/registro-usuario.component';
 import { HttpClientModule } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
@@ -14,18 +13,19 @@ import { RegistroClienteComponent } from './pages/publico/registro-cliente/regis
 import { RegistroInmuebleComponent } from './pages/seguro/empleado/registro-inmueble/registro-inmueble.component';
 import { BusquedaClienteComponent } from './pages/seguro/cliente/busqueda-cliente/busqueda-cliente.component';
 import { HeaderComponent } from './pages/publico/header/header.component';
+import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acceso/asignar-acceso.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegistroUsuarioComponent,
     InicioComponent,
     GestionPersonalComponent,
     RegistroClienteComponent,
     RegistroInmuebleComponent,
     BusquedaClienteComponent,
-    HeaderComponent
+    HeaderComponent,
+    AsignarAccesoComponent
   ],
   imports: [
     BrowserModule,

@@ -2,16 +2,15 @@
 /*
  * GET users listing.
  */
-
 exports.list = function(req, res){
 
   req.getConnection(function(err,connection){
        
-        var query = connection.query('SELECT * FROM personal',function(err,rows)
+        var query = connection.query('SELECT * FROM persona',function(err,rows)
         {
             
             if(err)
-             res.send('{"id": 404,"msj": "Hubo un error al listar el personal"}');
+             res.send('{"id": 404,"msj": "Hubo un error al listar las personas"}');
      
             res.send({data:rows});
            
@@ -22,16 +21,19 @@ exports.list = function(req, res){
   
 };
 
+/**
+ * Busca una persona por su cedula
+ */
 exports.search = function(req, res){
     
     var cedula = req.params.cedula;
     req.getConnection(function(err,connection){
        
-        var query = connection.query('SELECT * FROM personal WHERE cedula = ?',[cedula],function(err,rows)
+        var query = connection.query('SELECT * FROM persona WHERE cedula = ?',[cedula],function(err,rows)
         {
             
             if(err)
-            res.send('{"id": 404,"msj": "Hubo un error al buscar el personal"}');
+            res.send('{"id": 404,"msj": "Hubo un error al buscar la persona"}');
      
             res.send({data:rows[0]});
                 

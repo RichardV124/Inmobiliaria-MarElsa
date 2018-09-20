@@ -22,7 +22,7 @@ export class BusquedaClienteComponent implements OnInit {
 
   ngOnInit() {
   }
-
+/** 
   buscar() {
 
     if (this.selectedCliente.cedula == null) {
@@ -52,7 +52,7 @@ export class BusquedaClienteComponent implements OnInit {
         });
     }
   }
-
+*/
   limpiarcampos() {
     this.selectedCliente.nombre = null;
     this.selectedCliente.apellido = null;

@@ -33,6 +33,25 @@ exports.rolById = function(req, res){
       });
   };
 
+  /**
+ * Buscar rol por id
+ */
+exports.accesoById = function(req, res){
+    var id = req.params.id;
+    req.getConnection(function(err,connection){
+        var query = connection.query('SELECT * FROM acceso WHERE id = ?',[id],function(err,rows)
+        {
+            if(err)
+               res.send('{"id": 404,"msj": "Hubo un error al buscar el acceso"}');   
+
+             res.send({data:rows[0]});
+         });
+
+         console.log(query.sql);
+
+    });
+};
+
 /**
  * Lista de Accesos
  */
@@ -90,13 +109,14 @@ exports.accesosPorRol = function(req, res){
 exports.saveAccesoRol = function(req,res){
 
     var input = JSON.parse(JSON.stringify(req.body));
+    console.log(input);
 
     req.getConnection(function (err, connection) {
 
         var acceso_rol = {
 
-            rol_id : input.rol_id,
-            acceso_id : input.acceso_id
+            rol_id : input.rol.id,
+            acceso_id : input.acceso.id
         
         };
         console.log(acceso_rol);
@@ -119,18 +139,11 @@ exports.saveAccesoRol = function(req,res){
  exports.deleteAccesoRol = function(req,res){
 
     var input = JSON.parse(JSON.stringify(req.body));
+    console.log(input);
 
     req.getConnection(function (err, connection) {
 
-        var acceso_rol = {
-
-            rol_id : input.rol_id,
-            acceso_id : input.acceso_id
-        
-        };
-        console.log(acceso_rol);
-        
-        var query= connection.query("DELETE FROM acceso_rol  WHERE acceso_id = ? AND rol_id = ? ",[acceso_rol.acceso_id,acceso_rol.rol_id], 
+        var query= connection.query("DELETE FROM acceso_rol  WHERE acceso_id = ? AND rol_id = ? ",[input.rol_id,input.acceso_id], 
         function(err, rows)
         {
             if (err)

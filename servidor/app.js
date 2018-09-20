@@ -12,8 +12,8 @@ var path = require('path');
 
 //cargamos el route de customers
 var customers = require('./routes/customers'); 
-//cargamos el route de personal
-var personal = require('./routes/personal');
+//cargamos el route de persona
+var persona = require('./routes/persona');
 //cargamos el route de login
 var login = require('./routes/login');
 //cargamos el route de personal
@@ -99,19 +99,13 @@ app.get('/customers/delete/:id', customers.delete_customer);
 app.get('/customers/search/:id', customers.search);
 app.post('/customers/edit/',customers.save_edit);
 
-// ------- Servicios de personal ------- //
-app.get('/personal', personal.list);
-app.get('/personal/search/:cedula', personal.search);
-app.post('/personal/edit/',personal.edit);
-app.post('/personal/delete/', personal.delete);
-app.post('/personal/save', personal.save);
-app.get('/tipopersonal', personal.listTipoPersonal);
+// ------- Servicios de persona ------- //
+app.get('/persona/search/:cedula', persona.search);
 
 // ------- Servicios de login ------- //
-app.post('/login/login', login.login);
-app.get('/login/personal-by-login/:username', login.personalByLogin);
-app.get('/login/cliente-by-login/:username', login.clienteByLogin);
-app.get('/login/search2/:username', login.search2);
+app.get('/login/login/:username/:contrasenia', login.login);
+app.get('/login/usuario-by-persona/:persona', login.loginByPersona);
+app.get('/login/listar', login.listar);
 
 // ------- Servicios de cliente ------- //
 app.get('/cliente', cliente.list);
@@ -135,6 +129,7 @@ app.post('file/add', inmueble.addFile);
 app.get('/rol/listar', roles.listar);
 app.get('/rol-accesos/listar', roles.listarRolAccesos);
 app.get('/rol/rol-by-id/:id', roles.rolById);
+app.get('/acceso/acceso-by-id/:id', roles.accesoById);
 app.get('/acceso/listar', roles.listarAccesos);
 app.get('/acceso/por-rol/:rol', roles.accesosPorRol);
 app.post('/acceso-rol/save', roles.saveAccesoRol);
