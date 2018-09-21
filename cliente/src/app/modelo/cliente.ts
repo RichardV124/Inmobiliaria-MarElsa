@@ -1,5 +1,6 @@
 import { Login } from './login';
 import { Rol } from './rol';
+import { Municipio } from './municipio';
 
 export class Cliente {
     nombre: string;
@@ -9,6 +10,7 @@ export class Cliente {
     direccion: string;
     telefono: number;
     correo: string;
-    login_username: Login;
     rol_id: Rol;
+    municipio_id: Municipio;
+    genero: number;
 }

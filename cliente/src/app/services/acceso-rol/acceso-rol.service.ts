@@ -79,7 +79,6 @@ buscarAccesoPorId(id: number) {
  */
 eliminarAccesoRol(accesoRol: AccesoRol) {
   console.log(accesoRol);
-  
   return this.http.post<any>(`${this.domain}/acceso-rol/delete/`, accesoRol)
     .map(res => res);
 }

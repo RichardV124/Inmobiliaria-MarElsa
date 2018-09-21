@@ -12,4 +12,5 @@ telefono: number;
 correo: string;
 rol: Rol;
 municipio: Municipio;
+genero: number;
 }
