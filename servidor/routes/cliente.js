@@ -104,23 +104,23 @@ exports.list = function(req, res){
   
         var persona = {
               
-            nombre    : input.persona.nombre,
-            apellido : input.persona.apellido,
-            fecha_nacimiento : input.persona.fecha_nacimiento,
-            cedula : input.persona.cedula,
-            direccion : input.persona.direccion,
-            telefono : input.persona.telefono,
-            correo   : input.persona.correo,              
-            rol_id : input.persona.rol.id,
-            municipio_id : input.persona.municipio.id,
-            genero : input.persona.genero
+            nombre    : input.persona_cedula.nombre,
+            apellido : input.persona_cedula.apellido,
+            fecha_nacimiento : input.persona_cedula.fecha_nacimiento,
+            cedula : input.persona_cedula.cedula,
+            direccion : input.persona_cedula.direccion,
+            telefono : input.persona_cedula.telefono,
+            correo   : input.persona_cedula.correo,              
+            rol_id : input.persona_cedula.rol_id.id,
+            municipio_id : input.persona_cedula.municipio_id.id,
+            genero : input.persona_cedula.genero
         };
 
         var login = {
               
               username    : input.username,
               contrasenia : input.contrasenia,
-              persona_cedula : input.persona.cedula
+              persona_cedula : input.persona_cedula.cedula
           
           };
           console.log(login);

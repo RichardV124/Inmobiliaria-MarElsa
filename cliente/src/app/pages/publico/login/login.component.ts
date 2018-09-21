@@ -62,10 +62,10 @@ export class LoginComponent implements OnInit {
                this.msj = 'A ingresado datos incorrectos';
                this.show = 1;
              } else {
-               this.usuario.persona_cedula.rol = rta3.data;
+               this.usuario.persona_cedula.rol_id = rta3.data;
                // Obtenemos los accesos del rol
-               this.servicios.getUsuarioRolAccesos(this.usuario.persona_cedula.rol).subscribe(rta4 => {
-                 this.usuario.persona_cedula.rol.accesos = rta4.data;
+               this.servicios.getUsuarioRolAccesos(this.usuario.persona_cedula.rol_id).subscribe(rta4 => {
+                 this.usuario.persona_cedula.rol_id.accesos = rta4.data;
                  // una vez construido el objeto con el usuario, persona, rol, acceso
                  // procedemos a guardarlo como variable de sesion en angular 6
                  this.servicios.setUsuario(this.usuario);
