@@ -1,3 +1,4 @@
+import { LoginService } from './../../../../services/login/login.service';
 import { AccesoRol } from './../../../../modelo/acceso_rol';
 import { AccesoRolService } from './../../../../services/acceso-rol/acceso-rol.service';
 import { Acceso } from './../../../../modelo/acceso';
@@ -21,12 +22,14 @@ export class AsignarAccesoComponent implements OnInit {
   respuesta: RespuestaDTO;
   show;
 
-  constructor(private rolService: AccesoRolService) {
+  constructor(private rolService: AccesoRolService, private usuarioServicio: LoginService) {
     this.listarAccesos();
     this.listarRoles();
     this.rolSeleccionado.id = 0;
     this.accesoSeleccionado.id = 0;
     this.listarAccesosRol();
+     // Validamos si el usuario tiene acceso a la pagina
+     this.usuarioServicio.esAccesible('asignar-acceso');
   }
 
   ngOnInit() {
