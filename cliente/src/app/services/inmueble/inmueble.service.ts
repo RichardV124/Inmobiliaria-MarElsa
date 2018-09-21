@@ -26,6 +26,13 @@ export class InmuebleService {
      });
   }
 
+  buscarTipoInmuebleId(id: number) {
+    return this.http.get<any>(`${this.domain}/tipoinmueble/search/${id}`)
+    .map(res => {
+      return res.data;
+    });
+  }
+
    /**
  * Metodo que lista todos los tipos de inmuebles de la BD
  */

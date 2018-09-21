@@ -1,3 +1,4 @@
+import { Archivo } from './../../../../modelo/archivo';
 import { MunicipioService } from './../../../../services/municipio/municipio.service';
 import { Departamento } from './../../../../modelo/departamento';
 import { Municipio } from './../../../../modelo/municipio';
@@ -8,6 +9,10 @@ import { InmuebleService } from './../../../../services/inmueble/inmueble.servic
 import { TipoInmueble } from './../../../../modelo/tipo_inmueble';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Login } from '../../../../modelo/login';
+import { LoginService } from '../../../../services/login/login.service';
+import { Persona } from '../../../../modelo/persona';
+import { PersonaService } from '../../../../services/persona/persona.service';
 
 const uri = 'http://localhost:3000/file/upload';
 
@@ -29,11 +34,15 @@ export class RegistroInmuebleComponent implements OnInit {
   selectedInmueble: Inmueble = new Inmueble();
   selectedTipoInmueble: TipoInmueble = new TipoInmueble();
   respuesta: RespuestaDTO = new RespuestaDTO();
-  selectedFile: File = null;
+  selectedFile: File[] = null;
   attachmentList: any = [];
+  usuario: Login = new Login();
+  propietario: Persona = new Persona();
+  archivo: Archivo = new Archivo();
 
-  constructor(private inmuebleServie: InmuebleService,
-    private municipioService: MunicipioService, private router: Router) {
+  constructor(private inmuebleServie: InmuebleService, private servicios: LoginService,
+    private municipioService: MunicipioService, private personaService: PersonaService,
+    private router: Router) {
     this.listarTiposInmueble();
     this.listarDepartamentos();
     this.listarInmuebles();
@@ -43,6 +52,9 @@ export class RegistroInmuebleComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.servicios.esAccesible('registro-inmueble');
+    this.usuario = this.servicios.getUsuario();
+    console.log(this.usuario);
   }
 
   /** validarCamposNumericosNegativos() {
@@ -95,9 +107,15 @@ export class RegistroInmuebleComponent implements OnInit {
       if (!this.validarCamposVacios()) {
       this.respuesta.msj = 'Debe ingresar los campos obligatorios';
       this.show = 1;
+      this.clienteExiste();
+    // } else if (!this.clienteExiste()) {
+      // this.respuesta.msj = 'La cédula del cliente ingresado no existe';
+      // this.show = 1;
     } else {
       this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
       this.selectedInmueble.municipio_id = this.selectedMunicipio;
+      this.selectedInmueble.persona_cedula = this.usuario;
+      this.selectedInmueble.cliente_cedula = this.propietario;
       this.inmuebleServie.registrarInmueble(this.selectedInmueble)
       .subscribe(inmueble => {
         this.respuesta = JSON.parse(JSON.stringify(inmueble));
@@ -109,6 +127,21 @@ export class RegistroInmuebleComponent implements OnInit {
         this.listarInmuebles();
       });
      }
+  }
+
+  /**
+   * Verifica si la cédula del cliente que el empleado ingresó, existe
+   */
+  clienteExiste() {
+    this.personaService.buscarPersona(this.propietario.cedula)
+    .subscribe(cliente => {
+      this.propietario = JSON.parse(JSON.stringify(cliente));
+      console.log('nombre cliente: ' + this.propietario.nombre);
+      if (this.propietario.nombre != null) {
+        return true;
+      }
+    });
+    return false;
   }
 
   /**
@@ -126,19 +159,33 @@ export class RegistroInmuebleComponent implements OnInit {
    * @param event archivo seleccionado
    */
   onFileSelected(event) {
-    this.selectedFile = event.target.files[0];
+    this.selectedFile = event.target.files;
     console.log(this.selectedFile);
   }
 
   addFile() {
-    console.log('guardando foto ' + this.selectedFile.name);
+    // console.log('guardando foto ' + this.selectedFile.name);
   }
 
   listarInmuebles() {
     this.inmuebleServie.listarInmuebles()
     .subscribe(inmueble => {
       this.listaInmuebles = inmueble;
+      this.obtenerDatosCombosLista();
     });
+  }
+
+  /**
+   * Obtiene los datos que se registraron en los cambos para llenarlos en la lista
+   */
+  obtenerDatosCombosLista() {
+    // tslint:disable-next-line:prefer-const
+    for (let inmueble of this.listaInmuebles) {
+      this.inmuebleServie.buscarTipoInmuebleId(JSON.parse(JSON.stringify(inmueble['tipo_inmueble_id'])))
+      .subscribe(tipo => {
+        inmueble.tipo_inmueble_id = JSON.parse(JSON.stringify(tipo));
+      });
+    }
   }
 
   listarTiposInmueble() {
@@ -172,9 +219,9 @@ export class RegistroInmuebleComponent implements OnInit {
       this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
       this.selectedTipoInmueble.id = 1;
       this.inmuebleServie.buscarInmueble(this.selectedInmueble.id)
-      .subscribe(customer => {
-        this.selectedInmueble = JSON.parse(JSON.stringify(customer));
-        console.log(JSON.parse(JSON.stringify(customer)));
+      .subscribe(inmueble => {
+        this.selectedInmueble = JSON.parse(JSON.stringify(inmueble));
+        console.log(JSON.parse(JSON.stringify(inmueble)));
         console.log(this.selectedInmueble.direccion + ' SEARCH');
       });
     }

@@ -1,5 +1,6 @@
 import { Municipio } from './municipio';
 import { TipoInmueble } from './tipo_inmueble';
+import { Login } from './login';
 export class Inmueble {
 id: number;
 direccion: string;
@@ -27,4 +28,9 @@ num_closets: number;
 municipio_id: Municipio;
 num_cocinas: number;
 zona: number;
+alcantarillado: boolean;
+sauna: boolean;
+energia: boolean;
+zonabbq: boolean;
+persona_cedula: Login;
 }

@@ -122,6 +122,7 @@ app.get('/tipoinmueble', inmueble.listTipoInmueble);
 app.post('/inmueble/add', inmueble.save);
 app.post('/inmueble/delete/:id', inmueble.delete_inmueble);
 app.post('/inmueble/edit/:id', inmueble.save_edit);
+app.get('/tipoinmueble/search/:id', inmueble.searchTipoInmubeleId);
 
 // agregar archivos (foto, video)
 app.post('file/add', inmueble.addFile);

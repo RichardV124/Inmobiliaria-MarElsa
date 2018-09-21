@@ -48,6 +48,31 @@ exports.listTipoInmueble = function (req, res) {
 
 };
 
+exports.searchTipoInmubeleId = function (req, res) {
+
+    var id = req.params.id;
+    req.getConnection(function (err, connection) {
+
+        var query = connection.query('SELECT * FROM tipo_inmueble WHERE id = ?', [id], function (err, rows) {
+
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            console.log(query.sql);
+            console.log({
+                data: rows[0]
+            })
+            res.send({
+                data: rows[0]
+            });
+
+
+        });
+
+        //console.log(query.sql);
+    });
+};
+
 exports.search = function (req, res) {
 
     var id = req.params.id;
@@ -106,7 +131,13 @@ exports.save = function (req, res) {
             num_closets: input.num_closets,
             municipio_id: input.municipio_id.id,
             num_cocinas: input.num_cocinas,
-            zona: input.zona
+            zona: input.zona,
+            alcantarillado: input.alcantarillado,
+            sauna: input.sauna,
+            energia: input.energia,
+            zonabbq: input.zonabbq,
+            persona_cedula: input.persona_cedula.cedula,
+            cliente_cedula:input.cliente_cedula.cedula
         };
 
         var query = connection.query("INSERT INTO inmueble set ? ", data, function (err, rows) {
@@ -156,7 +187,13 @@ exports.save_edit = function (req, res) {
             num_closets: input.num_closets,
             municipio_id: input.municipio_id.id,
             num_cocinas: input.num_cocinas,
-            zona: input.zona
+            zona: input.zona,
+            alcantarillado: input.alcantarillado,
+            sauna: input.sauna,
+            energia: input.energia,
+            zonabbq: input.zonabbq,
+            persona_cedula: input.persona_cedula.cedula,
+            cliente_cedula:input.cliente_cedula.cedula
 
         };
 
