@@ -90,9 +90,9 @@ export class BusquedaClienteComponent implements OnInit {
     //   .subscribe(dep => {
     //             this.selectedDepartamento = JSON.parse(JSON.stringify(dep));
     //   });
-    this.selectedDepartamento.id = cliente.municipio['departamento_id'];
+    this.selectedDepartamento.id = cliente.municipio_id['departamento_id'];
     this.listarMunicipios();
-    this.selectedMunicipio.id = cliente.municipio.id;
+    this.selectedMunicipio.id = cliente.municipio_id.id;
     this.buscar();
   }
 
@@ -108,12 +108,12 @@ export class BusquedaClienteComponent implements OnInit {
     for (let persona of this.listaClientes) {
       this.accesoRolService.buscarRolPorId(JSON.parse(JSON.stringify(persona['rol_id'])))
       .subscribe(rol => {
-                persona.rol = JSON.parse(JSON.stringify(rol));
+                persona.rol_id = JSON.parse(JSON.stringify(rol));
       });
 
       this.municipioService.buscarMunicipio(JSON.parse(JSON.stringify(persona['municipio_id'])))
       .subscribe(mun => {
-                persona.municipio = JSON.parse(JSON.stringify(mun));
+                persona.municipio_id = JSON.parse(JSON.stringify(mun));
       });
     }
   }

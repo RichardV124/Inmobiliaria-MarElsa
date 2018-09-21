@@ -53,9 +53,9 @@ export class RegistroClienteComponent implements OnInit {
     if (this.validarCampos()) {
     } else {
       this.rol.id = 2;
-      this.selectedPersona.rol = this.rol;
-      this.selectedPersona.municipio = this.selectedMunicipio;
-      this.selectedLogin.persona = this.selectedPersona;
+      this.selectedPersona.rol_id = this.rol;
+      this.selectedPersona.municipio_id = this.selectedMunicipio;
+      this.selectedLogin.persona_cedula = this.selectedPersona;
       this.clienteService.registrarPersona(this.selectedLogin)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
