@@ -81,7 +81,7 @@ exports.save = function (req, res) {
     req.getConnection(function (err, connection) {
 
         var data = {
-            id: input.id,
+            // id: input.id,
             direccion: input.direccion,
             area: input.area,
             tipo_inmueble_id: input.tipo_inmueble_id.id,
@@ -92,11 +92,11 @@ exports.save = function (req, res) {
             pisos: input.pisos,
             seguridad: input.seguridad,
             zonas_verdes: input.zonas_verdes,
-            garajes: input.garajes,
+            garaje: input.garaje,
             salon_comunal: input.salon_comunal,
             conjunto_cerrado: input.conjunto_cerrado,
             cocina_integral: input.cocina_integral,
-            gas: inpu.gas,
+            gas: input.gas,
             alarma: input.alarma,
             zona_para_ninios: input.zona_para_ninios,
             terraza: input.terraza,
@@ -104,7 +104,9 @@ exports.save = function (req, res) {
             piscina: input.piscina,
             balcon: input.balcon,
             num_closets: input.num_closets,
-            municipio_id: input.municipio_id.id
+            municipio_id: input.municipio_id.id,
+            num_cocinas: input.num_cocinas,
+            zona: input.zona
         };
 
         var query = connection.query("INSERT INTO inmueble set ? ", data, function (err, rows) {
@@ -140,11 +142,11 @@ exports.save_edit = function (req, res) {
             pisos: input.pisos,
             seguridad: input.seguridad,
             zonas_verdes: input.zonas_verdes,
-            garajes: input.garajes,
+            garaje: input.garaje,
             salon_comunal: input.salon_comunal,
             conjunto_cerrado: input.conjunto_cerrado,
             cocina_integral: input.cocina_integral,
-            gas: inpu.gas,
+            gas: input.gas,
             alarma: input.alarma,
             zona_para_ninios: input.zona_para_ninios,
             terraza: input.terraza,
@@ -152,7 +154,9 @@ exports.save_edit = function (req, res) {
             piscina: input.piscina,
             balcon: input.balcon,
             num_closets: input.num_closets,
-            municipio_id: input.municipio_id.id
+            municipio_id: input.municipio_id.id,
+            num_cocinas: input.num_cocinas,
+            zona: input.zona
 
         };
 

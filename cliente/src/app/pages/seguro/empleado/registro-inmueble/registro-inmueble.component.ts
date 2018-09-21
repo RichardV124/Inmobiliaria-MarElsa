@@ -18,6 +18,8 @@ const uri = 'http://localhost:3000/file/upload';
 })
 export class RegistroInmuebleComponent implements OnInit {
 
+  show = 0;
+
   listaInmuebles: Inmueble[];
   listaTiposInmueble: TipoInmueble[];
   listaMunicipios: Municipio[];
@@ -34,24 +36,65 @@ export class RegistroInmuebleComponent implements OnInit {
     private municipioService: MunicipioService, private router: Router) {
     this.listarTiposInmueble();
     this.listarDepartamentos();
-    this.selectedTipoInmueble.id = 0;
-    this.selectedDepartamento.id = 0;
-    this.selectedMunicipio.id = 0;
+    this.listarInmuebles();
+    this.combosPorDefecto();
     this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
     this.selectedInmueble.municipio_id = this.selectedMunicipio;
-
    }
 
   ngOnInit() {
   }
 
+  /** validarCamposNumericosNegativos() {
+    if (this.selectedInmueble.garaje < 0 || this.selectedInmueble.num_closets < 0
+      || this.selectedInmueble.num_cocinas < 0 || this.selectedInmueble.area < 0
+      || this.selectedInmueble.valor < 0
+      || this.selectedInmueble.num_habitaciones < 0 || this.selectedInmueble.num_banios < 0
+      || this.selectedInmueble.pisos < 0) {
+        return false;
+      }
+      return true;
+  }
+
+  validarCamposNumericos() {
+    if (this.selectedInmueble.area < 1 || this.selectedInmueble.valor < 1
+      || this.selectedInmueble.num_habitaciones < 1 || this.selectedInmueble.num_banios < 1
+      || this.selectedInmueble.pisos < 1) {
+      return false;
+    }
+    return true;
+  } **/
+
+  validarCamposVacios() {
+    if (this.selectedMunicipio.id === 0 || this.selectedDepartamento.id === 0
+        || this.selectedInmueble.zona === 0) {
+        return false;
+      }
+      return true;
+  }
+
+  /**
+   * Si los campos que no son obligatorios no son ingresados, se
+   * les asigna el valor 0
+   */
+  validarCamposNoIngresados() {
+    if (this.selectedInmueble.promocion == null) {
+      this.selectedInmueble.promocion = 0;
+    }
+    if (this.selectedInmueble.garaje == null) {
+      this.selectedInmueble.garaje = 0;
+    }
+    if (this.selectedInmueble.num_closets == null) {
+      this.selectedInmueble.num_closets = 0;
+    }
+  }
 
   registrar() {
 
-    if (this.selectedInmueble.direccion == null || this.selectedInmueble.area == null
-      || this.selectedInmueble.valor == null || this.selectedInmueble.num_habitaciones == null
-      || this.selectedInmueble.num_banios == null || this.selectedInmueble.pisos == null) {
-
+    this.validarCamposNoIngresados();
+      if (!this.validarCamposVacios()) {
+      this.respuesta.msj = 'Debe ingresar los campos obligatorios';
+      this.show = 1;
     } else {
       this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
       this.selectedInmueble.municipio_id = this.selectedMunicipio;
@@ -61,9 +104,21 @@ export class RegistroInmuebleComponent implements OnInit {
         console.log(this.respuesta.msj + ' SAVE');
         console.log(this.selectedInmueble);
         this.selectedInmueble = new Inmueble();
-        this.selectedTipoInmueble.id = 0;
+        this.combosPorDefecto();
+        this.show = 2;
+        this.listarInmuebles();
       });
-    }
+     }
+  }
+
+  /**
+   * llena el valor de los combos por defecto
+   */
+  combosPorDefecto() {
+    this.selectedDepartamento.id = 0;
+    this.selectedMunicipio.id = 0;
+    this.selectedInmueble.zona = 0;
+    this.selectedTipoInmueble.id = 0;
   }
 
 /**
@@ -77,6 +132,13 @@ export class RegistroInmuebleComponent implements OnInit {
 
   addFile() {
     console.log('guardando foto ' + this.selectedFile.name);
+  }
+
+  listarInmuebles() {
+    this.inmuebleServie.listarInmuebles()
+    .subscribe(inmueble => {
+      this.listaInmuebles = inmueble;
+    });
   }
 
   listarTiposInmueble() {

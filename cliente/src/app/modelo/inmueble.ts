@@ -12,7 +12,7 @@ num_banios: number;
 pisos: number;
 seguridad: boolean;
 zonas_verdes: boolean;
-garajes: number;
+garaje: number;
 salon_comunal: boolean;
 conjunto_cerrado: boolean;
 cocina_integral: boolean;
@@ -25,4 +25,6 @@ piscina: boolean;
 balcon: boolean;
 num_closets: number;
 municipio_id: Municipio;
+num_cocinas: number;
+zona: number;
 }
