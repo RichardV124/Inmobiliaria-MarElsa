@@ -140,6 +140,8 @@ app.post('/acceso-rol/search/:rol_id/:acceso_id', roles.searchAccesoRol);
 // ------- Servicios de departamento y municipio ------- //
 app.get('/departamento/list', departamento.list);
 app.get('/municipio/list/:id', municipio.list);
+app.get('/municipio/search/:id', municipio.search);
+app.get('/departamento/search/:id', departamento.search);
 
 
 app.use(app.router);

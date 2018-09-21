@@ -13,5 +13,6 @@ export class Persona {
     correo: string;
     rol_id: Rol;
     municipio_id: Municipio;
+    genero: number;
 
 }
