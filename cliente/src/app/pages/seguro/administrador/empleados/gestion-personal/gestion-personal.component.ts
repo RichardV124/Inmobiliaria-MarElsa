@@ -1,7 +1,8 @@
+import { MunicipioService } from './../../../../../services/municipio/municipio.service';
 import { Rol } from './../../../../../modelo/rol';
 import { TipoPersonal } from './../../../../../modelo/tipo_personal';
-import { PersonalService } from './../../../../../services/personal/personal.service';
-import { Personal } from './../../../../../modelo/personal';
+import { PersonaService } from './../../../../../services/persona/persona.service';
+import { Persona } from './../../../../../modelo/persona';
 import { Router } from '@angular/router';
 import { RespuestaDTO } from './../../../../../modelo/respuestaDTO';
 import { Login } from './../../../../../modelo/login';
@@ -16,50 +17,81 @@ export class GestionPersonalComponent implements OnInit {
 
   show = 0;
 
-
-  listaPersonal: Personal[];
+  listaPersonal: Persona[];
   listaTipoPersonal: TipoPersonal[];
 
-  selectedPersonal: Personal = new Personal();
-  selectedLogin: Login = new Login();
-  selectedTipoPersonal: TipoPersonal = new TipoPersonal();
-  selectedRol: Rol = new Rol();
+  personaSeleccionada: Persona = new Persona();
+  loginSeleccionado: Login = new Login();
+  tipoPersonalSeleccionado: TipoPersonal = new TipoPersonal();
+  rolSeleccionado: Rol = new Rol();
   respuesta: RespuestaDTO = new RespuestaDTO();
 
-  constructor(private personalService: PersonalService, private router: Router) {
-    this.listarEmpleados();
-        this.listarTipoPersonal();
-        this.selectedTipoPersonal.id = 0;
-        this.selectedPersonal.tipo_id = this.selectedTipoPersonal;
+  constructor(private personaService: PersonaService,  private router: Router ,
+    private municipioService: MunicipioService) {
+    //this.listarEmpleados();
+    this.listarTipoPersonal();
+    this.tipoPersonalSeleccionado.id = 0;
+  //  this.personaSeleccionada.tipo_id = this.tipoPersonalSeleccionado;
   }
 
   ngOnInit() {
   }
 
-  ver(personal: Personal) {
-    this.selectedPersonal = personal;
+
+  ver(persona: Persona) {
+    this.personaSeleccionada = persona;
     this.buscar();
   }
 
+  buscar() {
+
+    if (this.personaSeleccionada.cedula == null) {
+
+      this.show = 1;
+          this.respuesta.msj = 'Debe ingresar la cedula a buscar ';
+    } else {
+      this.personaService.buscarPersona(this.personaSeleccionada.cedula)
+      .subscribe(personal => {
+        if (personal === undefined ) {
+          this.show = 1;
+          this.respuesta.msj = 'No se encuentra ningun empleado con la cedula ' +  this.personaSeleccionada.cedula;
+          console.log('NO SE ENCUENTRA');
+        } else {
+        this.personaSeleccionada = JSON.parse(JSON.stringify(personal));
+        let tipo = JSON.parse(JSON.stringify(personal))['tipo_id'];
+        let username = JSON.parse(JSON.stringify(personal))['login_username'];
+        this.tipoPersonalSeleccionado.id = tipo;
+        this.loginSeleccionado.username = username;
+this.loginSeleccionado.persona = this.personaSeleccionada;
+       //this.personaSeleccionada.tipo_id = this.tipoPersonalSeleccionada;
+      //  console.log(this.selectedPersonal.tipo_id.id);
+        //console.log(this.selectedPersonal.nombre + ' SEARCH');
+        }
+      });
+    }
+}
+
+
+ 
   registrar() {
 
-      if (this.selectedPersonal.nombre == null || this.selectedPersonal.apellido == null
-        || this.selectedPersonal.fecha_nacimiento == null || this.selectedPersonal.experiencia == null
-        || this.selectedPersonal.formacion == null || this.selectedPersonal.direccion == null
-        || this.selectedPersonal.cedula == null) {
+      if (this.personaSeleccionada.nombre == null || this.personaSeleccionada.apellido == null
+        || this.personaSeleccionada.fecha_nacimiento == null || this.personaSeleccionada.direccion == null
+        || this.personaSeleccionada.cedula == null) {
 
       } else {
-        this.selectedPersonal.login = this.selectedLogin;
-        this.selectedPersonal.tipo_id = this.selectedTipoPersonal;
-        this.selectedRol.id = 2;
-       this.selectedPersonal.rol = this.selectedRol;
-        this.personalService.registrarPersonal(this.selectedPersonal)
+       // this.personaSeleccionada.tipo_id = this.selectedTipoPersonal;
+        this.loginSeleccionado.persona = this.personaSeleccionada;
+        //Le quemamos el rol de empleado el cual es 2
+        this.rolSeleccionado.id = 2;
+       this.personaSeleccionada.rol = this.rolSeleccionado;
+        this.personaService.registrarPersona(this.personaSeleccionada)
         .subscribe(res => {
           this.respuesta = JSON.parse(JSON.stringify(res));
           console.log(this.respuesta.msj + ' SAVE');
-          console.log(this.selectedPersonal.nombre);
-          this.selectedPersonal = new Personal();
-          this.selectedLogin = new Login();
+          console.log(this.personaSeleccionada.nombre);
+          this.personaSeleccionada = new Persona();
+          this.loginSeleccionado = new Login();
           this.show = 2;
         });
       }
@@ -67,79 +99,48 @@ export class GestionPersonalComponent implements OnInit {
 
   editar() {
 
-    if (this.selectedPersonal.nombre == null || this.selectedPersonal.apellido == null
-      || this.selectedPersonal.fecha_nacimiento == null || this.selectedPersonal.experiencia == null
-      || this.selectedPersonal.formacion == null || this.selectedPersonal.direccion == null
-      || this.selectedPersonal.cedula == null) {
+    if (this.personaSeleccionada.nombre == null || this.personaSeleccionada.apellido == null
+      || this.personaSeleccionada.fecha_nacimiento == null || this.personaSeleccionada.direccion == null
+      || this.personaSeleccionada.cedula == null) {
 
     } else {
-      this.selectedPersonal.login = this.selectedLogin;
-      this.selectedPersonal.tipo_id = this.selectedTipoPersonal;
-      console.log(JSON.parse(JSON.stringify(this.selectedPersonal)));
-      this.personalService.editarPersonal(this.selectedPersonal)
+      //this.selectedPersonal.login = this.selectedLogin;
+      //this.selectedPersonal.tipo_id = this.selectedTipoPersonal;
+      //console.log(JSON.parse(JSON.stringify(this.selectedPersonal)));
+      this.personaService.editarPersona(this.personaSeleccionada)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
         console.log(this.respuesta.msj + ' EDIT');
-        this.selectedPersonal = new Personal();
-        this.selectedLogin = new Login();
+        this.personaSeleccionada = new Persona();
+        this.loginSeleccionado = new Login();
       });
     }
 }
 
-  eliminar(personal: Personal) {
+  eliminar(personal: Persona) {
     if (confirm('¿ Estas seguro que quieres eliminarlo ?')) {
-      this.personalService.eliminarPersonal(personal)
+      this.personaService.eliminarPersonal(personal)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
         console.log(this.respuesta.msj + ' DELETE');
-        this.selectedPersonal = new Personal();
-        this.selectedLogin = new Login();
+        this.personaSeleccionada = new Persona();
+        this.loginSeleccionado = new Login();
         this.show = 2;
       });
     }
   }
 
-  buscar() {
-
-    if (this.selectedPersonal.cedula == null) {
-
-      this.show = 1;
-          this.respuesta.msj = 'Debe ingresar la cedula a buscar ';
-    } else {
-      this.personalService.buscarPersonal(this.selectedPersonal.cedula)
-      .subscribe(personal => {
-        if (personal === undefined ) {
-          this.show = 1;
-          this.respuesta.msj = 'No se encuentra ningun empleado con la cedula ' +  this.selectedPersonal.cedula;
-          console.log('NO SE ENCUENTRA');
-        } else {
-        this.selectedPersonal = JSON.parse(JSON.stringify(personal));
-        let tipo = JSON.parse(JSON.stringify(personal))['tipo_id'];
-        let username = JSON.parse(JSON.stringify(personal))['login_username'];
-        this.selectedTipoPersonal.id = tipo;
-        this.selectedLogin.username = username;
-        this.selectedPersonal.login = this.selectedLogin;
-       this.selectedPersonal.tipo_id = this.selectedTipoPersonal;
-        console.log(this.selectedPersonal.tipo_id.id);
-        console.log(this.selectedPersonal.nombre + ' SEARCH');
-        }
-      });
-    }
-}
-
   listarEmpleados() {
-    this.personalService.listarPersonal()
+    this.personaService.listarPersona()
     .subscribe(personal => {
       this.listaPersonal = personal;
     });
   }
 
   listarTipoPersonal() {
-    this.personalService.listarTipoPersonal()
+    this.personaService.listarTipoPersonal()
     .subscribe(tipoPersonal => {
       this.listaTipoPersonal = tipoPersonal;
     });
   }
-
 }
-

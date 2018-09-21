@@ -6,7 +6,7 @@ exports.list = function(req, res){
 
     req.getConnection(function(err,connection){
          
-          var query = connection.query('SELECT * FROM cliente',function(err,rows)
+          var query = connection.query('SELECT * FROM persona WHERE rol_id=2;',function(err,rows)
           {
               
               if(err)
@@ -27,7 +27,7 @@ exports.list = function(req, res){
       var cedula = req.params.cedula;
       req.getConnection(function(err,connection){
          
-          var query = connection.query('SELECT * FROM cliente WHERE cedula = ?',[cedula],function(err,rows)
+          var query = connection.query('SELECT * FROM persona WHERE cedula = ?',[cedula],function(err,rows)
           {
               
               if(err)
@@ -60,7 +60,7 @@ exports.list = function(req, res){
           
           };
           
-          connection.query("UPDATE cliente set ? WHERE cedula = ? ",[data,cedula], function(err, rows)
+          connection.query("UPDATE persona set ? WHERE cedula = ? ",[data,cedula], function(err, rows)
           {
     
             if (err)
@@ -80,7 +80,7 @@ exports.list = function(req, res){
       
        req.getConnection(function (err, connection) {
           
-          connection.query("DELETE FROM cliente  WHERE cedula = ? ",[cedula], function(err, rows)
+          connection.query("DELETE FROM persona  WHERE cedula = ? ",[cedula], function(err, rows)
           {
               
                if(err)
@@ -101,48 +101,49 @@ exports.list = function(req, res){
   console.log(input);
   
       req.getConnection(function (err, connection) {
-          
-          var cliente = {
-              
-              nombre    : input.nombre,
-              apellido : input.apellido,
-              fecha_nacimiento : input.fecha_nacimiento,
-              cedula : input.cedula,
-              direccion : input.direccion,
-              telefono : input.telefono,
-              correo   : input.correo,
-              login_username : input.login_username.username,
-              rol_id : input.rol_id.id
-
-          };
   
-          var login = {
+        var persona = {
               
-              username    : input.login_username.username,
-              contrasenia : input.login_username.contrasenia
+            nombre    : input.persona.nombre,
+            apellido : input.persona.apellido,
+            fecha_nacimiento : input.persona.fecha_nacimiento,
+            cedula : input.persona.cedula,
+            direccion : input.persona.direccion,
+            telefono : input.persona.telefono,
+            correo   : input.persona.correo,              
+            rol_id : input.persona.rol.id,
+            municipio_id : input.persona.municipio.id,
+            genero : input.persona.genero
+        };
+
+        var login = {
+              
+              username    : input.username,
+              contrasenia : input.contrasenia,
+              persona_cedula : input.persona.cedula
           
           };
           console.log(login);
-          
-          var query = connection.query("INSERT INTO login set ? ",login, function(err, rows)
-          {
-              if (err)
-              console.log("Error inserting : %s ",err );
-         
-          //res.send('{"id": 505,"msj": "Se registro correctamente"}');
-          
-        });
-  
-          var query2 = connection.query("INSERT INTO cliente set ? ",cliente, function(err, rows)
+
+          var query = connection.query("INSERT INTO persona set ? ",persona, function(err, rows)
           {
     
             if (err)
                 console.log("Error inserting : %s ",err );
            
-            res.send('{"id": 505,"msj": "Se registró correctamente el cliente"}');
+            //res.send('{"id": 505,"msj": "Se registró correctamente el cliente"}');
             
           });
+
+          var query2 = connection.query("INSERT INTO login set ? ",login, function(err, rows)
+          {
+              if (err)
+              console.log("Error inserting : %s ",err );
+         
+          res.send('{"id": 505,"msj": "Se registró correctamente"}');
           
+        });
+       
           console.log(query.sql); //get raw query
           console.log(query2.sql);
       });

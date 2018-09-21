@@ -33,5 +33,27 @@ listarDepartamentos() {
   });
 }
 
+/**
+   * Metodo para buscar un municipio
+   * @param id, id por el cual se buscara el municipio, se envia por la ruta
+   */
+  buscarMunicipio(id: number) {
+    return this.http.get<any>(`${this.domain}/municipio/search/${id}`)
+    .map(res => {
+      return res.data;
+  });
 
+  }
+
+  /**
+   * Metodo para buscar un Departamento
+   * @param id, id por el cual se buscara el Departamento, se envia por la ruta
+   */
+  buscarDepartamento(id: number) {
+    return this.http.get<any>(`${this.domain}/departamento/search/${id}`)
+    .map(res => {
+      return res.data;
+  });
+
+  }
 }

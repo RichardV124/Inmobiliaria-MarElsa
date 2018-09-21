@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 4.1.5.907
---   en:        2018-09-18 10:05:06 COT
+--   en:        2018-09-19 22:49:47 COT
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -10,7 +10,7 @@ CREATE TABLE ACCESO
   (
     id     INTEGER NOT NULL AUTO_INCREMENT,
     nombre VARCHAR (40) NOT NULL ,
-    url    VARCHAR (100) NOT NULL,
+    url    VARCHAR (40) NOT NULL,
 	PRIMARY KEY ( id )
   ) ;
 
@@ -25,48 +25,32 @@ CREATE TABLE ACCESO_ROL
 CREATE TABLE ARCHIVO
   (
     id          INTEGER NOT NULL AUTO_INCREMENT,
-    url         VARCHAR (100) NOT NULL ,
-    inmueble_id INTEGER NOT NULL,
-	PRIMARY KEY ( id ) 
+    nombre      VARCHAR (80) NOT NULL ,
+    inmueble_id INTEGER NOT NULL ,
+    archivo     VARCHAR (40),
+	PRIMARY KEY ( id )
   ) ;
 
 
 CREATE TABLE ARRIENDO
   (
     id              INTEGER NOT NULL AUTO_INCREMENT,
-    descripcion     VARCHAR (100) ,
+    descripcion     VARCHAR (30) ,
     inmueble_id     INTEGER NOT NULL ,
     cliente_cedula  INTEGER NOT NULL ,
-    personal_cedula INTEGER NOT NULL,
+    empleado_cedula INTEGER NOT NULL,
 	PRIMARY KEY ( id )
   ) ;
-
-
-CREATE TABLE CLIENTE
-  (
-    nombre           VARCHAR (30) NOT NULL ,
-    apellido         VARCHAR (30) NOT NULL ,
-    fecha_nacimiento DATE ,
-    cedula           INTEGER NOT NULL ,
-    direccion        VARCHAR (30) NOT NULL ,
-    telefono         INTEGER NOT NULL ,
-    correo           INTEGER ,
-    login_username   VARCHAR (30) NOT NULL ,
-    rol_id           INTEGER NOT NULL ,
-    municipio_id     INTEGER NOT NULL
-  ) ;
-ALTER TABLE CLIENTE ADD CONSTRAINT CLIENTE_PK PRIMARY KEY ( cedula ) ;
-ALTER TABLE CLIENTE ADD CONSTRAINT CLIENTE__UN UNIQUE ( login_username ) ;
 
 
 CREATE TABLE CONTRATO
   (
     id              INTEGER NOT NULL AUTO_INCREMENT,
-    descripcion     VARCHAR (30) ,
+    descripcion     VARCHAR (9000) ,
     firma           CHAR (1) NOT NULL ,
     cliente_cedula  INTEGER NOT NULL ,
     inmueble_id     INTEGER NOT NULL ,
-    personal_cedula INTEGER NOT NULL,
+    empleado_cedula INTEGER NOT NULL,
 	PRIMARY KEY ( id )
   ) ;
 
@@ -79,53 +63,96 @@ CREATE TABLE DEPARTAMENTO
   ) ;
 
 
+CREATE TABLE EMPLEADO
+  (
+    tipo_id        INTEGER NOT NULL ,
+    persona_cedula INTEGER NOT NULL
+  ) ;
+ALTER TABLE EMPLEADO ADD CONSTRAINT EMPLEADO_PK PRIMARY KEY ( persona_cedula ) ;
+ALTER TABLE EMPLEADO ADD CONSTRAINT EMPLEADO__UN UNIQUE ( persona_cedula ) ;
+
+
+CREATE TABLE ESTUDIO
+  (
+    id                 INTEGER NOT NULL AUTO_INCREMENT,
+    descripcion        VARCHAR (40) NOT NULL ,
+    institucion        VARCHAR (50) NOT NULL ,
+    persona_cedula     INTEGER NOT NULL ,
+    nombre_certificado VARCHAR (50) ,
+    telefono           VARCHAR (50) NOT NULL ,
+    direccion          VARCHAR (50) NOT NULL,
+	PRIMARY KEY ( id )
+  ) ;
+
+
+CREATE TABLE EXPERIENCIA
+  (
+    id                 INTEGER NOT NULL AUTO_INCREMENT,
+    fecha_inicio       DATE NOT NULL ,
+    fecha_fin          DATE NOT NULL ,
+    cargo              VARCHAR (90) NOT NULL ,
+    nom_empresa        VARCHAR (90) NOT NULL ,
+    persona_cedula     INTEGER NOT NULL ,
+    nombre_certificado VARCHAR (50) ,
+    telefono           VARCHAR (50) ,
+    direccion          VARCHAR (50),
+	PRIMARY KEY ( id )
+  ) ;
+
+
 CREATE TABLE FACTURA
   (
     id              INTEGER NOT NULL AUTO_INCREMENT,
     fecha           DATE NOT NULL ,
-    descripcion     VARCHAR (100) NOT NULL ,
+    descripcion     VARCHAR (9000) NOT NULL ,
     cliente_cedula  INTEGER NOT NULL ,
-    personal_cedula INTEGER NOT NULL,
-	PRIMARY KEY ( id ) 
+    empleado_cedula INTEGER NOT NULL,
+	PRIMARY KEY ( id )
   ) ;
 
 
 CREATE TABLE INMUEBLE
   (
     id               INTEGER NOT NULL AUTO_INCREMENT,
-    direccion        VARCHAR (50) NOT NULL ,
+    direccion        VARCHAR (90) NOT NULL ,
     area             INTEGER NOT NULL ,
     tipo_inmueble_id INTEGER NOT NULL ,
     valor            DOUBLE NOT NULL ,
     promocion        DOUBLE ,
     num_habitaciones INTEGER ,
-    num_banios        INTEGER ,
+    num_banios       INTEGER ,
     pisos            INTEGER ,
     seguridad        CHAR (1) ,
     zonas_verdes     CHAR (1) ,
-    garajes          INTEGER ,
+    garaje           CHAR (1) ,
     salon_comunal    CHAR (1) ,
     conjunto_cerrado CHAR (1) ,
     cocina_integral  CHAR (1) ,
     gas              CHAR (1) ,
     alarma           CHAR (1) ,
-    zona_para_ninios  CHAR (1) ,
+    zona_para_ninios CHAR (1) ,
     terraza          CHAR (1) ,
     gimnasio         CHAR (1) ,
     balcon           CHAR (1) ,
-    piscina          CHAR (1) ,
     num_closets      INTEGER ,
-    municipio_id     INTEGER NOT NULL,
+    municipio_id     INTEGER NOT NULL ,
+    piscina          CHAR (1) ,
+    num_cocinas      INTEGER ,
+    persona_cedula   INTEGER NOT NULL ,
+    zona             INTEGER,
 	PRIMARY KEY ( id )
   ) ;
 
 
 CREATE TABLE LOGIN
   (
-    username    VARCHAR (30) NOT NULL ,
-    contrasenia VARCHAR (30) NOT NULL
+    persona_cedula INTEGER NOT NULL ,
+    username       VARCHAR (30) NOT NULL ,
+    contrasenia    VARCHAR (30) NOT NULL
   ) ;
-ALTER TABLE LOGIN ADD CONSTRAINT LOGIN_PK PRIMARY KEY ( username ) ;
+ALTER TABLE LOGIN ADD CONSTRAINT LOGIN_PK PRIMARY KEY ( persona_cedula ) ;
+ALTER TABLE LOGIN ADD CONSTRAINT LOGIN__UN UNIQUE ( persona_cedula ) ;
+ALTER TABLE LOGIN ADD CONSTRAINT LOGIN__UNv1 UNIQUE ( username ) ;
 
 
 CREATE TABLE MUNICIPIO
@@ -137,22 +164,20 @@ CREATE TABLE MUNICIPIO
   ) ;
 
 
-CREATE TABLE PERSONAL
+CREATE TABLE PERSONA
   (
-    cedula           INTEGER NOT NULL ,
     nombre           VARCHAR (30) NOT NULL ,
     apellido         VARCHAR (30) NOT NULL ,
     fecha_nacimiento DATE ,
-    experiencia      VARCHAR (30) NOT NULL ,
-    tipo_id          INTEGER NOT NULL ,
-    formacion        VARCHAR (30) NOT NULL ,
-    direccion        VARCHAR (30) NOT NULL ,
-    login_username   VARCHAR (30) NOT NULL ,
+    cedula           INTEGER NOT NULL ,
+    direccion        VARCHAR (90) ,
+    telefono         INTEGER NOT NULL ,
+    correo           VARCHAR (50) ,
     rol_id           INTEGER NOT NULL ,
-    municipio_id     INTEGER NOT NULL
+    municipio_id     INTEGER NOT NULL ,
+    genero           INTEGER
   ) ;
-ALTER TABLE PERSONAL ADD CONSTRAINT PERSONAL_PK PRIMARY KEY ( cedula ) ;
-ALTER TABLE PERSONAL ADD CONSTRAINT PERSONAL__UN UNIQUE ( login_username ) ;
+ALTER TABLE PERSONA ADD CONSTRAINT CLIENTE_PK PRIMARY KEY ( cedula ) ;
 
 
 CREATE TABLE ROL
@@ -165,9 +190,10 @@ CREATE TABLE ROL
 
 
 CREATE TABLE TIPO_INMUEBLE
-  ( id INTEGER NOT NULL AUTO_INCREMENT,
-  descripcion VARCHAR (30),
-  PRIMARY KEY ( id )
+  (
+    id          INTEGER NOT NULL AUTO_INCREMENT,
+    descripcion VARCHAR (30),
+	PRIMARY KEY ( id )
   ) ;
 
 
@@ -185,7 +211,7 @@ CREATE TABLE VENTA
     descripcion     VARCHAR (30) ,
     inmueble_id     INTEGER NOT NULL ,
     cliente_cedula  INTEGER NOT NULL ,
-    personal_cedula INTEGER NOT NULL,
+    empleado_cedula INTEGER NOT NULL,
 	PRIMARY KEY ( id )
   ) ;
 ALTER TABLE VENTA ADD CONSTRAINT VENTA__UN UNIQUE ( inmueble_id ) ;
@@ -194,9 +220,13 @@ ALTER TABLE VENTA ADD CONSTRAINT VENTA__UN UNIQUE ( inmueble_id ) ;
 CREATE TABLE VISITA
   (
     id              INTEGER NOT NULL AUTO_INCREMENT,
-    inmueble_id     INTEGER NOT NULL ,
+    inmueble_id     INTEGER ,
     cliente_cedula  INTEGER NOT NULL ,
-    personal_cedula INTEGER NOT NULL,
+    empleado_cedula INTEGER ,
+    tipo_visita     VARCHAR (30) NOT NULL ,
+    descripcion     VARCHAR (200) NOT NULL ,
+    atendida        CHAR (1) NOT NULL ,
+    fecha           TIMESTAMP,
 	PRIMARY KEY ( id )
   ) ;
 
@@ -205,62 +235,64 @@ ALTER TABLE ACCESO_ROL ADD CONSTRAINT ACCESO_ROL_ACCESO_FK FOREIGN KEY ( acceso_
 
 ALTER TABLE ACCESO_ROL ADD CONSTRAINT ACCESO_ROL_ROL_FK FOREIGN KEY ( rol_id ) REFERENCES ROL ( id ) ;
 
-ALTER TABLE ARRIENDO ADD CONSTRAINT ARRIENDO_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES CLIENTE ( cedula ) ;
+ALTER TABLE ARRIENDO ADD CONSTRAINT ARRIENDO_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES PERSONA ( cedula ) ;
 
 ALTER TABLE ARRIENDO ADD CONSTRAINT ARRIENDO_INMUEBLE_FK FOREIGN KEY ( inmueble_id ) REFERENCES INMUEBLE ( id ) ;
 
-ALTER TABLE ARRIENDO ADD CONSTRAINT ARRIENDO_PERSONAL_FK FOREIGN KEY ( personal_cedula ) REFERENCES PERSONAL ( cedula ) ;
+ALTER TABLE ARRIENDO ADD CONSTRAINT ARRIENDO_PERSONAL_FK FOREIGN KEY ( empleado_cedula ) REFERENCES EMPLEADO ( persona_cedula ) ;
 
-ALTER TABLE CLIENTE ADD CONSTRAINT CLIENTE_LOGIN_FK FOREIGN KEY ( login_username ) REFERENCES LOGIN ( username ) ;
+ALTER TABLE PERSONA ADD CONSTRAINT CLIENTE_MUNICIPIO_FK FOREIGN KEY ( municipio_id ) REFERENCES MUNICIPIO ( id ) ;
 
-ALTER TABLE CLIENTE ADD CONSTRAINT CLIENTE_MUNICIPIO_FK FOREIGN KEY ( municipio_id ) REFERENCES MUNICIPIO ( id ) ;
+ALTER TABLE PERSONA ADD CONSTRAINT CLIENTE_ROL_FK FOREIGN KEY ( rol_id ) REFERENCES ROL ( id ) ;
 
-ALTER TABLE CLIENTE ADD CONSTRAINT CLIENTE_ROL_FK FOREIGN KEY ( rol_id ) REFERENCES ROL ( id ) ;
-
-ALTER TABLE CONTRATO ADD CONSTRAINT CONTRATO_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES CLIENTE ( cedula ) ;
+ALTER TABLE CONTRATO ADD CONSTRAINT CONTRATO_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES PERSONA ( cedula ) ;
 
 ALTER TABLE CONTRATO ADD CONSTRAINT CONTRATO_INMUEBLE_FK FOREIGN KEY ( inmueble_id ) REFERENCES INMUEBLE ( id ) ;
 
-ALTER TABLE CONTRATO ADD CONSTRAINT CONTRATO_PERSONAL_FK FOREIGN KEY ( personal_cedula ) REFERENCES PERSONAL ( cedula ) ;
+ALTER TABLE CONTRATO ADD CONSTRAINT CONTRATO_PERSONAL_FK FOREIGN KEY ( empleado_cedula ) REFERENCES EMPLEADO ( persona_cedula ) ;
 
-ALTER TABLE FACTURA ADD CONSTRAINT FACTURA_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES CLIENTE ( cedula ) ;
+ALTER TABLE EMPLEADO ADD CONSTRAINT EMPLEADO_PERSONA_FK FOREIGN KEY ( persona_cedula ) REFERENCES PERSONA ( cedula ) ;
 
-ALTER TABLE FACTURA ADD CONSTRAINT FACTURA_PERSONAL_FK FOREIGN KEY ( personal_cedula ) REFERENCES PERSONAL ( cedula ) ;
+ALTER TABLE EMPLEADO ADD CONSTRAINT EMPLEADO_TIPO_FK FOREIGN KEY ( tipo_id ) REFERENCES TIPO_PERSONAL ( id ) ;
+
+ALTER TABLE ESTUDIO ADD CONSTRAINT ESTUDIO_PERSONAL_FK FOREIGN KEY ( persona_cedula ) REFERENCES EMPLEADO ( persona_cedula ) ;
+
+ALTER TABLE EXPERIENCIA ADD CONSTRAINT EXPERIENCIA_PERSONAL_FK FOREIGN KEY ( persona_cedula ) REFERENCES EMPLEADO ( persona_cedula ) ;
+
+ALTER TABLE FACTURA ADD CONSTRAINT FACTURA_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES PERSONA ( cedula ) ;
+
+ALTER TABLE FACTURA ADD CONSTRAINT FACTURA_PERSONAL_FK FOREIGN KEY ( empleado_cedula ) REFERENCES EMPLEADO ( persona_cedula ) ;
 
 ALTER TABLE ARCHIVO ADD CONSTRAINT FOTO_INMUEBLE_FK FOREIGN KEY ( inmueble_id ) REFERENCES INMUEBLE ( id ) ;
+
+ALTER TABLE INMUEBLE ADD CONSTRAINT INMUEBLE_LOGIN_FK FOREIGN KEY ( persona_cedula ) REFERENCES LOGIN ( persona_cedula ) ;
 
 ALTER TABLE INMUEBLE ADD CONSTRAINT INMUEBLE_MUNICIPIO_FK FOREIGN KEY ( municipio_id ) REFERENCES MUNICIPIO ( id ) ;
 
 ALTER TABLE INMUEBLE ADD CONSTRAINT INMUEBLE_TIPO_INMUEBLE_FK FOREIGN KEY ( tipo_inmueble_id ) REFERENCES TIPO_INMUEBLE ( id ) ;
 
+ALTER TABLE LOGIN ADD CONSTRAINT LOGIN_PERSONA_FK FOREIGN KEY ( persona_cedula ) REFERENCES PERSONA ( cedula ) ;
+
 ALTER TABLE MUNICIPIO ADD CONSTRAINT MUNICIPIO_DEPARTAMENTO_FK FOREIGN KEY ( departamento_id ) REFERENCES DEPARTAMENTO ( id ) ;
 
-ALTER TABLE PERSONAL ADD CONSTRAINT PERSONAL_LOGIN_FK FOREIGN KEY ( login_username ) REFERENCES LOGIN ( username ) ;
-
-ALTER TABLE PERSONAL ADD CONSTRAINT PERSONAL_MUNICIPIO_FK FOREIGN KEY ( municipio_id ) REFERENCES MUNICIPIO ( id ) ;
-
-ALTER TABLE PERSONAL ADD CONSTRAINT PERSONAL_ROL_FK FOREIGN KEY ( rol_id ) REFERENCES ROL ( id ) ;
-
-ALTER TABLE PERSONAL ADD CONSTRAINT PERSONAL_TIPO_FK FOREIGN KEY ( tipo_id ) REFERENCES TIPO_PERSONAL ( id ) ;
-
-ALTER TABLE VENTA ADD CONSTRAINT VENTA_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES CLIENTE ( cedula ) ;
+ALTER TABLE VENTA ADD CONSTRAINT VENTA_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES PERSONA ( cedula ) ;
 
 ALTER TABLE VENTA ADD CONSTRAINT VENTA_INMUEBLE_FK FOREIGN KEY ( inmueble_id ) REFERENCES INMUEBLE ( id ) ;
 
-ALTER TABLE VENTA ADD CONSTRAINT VENTA_PERSONAL_FK FOREIGN KEY ( personal_cedula ) REFERENCES PERSONAL ( cedula ) ;
+ALTER TABLE VENTA ADD CONSTRAINT VENTA_PERSONAL_FK FOREIGN KEY ( empleado_cedula ) REFERENCES EMPLEADO ( persona_cedula ) ;
 
-ALTER TABLE VISITA ADD CONSTRAINT VISITA_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES CLIENTE ( cedula ) ;
+ALTER TABLE VISITA ADD CONSTRAINT VISITA_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES PERSONA ( cedula ) ;
 
 ALTER TABLE VISITA ADD CONSTRAINT VISITA_INMUEBLE_FK FOREIGN KEY ( inmueble_id ) REFERENCES INMUEBLE ( id ) ;
 
-ALTER TABLE VISITA ADD CONSTRAINT VISITA_PERSONAL_FK FOREIGN KEY ( personal_cedula ) REFERENCES PERSONAL ( cedula ) ;
+ALTER TABLE VISITA ADD CONSTRAINT VISITA_PERSONAL_FK FOREIGN KEY ( empleado_cedula ) REFERENCES EMPLEADO ( persona_cedula ) ;
 
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
--- CREATE TABLE                            17
+-- CREATE TABLE                            19
 -- CREATE INDEX                             0
--- ALTER TABLE                             46
+-- ALTER TABLE                             50
 -- CREATE VIEW                              0
 -- ALTER VIEW                               0
 -- CREATE PACKAGE                           0

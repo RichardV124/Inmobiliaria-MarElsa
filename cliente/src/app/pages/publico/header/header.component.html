@@ -22,9 +22,12 @@
 							<a href=""><i class="fa fa-linkedin"></i></a>
 						</div>
 						<div class="user-panel">
-							<a href="/registro-cliente"><i class="fa fa-user-circle-o"></i> Registro cliente</a>
+							<!-- Menu usuario logeado -->
+							<ul *ngIf="usuario">	
+									<li *ngFor="let acceso of accesos"><a href="{{acceso.url}}">{{acceso.nombre}}</a></li>	
+									<li><a (click)="logout($event)" href="">Salir</a></li>						
+								</ul>
 							<a href="/login"><i class="fa fa-sign-in"></i> Login</a>
-							<a href="/registro-inmueble"><i class="fa fa-sign-in"></i> Registrar inmueble</a>
 						</div>
 					</div>
 				</div>

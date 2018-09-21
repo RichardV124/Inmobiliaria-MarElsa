@@ -1,0 +1,49 @@
+<div class="card mt-4">
+  <div class="card-body">
+      <div class="form-group">
+            <span>Rol</span>
+          <select  [(ngModel)]="rolSeleccionado.id" class="form-control">
+              <option [ngValue]="0" selected disabled hidden>Seleccione el rol a asignar</option>
+              <option *ngFor="let r of listaRoles" [value]="r.id">{{r.nombre}}</option>
+          </select>
+          <br>
+          <span>Acceso</span>
+          <select  [(ngModel)]="accesoSeleccionado.id" class="form-control">
+            <option [ngValue]="0" selected disabled hidden>Seleccione el acceso a asignar</option>
+            <option *ngFor="let a of listaAccesos" [value]="a.id">{{a.nombre}}</option>
+        </select>
+        <br>
+        <button (click)="asignar()" class="btn btn-success" > 
+            Asignar
+          </button>
+          <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
+          <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
+          
+       </div>
+  </div>
+</div>
+
+<br><br>
+
+            <div class="col-lg-8">
+                <br>
+                <div class="section_subtitle"> Lista de roles con sus accesos </div><br>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Acceso</th>
+                        <th scope="col">Eliminar</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let ar of listaAccesoRol">
+                        <td>{{ar.rol.nombre}}</td>
+                        <td>{{ar.acceso.nombre}}</td>
+                        <td><button (click)=" eliminar(ar)" class="btn btn-danger"> 
+                                Eliminar
+                            </button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>

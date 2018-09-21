@@ -1,10 +1,8 @@
-import { Rol } from './rol';
-import { Login } from './login';
+import { Persona } from './persona';
+
 export class Usuario {
-cedula: string;
-nombre: string;
-apellido: string;
-email: string;
-login: Login;
-rol: Rol;
+
+    username: string;
+    contrasenia: string;
+    persona: Persona = new Persona;
 }
