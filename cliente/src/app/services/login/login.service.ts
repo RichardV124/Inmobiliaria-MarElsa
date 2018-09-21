@@ -16,7 +16,7 @@ export class LoginService {
   public usuario: Login;
 
   // Ruta raiz donde se encuentran los servicios
-  domain = 'http://localhost:4200/';
+  domain = 'http://localhost:4300/';
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -95,7 +95,7 @@ export class LoginService {
    * @param usuario el usuario al que vamos a obtener la persona
    */
   getUsuarioPersona (usuario: Login) {
-    return this.http.get<any>(this.domain + 'persona/search/' + usuario.persona)
+    return this.http.get<any>(this.domain + 'persona/search/' + usuario.persona_cedula)
     .map(res => {
             return res;
         });
@@ -106,7 +106,7 @@ export class LoginService {
    * @param rol el rol al que vamos a obtener la informacion
    */
   getUsuarioPersonaRol (persona: Persona) {
-      return this.http.get<any>(this.domain + 'rol/rol-by-id/' + persona.rol)
+      return this.http.get<any>(this.domain + 'rol/rol-by-id/' + persona.rol_id)
       .map(res => {
               return res;
           });

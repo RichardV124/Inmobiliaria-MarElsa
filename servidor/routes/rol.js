@@ -124,7 +124,7 @@ exports.saveAccesoRol = function(req,res){
         var query = connection.query("INSERT INTO acceso_rol set ? ",acceso_rol, function(err, rows)
         {
             if (err)
-            res.send('{"id": 404,"msj": "Hubo un error al asignar el acceso"}');
+            res.send('{"id": 600,"msj": "Este acceso ya esta asignado a este rol"}');
        
         res.send('{"id": 505,"msj": "Se asigno correctamente el acceso"}');
         
@@ -143,7 +143,7 @@ exports.saveAccesoRol = function(req,res){
 
     req.getConnection(function (err, connection) {
 
-        var query= connection.query("DELETE FROM acceso_rol  WHERE acceso_id = ? AND rol_id = ? ",[input.rol_id,input.acceso_id], 
+        var query= connection.query("DELETE FROM acceso_rol  WHERE acceso_id = ? AND rol_id = ? ",[input.acceso_id,input.rol_id], 
         function(err, rows)
         {
             if (err)

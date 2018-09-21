@@ -101,6 +101,7 @@ app.post('/customers/edit/',customers.save_edit);
 
 // ------- Servicios de persona ------- //
 app.get('/persona/search/:cedula', persona.search);
+app.get('/tipopersonal/listar', persona.listTipoPersonal);
 
 // ------- Servicios de login ------- //
 app.get('/login/login/:username/:contrasenia', login.login);
@@ -134,7 +135,7 @@ app.get('/acceso/listar', roles.listarAccesos);
 app.get('/acceso/por-rol/:rol', roles.accesosPorRol);
 app.post('/acceso-rol/save', roles.saveAccesoRol);
 app.post('/acceso-rol/delete', roles.deleteAccesoRol);
-app.post('/acceso-rol/search', roles.searchAccesoRol);
+app.post('/acceso-rol/search/:rol_id/:acceso_id', roles.searchAccesoRol);
 
 // ------- Servicios de departamento y municipio ------- //
 app.get('/departamento/list', departamento.list);

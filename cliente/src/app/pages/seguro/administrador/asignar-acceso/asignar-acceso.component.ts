@@ -35,16 +35,19 @@ export class AsignarAccesoComponent implements OnInit {
 asignar () {
 this.accesoRol.rol = this.rolSeleccionado;
 this.accesoRol.acceso = this.accesoSeleccionado;
+
 this.rolService.asignarAcceso(this.accesoRol)
         .subscribe(res => {
           this.respuesta = JSON.parse(JSON.stringify(res));
-          console.log(this.respuesta.msj + ' SAVE');
-
-       //   this.rolSeleccionado = new Rol();
-         // this.accesoSeleccionado = new Acceso();
-        // this.accesoRol = new AccesoRol();
+          if (this.respuesta.id == 600) {
+            this.show = 1;
+          } else {
+              this.rolSeleccionado = new Rol();
+              this.accesoSeleccionado = new Acceso();
+              this.accesoRol = new AccesoRol();
           this.show = 2;
           this.listarAccesosRol();
+          }
         });
 }
 

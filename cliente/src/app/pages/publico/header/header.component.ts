@@ -12,7 +12,7 @@ import { Login } from '../../../modelo/login';
 export class HeaderComponent implements OnInit {
 
   // Usuario que inicio sesion en la aplicacion
-  usuario: Login;
+  usuario: Login = new Login();
   // Listado de Accesos a los que puede ingresar el usuario que inicio sesion
   accesos: Array<Acceso> = [];
 
@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.usuario = this.servicios.getUsuario();
     if (this.usuario != null) {
-      this.accesos = this.usuario.persona.rol.accesos;
+      this.accesos = this.usuario.persona_cedula.rol.accesos;
     }
   }
 

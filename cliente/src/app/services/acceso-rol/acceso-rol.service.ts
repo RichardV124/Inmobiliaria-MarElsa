@@ -66,6 +66,13 @@ buscarRolPorId(id: number) {
 });
 }
 
+buscarAccesoRol(rol: number, acceso: number ) {
+  return this.http.get<any>(`${this.domain}/acceso-rol/search/${rol}/${acceso}`)
+  .map(res => {
+    return res.data;
+});
+}
+
 buscarAccesoPorId(id: number) {
   return this.http.get<any>(`${this.domain}/acceso/acceso-by-id/${id}`)
   .map(res => {
@@ -79,7 +86,6 @@ buscarAccesoPorId(id: number) {
  */
 eliminarAccesoRol(accesoRol: AccesoRol) {
   console.log(accesoRol);
-  
   return this.http.post<any>(`${this.domain}/acceso-rol/delete/`, accesoRol)
     .map(res => res);
 }
