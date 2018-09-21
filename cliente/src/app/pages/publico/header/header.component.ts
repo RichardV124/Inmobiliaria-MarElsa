@@ -23,7 +23,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.usuario = this.servicios.getUsuario();
     if (this.usuario != null) {
-      this.accesos = this.usuario.persona_cedula.rol.accesos;
+      console.log(this.usuario.persona_cedula);
+      this.accesos = this.usuario.persona_cedula.rol_id.accesos;
     }
   }
 
