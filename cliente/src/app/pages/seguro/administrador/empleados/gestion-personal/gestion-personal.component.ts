@@ -62,7 +62,7 @@ export class GestionPersonalComponent implements OnInit {
         let username = JSON.parse(JSON.stringify(personal))['login_username'];
         this.tipoPersonalSeleccionado.id = tipo;
         this.loginSeleccionado.username = username;
-this.loginSeleccionado.persona = this.personaSeleccionada;
+this.loginSeleccionado.persona_cedula = this.personaSeleccionada;
        //this.personaSeleccionada.tipo_id = this.tipoPersonalSeleccionada;
       //  console.log(this.selectedPersonal.tipo_id.id);
         //console.log(this.selectedPersonal.nombre + ' SEARCH');
@@ -81,10 +81,10 @@ this.loginSeleccionado.persona = this.personaSeleccionada;
 
       } else {
        // this.personaSeleccionada.tipo_id = this.selectedTipoPersonal;
-        this.loginSeleccionado.persona = this.personaSeleccionada;
+        this.loginSeleccionado.persona_cedula = this.personaSeleccionada;
         //Le quemamos el rol de empleado el cual es 2
         this.rolSeleccionado.id = 2;
-       this.personaSeleccionada.rol = this.rolSeleccionado;
+       this.personaSeleccionada.rol_id = this.rolSeleccionado;
         this.personaService.registrarPersona(this.personaSeleccionada)
         .subscribe(res => {
           this.respuesta = JSON.parse(JSON.stringify(res));
