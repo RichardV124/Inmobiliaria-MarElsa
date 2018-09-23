@@ -60,8 +60,8 @@ listarTiposInmueble() {
  * Metodo para buscar un inmueble
  * @param id, id por el cual se buscara el inmueble, se envia por la ruta
  */
-  buscarInmueble(id: number) {
-    return this.http.get<any>(`${this.domain}/inmueble/search/${id}`)
+  buscarInmueble(matricula: string) {
+    return this.http.get<any>(`${this.domain}/inmueble/search/${matricula}`)
     .map(res => {
       return res.data;
     });

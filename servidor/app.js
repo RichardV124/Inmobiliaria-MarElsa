@@ -117,7 +117,7 @@ app.post('/cliente/save', cliente.save);
 
 // ------- Servicios de inmuebles ------- //
 app.get('/inmueble', inmueble.list);
-app.get('/inmueble/search/:id', inmueble.search);
+app.get('/inmueble/search/:matricula', inmueble.search);
 app.get('/tipoinmueble', inmueble.listTipoInmueble);
 app.post('/inmueble/add', inmueble.save);
 app.post('/inmueble/delete/:id', inmueble.delete_inmueble);

@@ -296,6 +296,14 @@ ADD COLUMN `cliente_cedula` INT NOT NULL AFTER `sauna`;
 
 ALTER TABLE INMUEBLE ADD CONSTRAINT INMUEBLE_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES PERSONA ( cedula ) ;
 
+ALTER TABLE INMUEBLE 
+ADD COLUMN `matricula` VARCHAR(45) NOT NULL AFTER `cliente_cedula`,
+ADD UNIQUE INDEX `matricula_UNIQUE` (`matricula`);
+
+ALTER TABLE INMUEBLE 
+ADD COLUMN `precio_negociable` CHAR(1) NULL AFTER `matricula`;
+
+
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
 -- CREATE TABLE                            19

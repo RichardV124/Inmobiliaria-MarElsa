@@ -35,7 +35,6 @@ export class RegistroInmuebleComponent implements OnInit {
   selectedTipoInmueble: TipoInmueble = new TipoInmueble();
   respuesta: RespuestaDTO = new RespuestaDTO();
   selectedFile: File[] = null;
-  attachmentList: any = [];
   usuario: Login = new Login();
   propietario: Persona = new Persona();
   archivo: Archivo = new Archivo();
@@ -57,29 +56,16 @@ export class RegistroInmuebleComponent implements OnInit {
     console.log(this.usuario);
   }
 
-  /** validarCamposNumericosNegativos() {
-    if (this.selectedInmueble.garaje < 0 || this.selectedInmueble.num_closets < 0
-      || this.selectedInmueble.num_cocinas < 0 || this.selectedInmueble.area < 0
-      || this.selectedInmueble.valor < 0
-      || this.selectedInmueble.num_habitaciones < 0 || this.selectedInmueble.num_banios < 0
-      || this.selectedInmueble.pisos < 0) {
-        return false;
-      }
-      return true;
-  }
-
-  validarCamposNumericos() {
-    if (this.selectedInmueble.area < 1 || this.selectedInmueble.valor < 1
-      || this.selectedInmueble.num_habitaciones < 1 || this.selectedInmueble.num_banios < 1
-      || this.selectedInmueble.pisos < 1) {
-      return false;
-    }
-    return true;
-  } **/
-
+  /**
+   * Valida que se hayan ingresado los campos obligatorios
+   */
   validarCamposVacios() {
     if (this.selectedMunicipio.id === 0 || this.selectedDepartamento.id === 0
-        || this.selectedInmueble.zona === 0) {
+        || this.selectedInmueble.zona === 0 || this.propietario.cedula == null
+        || this.selectedInmueble.matricula == null || this.selectedInmueble.direccion == null
+        || this.selectedInmueble.area == null || this.selectedInmueble.valor == null
+        || this.selectedInmueble.num_habitaciones == null || this.selectedInmueble.num_banios == null
+        || this.selectedInmueble.pisos == null || this.selectedInmueble.num_cocinas == null) {
         return false;
       }
       return true;
@@ -101,32 +87,39 @@ export class RegistroInmuebleComponent implements OnInit {
     }
   }
 
+  /**
+   * Verifica los datos ingresados para realizar el registro
+   */
   registrar() {
 
     this.validarCamposNoIngresados();
       if (!this.validarCamposVacios()) {
       this.respuesta.msj = 'Debe ingresar los campos obligatorios';
       this.show = 1;
-      this.clienteExiste();
-    // } else if (!this.clienteExiste()) {
-      // this.respuesta.msj = 'La cédula del cliente ingresado no existe';
-      // this.show = 1;
-    } else {
-      this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
-      this.selectedInmueble.municipio_id = this.selectedMunicipio;
-      this.selectedInmueble.persona_cedula = this.usuario;
-      this.selectedInmueble.cliente_cedula = this.propietario;
-      this.inmuebleServie.registrarInmueble(this.selectedInmueble)
-      .subscribe(inmueble => {
-        this.respuesta = JSON.parse(JSON.stringify(inmueble));
-        console.log(this.respuesta.msj + ' SAVE');
-        console.log(this.selectedInmueble);
-        this.selectedInmueble = new Inmueble();
-        this.combosPorDefecto();
-        this.show = 2;
-        this.listarInmuebles();
-      });
-     }
+      } else {
+        this.clienteExiste();
+      }
+  }
+
+  /**
+   * Realiza el registro en la base de datos cuando
+   */
+  continuarRegistro() {
+    this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
+    this.selectedInmueble.municipio_id = this.selectedMunicipio;
+    this.selectedInmueble.persona_cedula = this.usuario;
+    this.selectedInmueble.cliente_cedula = this.propietario;
+    this.inmuebleServie.registrarInmueble(this.selectedInmueble)
+    .subscribe(inmueble => {
+      this.respuesta = JSON.parse(JSON.stringify(inmueble));
+      // console.log(this.respuesta.msj + ' SAVE');
+      // console.log(this.selectedInmueble);
+      this.selectedInmueble = new Inmueble();
+      this.propietario = new Persona();
+      this.combosPorDefecto();
+      this.show = 2;
+      this.listarInmuebles();
+    });
   }
 
   /**
@@ -138,10 +131,12 @@ export class RegistroInmuebleComponent implements OnInit {
       this.propietario = JSON.parse(JSON.stringify(cliente));
       console.log('nombre cliente: ' + this.propietario.nombre);
       if (this.propietario.nombre != null) {
-        return true;
+        this.continuarRegistro();
+      } else {
+        this.respuesta.msj = 'La cédula del cliente ingresado no existe';
+        this.show = 1;
       }
     });
-    return false;
   }
 
   /**
@@ -167,6 +162,9 @@ export class RegistroInmuebleComponent implements OnInit {
     // console.log('guardando foto ' + this.selectedFile.name);
   }
 
+  /**
+   * Obtiene la lista de inmuebles registrados en la bd
+   */
   listarInmuebles() {
     this.inmuebleServie.listarInmuebles()
     .subscribe(inmueble => {
@@ -188,14 +186,19 @@ export class RegistroInmuebleComponent implements OnInit {
     }
   }
 
+  /**
+   * Obtiene la lista de tipos de inmuebles
+   */
   listarTiposInmueble() {
     this.inmuebleServie.listarTiposInmueble()
     .subscribe(tipoInmueble => {
       this.listaTiposInmueble = tipoInmueble;
-      console.log(tipoInmueble);
     });
   }
 
+  /**
+   * Obtiene la lista de departamentos
+   */
   listarDepartamentos() {
     this.municipioService.listarDepartamentos().
     subscribe(departamento => {
@@ -203,6 +206,9 @@ export class RegistroInmuebleComponent implements OnInit {
     });
   }
 
+  /**
+   * Obtiene los muncipios de un departamento
+   */
   listarMunicipios() {
     this.selectedMunicipio.id = 0;
     this.municipioService.listarMunicipios(this.selectedDepartamento.id).
@@ -211,16 +217,54 @@ export class RegistroInmuebleComponent implements OnInit {
     });
   }
 
+  /**
+   * Obtiene los datos de los combos al buscar un inmubele
+   */
+  obtenerDatosCombosBusqueda() {
+    // Se obtienen los datos del tipo de inmueble
+    const idTipo = this.obtenerDatosJSON('tipo_inmueble_id');
+    // Se asigna los datos obtenidos al tipo inmueble
+    this.selectedTipoInmueble.id = idTipo;
+
+    // Se obtienen el id del departamento
+    const idDepto = this.obtenerDatosJSON('id_depto');
+    // Se asignan los datos obtenidos al departamento
+    this.selectedDepartamento.id = idDepto;
+    this.listarMunicipios();
+
+    // Se obtienen el id del municipio
+    const idMunicipio = this.obtenerDatosJSON('municipio_id');
+    // Se asignan los datos obtenidos al municipio
+    this.selectedMunicipio.id = idMunicipio;
+
+  }
+
+  /**
+   * Obtiene los datos de la cadena json retornada en la busqueda del inmueble
+   * @param atributo nombre del campo en la consulta obtenida
+   */
+  obtenerDatosJSON(atributo: string) {
+    return JSON.parse(JSON.stringify(this.selectedInmueble[atributo]));
+  }
+
+  /**
+   * Busca un inmueble en la bd por su matrícula
+   */
   buscar() {
 
-    if (this.selectedInmueble.id == null) {
-
+    if (this.selectedInmueble.matricula == null) {
+      this.show = 1;
+      this.respuesta.msj = 'Debe ingresar la matrícula del inmueble';
     } else {
-      this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
-      this.selectedTipoInmueble.id = 1;
-      this.inmuebleServie.buscarInmueble(this.selectedInmueble.id)
+      this.inmuebleServie.buscarInmueble(this.selectedInmueble.matricula)
       .subscribe(inmueble => {
         this.selectedInmueble = JSON.parse(JSON.stringify(inmueble));
+        if (this.selectedInmueble.direccion == null) {
+          this.show = 1;
+          this.respuesta.msj = 'El inmueble no existe';
+        } else {
+          this.obtenerDatosCombosBusqueda();
+        }
         console.log(JSON.parse(JSON.stringify(inmueble)));
         console.log(this.selectedInmueble.direccion + ' SEARCH');
       });

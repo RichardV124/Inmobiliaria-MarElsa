@@ -40,10 +40,8 @@ exports.listTipoInmueble = function (req, res) {
                 data: rows
             });
 
-
         });
 
-        console.log(query.sql);
     });
 
 };
@@ -75,10 +73,14 @@ exports.searchTipoInmubeleId = function (req, res) {
 
 exports.search = function (req, res) {
 
-    var id = req.params.id;
+    var matricula = req.params.matricula;
     req.getConnection(function (err, connection) {
 
-        var query = connection.query('SELECT * FROM inmueble WHERE id = ?', [id], function (err, rows) {
+        var query = connection.query('SELECT i.*, ti.descripcion, d.id as id_depto ' 
+        + ' FROM inmueble i JOIN tipo_inmueble ti ' 
+        + ' ON i.tipo_inmueble_id = ti.id JOIN municipio m ON m.id = i.municipio_id '
+        + ' JOIN departamento d ON d.id = m.departamento_id ' 
+        + ' WHERE i.matricula = ?', [matricula], function (err, rows) {
 
             if (err)
                 console.log("Error Selecting : %s ", err);
@@ -102,6 +104,7 @@ exports.search = function (req, res) {
 exports.save = function (req, res) {
 
     var input = JSON.parse(JSON.stringify(req.body));
+    // console.log(input);
 
     req.getConnection(function (err, connection) {
 
@@ -136,8 +139,10 @@ exports.save = function (req, res) {
             sauna: input.sauna,
             energia: input.energia,
             zonabbq: input.zonabbq,
-            persona_cedula: input.persona_cedula.cedula,
-            cliente_cedula:input.cliente_cedula.cedula
+            persona_cedula: input.persona_cedula.persona_cedula.cedula,
+            cliente_cedula:input.cliente_cedula.cedula,
+            matricula: input.matricula,
+            precio_negociable: input.precio_negociable
         };
 
         var query = connection.query("INSERT INTO inmueble set ? ", data, function (err, rows) {
@@ -158,6 +163,7 @@ exports.save_edit = function (req, res) {
 
     console.log(req.body);
     var input = JSON.parse(JSON.stringify(req.body));
+    // console.log(input);
     var id = req.params.id;
 
     req.getConnection(function (err, connection) {
@@ -192,8 +198,10 @@ exports.save_edit = function (req, res) {
             sauna: input.sauna,
             energia: input.energia,
             zonabbq: input.zonabbq,
-            persona_cedula: input.persona_cedula.cedula,
-            cliente_cedula:input.cliente_cedula.cedula
+            persona_cedula: input.persona_cedula.persona_cedula.cedula,
+            cliente_cedula:input.cliente_cedula.cedula,
+            matricula: input.matricula,
+            precio_negociable: input.precio_negociable
 
         };
 

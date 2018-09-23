@@ -1,3 +1,4 @@
+import { Persona } from './persona';
 import { Municipio } from './municipio';
 import { TipoInmueble } from './tipo_inmueble';
 import { Login } from './login';
@@ -33,4 +34,6 @@ sauna: boolean;
 energia: boolean;
 zonabbq: boolean;
 persona_cedula: Login;
+cliente_cedula: Persona;
+matricula: string;
 }
