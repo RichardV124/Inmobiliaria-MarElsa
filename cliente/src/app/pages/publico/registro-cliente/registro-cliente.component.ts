@@ -52,7 +52,7 @@ export class RegistroClienteComponent implements OnInit {
 
     if (this.validarCampos()) {
     } else {
-      this.rol.id = 2;
+      this.rol.id = 3;
       this.selectedPersona.rol_id = this.rol;
       this.selectedPersona.municipio_id = this.selectedMunicipio;
       this.selectedLogin.persona_cedula = this.selectedPersona;

@@ -172,7 +172,7 @@ console.log(input);
         {
   
           if (err)
-          connection.
+          connection. 
           res.send('{"id": 404,"msj": "Hubo un error al insertar el personal"}');
          
           res.send('{"id": 505,"msj": "Se registro correctamente el personal"}');

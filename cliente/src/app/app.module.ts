@@ -14,6 +14,7 @@ import { RegistroInmuebleComponent } from './pages/seguro/empleado/registro-inmu
 import { BusquedaClienteComponent } from './pages/seguro/cliente/busqueda-cliente/busqueda-cliente.component';
 import { HeaderComponent } from './pages/publico/header/header.component';
 import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acceso/asignar-acceso.component';
+import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/editar-cliente.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acc
     RegistroClienteComponent,
     RegistroInmuebleComponent,
     BusquedaClienteComponent,
+    EditarClienteComponent,
     HeaderComponent,
     AsignarAccesoComponent
   ],
