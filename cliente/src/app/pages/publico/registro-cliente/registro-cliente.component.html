@@ -61,15 +61,15 @@
                             </div>                   
                         </div>                                     
                     </div>
-                <div class="form-group">
+                    <div class="form-group">
                     <div class="row">
                       <div class="col-md-3"><label>Departamento</label></div>
                       <div class="col-md-9">
-                        <select  [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
-                            <option [ngValue]="0" selected disabled hidden>Seleccione un Departamento</option>
-                            <option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
-                        </select>
-                      </div>
+                          <select  [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
+                             <option [ngValue]="0" selected disabled hidden>Seleccione un Departamento</option>
+                             <option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
+                         </select>
+                         </div>
                     </div>                   
                  </div>
                 <div class="form-group">
@@ -117,7 +117,7 @@
                       Registrar
                     </button>                       
                 </div>
-            </div>
+          </div>
 
             <br><br>
 
