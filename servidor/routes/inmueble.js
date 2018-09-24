@@ -40,20 +40,47 @@ exports.listTipoInmueble = function (req, res) {
                 data: rows
             });
 
-
         });
 
-        console.log(query.sql);
     });
 
 };
 
-exports.search = function (req, res) {
+exports.searchTipoInmubeleId = function (req, res) {
 
     var id = req.params.id;
     req.getConnection(function (err, connection) {
 
-        var query = connection.query('SELECT * FROM inmueble WHERE id = ?', [id], function (err, rows) {
+        var query = connection.query('SELECT * FROM tipo_inmueble WHERE id = ?', [id], function (err, rows) {
+
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            console.log(query.sql);
+            console.log({
+                data: rows[0]
+            })
+            res.send({
+                data: rows[0]
+            });
+
+
+        });
+
+        //console.log(query.sql);
+    });
+};
+
+exports.search = function (req, res) {
+
+    var matricula = req.params.matricula;
+    req.getConnection(function (err, connection) {
+
+        var query = connection.query('SELECT i.*, ti.descripcion, d.id as id_depto ' 
+        + ' FROM inmueble i JOIN tipo_inmueble ti ' 
+        + ' ON i.tipo_inmueble_id = ti.id JOIN municipio m ON m.id = i.municipio_id '
+        + ' JOIN departamento d ON d.id = m.departamento_id ' 
+        + ' WHERE i.matricula = ?', [matricula], function (err, rows) {
 
             if (err)
                 console.log("Error Selecting : %s ", err);
@@ -77,11 +104,12 @@ exports.search = function (req, res) {
 exports.save = function (req, res) {
 
     var input = JSON.parse(JSON.stringify(req.body));
+    // console.log(input);
 
     req.getConnection(function (err, connection) {
 
         var data = {
-            id: input.id,
+            // id: input.id,
             direccion: input.direccion,
             area: input.area,
             tipo_inmueble_id: input.tipo_inmueble_id.id,
@@ -92,11 +120,11 @@ exports.save = function (req, res) {
             pisos: input.pisos,
             seguridad: input.seguridad,
             zonas_verdes: input.zonas_verdes,
-            garajes: input.garajes,
+            garaje: input.garaje,
             salon_comunal: input.salon_comunal,
             conjunto_cerrado: input.conjunto_cerrado,
             cocina_integral: input.cocina_integral,
-            gas: inpu.gas,
+            gas: input.gas,
             alarma: input.alarma,
             zona_para_ninios: input.zona_para_ninios,
             terraza: input.terraza,
@@ -104,7 +132,17 @@ exports.save = function (req, res) {
             piscina: input.piscina,
             balcon: input.balcon,
             num_closets: input.num_closets,
-            municipio_id: input.municipio_id.id
+            municipio_id: input.municipio_id.id,
+            num_cocinas: input.num_cocinas,
+            zona: input.zona,
+            alcantarillado: input.alcantarillado,
+            sauna: input.sauna,
+            energia: input.energia,
+            zonabbq: input.zonabbq,
+            persona_cedula: input.persona_cedula.persona_cedula.cedula,
+            cliente_cedula:input.cliente_cedula.cedula,
+            matricula: input.matricula,
+            precio_negociable: input.precio_negociable
         };
 
         var query = connection.query("INSERT INTO inmueble set ? ", data, function (err, rows) {
@@ -125,6 +163,7 @@ exports.save_edit = function (req, res) {
 
     console.log(req.body);
     var input = JSON.parse(JSON.stringify(req.body));
+    // console.log(input);
     var id = req.params.id;
 
     req.getConnection(function (err, connection) {
@@ -140,11 +179,11 @@ exports.save_edit = function (req, res) {
             pisos: input.pisos,
             seguridad: input.seguridad,
             zonas_verdes: input.zonas_verdes,
-            garajes: input.garajes,
+            garaje: input.garaje,
             salon_comunal: input.salon_comunal,
             conjunto_cerrado: input.conjunto_cerrado,
             cocina_integral: input.cocina_integral,
-            gas: inpu.gas,
+            gas: input.gas,
             alarma: input.alarma,
             zona_para_ninios: input.zona_para_ninios,
             terraza: input.terraza,
@@ -152,7 +191,17 @@ exports.save_edit = function (req, res) {
             piscina: input.piscina,
             balcon: input.balcon,
             num_closets: input.num_closets,
-            municipio_id: input.municipio_id.id
+            municipio_id: input.municipio_id.id,
+            num_cocinas: input.num_cocinas,
+            zona: input.zona,
+            alcantarillado: input.alcantarillado,
+            sauna: input.sauna,
+            energia: input.energia,
+            zonabbq: input.zonabbq,
+            persona_cedula: input.persona_cedula.persona_cedula.cedula,
+            cliente_cedula:input.cliente_cedula.cedula,
+            matricula: input.matricula,
+            precio_negociable: input.precio_negociable
 
         };
 

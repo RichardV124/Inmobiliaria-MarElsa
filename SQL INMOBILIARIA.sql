@@ -287,6 +287,22 @@ ALTER TABLE VISITA ADD CONSTRAINT VISITA_INMUEBLE_FK FOREIGN KEY ( inmueble_id )
 
 ALTER TABLE VISITA ADD CONSTRAINT VISITA_PERSONAL_FK FOREIGN KEY ( empleado_cedula ) REFERENCES EMPLEADO ( persona_cedula ) ;
 
+ALTER TABLE INMUEBLE
+ADD COLUMN `alcantarillado` CHAR(1) NULL AFTER `zona`,
+ADD COLUMN `energia` CHAR(1) NULL AFTER `alcantarillado`,
+ADD COLUMN `zonabbq` CHAR(1) NULL AFTER `energia`,
+ADD COLUMN `sauna` CHAR(1) NULL AFTER `zonabbq`,
+ADD COLUMN `cliente_cedula` INT NOT NULL AFTER `sauna`;
+
+ALTER TABLE INMUEBLE ADD CONSTRAINT INMUEBLE_CLIENTE_FK FOREIGN KEY ( cliente_cedula ) REFERENCES PERSONA ( cedula ) ;
+
+ALTER TABLE INMUEBLE 
+ADD COLUMN `matricula` VARCHAR(45) NOT NULL AFTER `cliente_cedula`,
+ADD UNIQUE INDEX `matricula_UNIQUE` (`matricula`);
+
+ALTER TABLE INMUEBLE 
+ADD COLUMN `precio_negociable` CHAR(1) NULL AFTER `matricula`;
+
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
