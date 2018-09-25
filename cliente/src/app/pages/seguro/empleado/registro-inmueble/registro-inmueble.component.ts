@@ -1,3 +1,4 @@
+import { ClienteService } from './../../../../services/cliente/cliente.service';
 import { Archivo } from './../../../../modelo/archivo';
 import { MunicipioService } from './../../../../services/municipio/municipio.service';
 import { Departamento } from './../../../../modelo/departamento';
@@ -12,7 +13,6 @@ import { Router } from '@angular/router';
 import { Login } from '../../../../modelo/login';
 import { LoginService } from '../../../../services/login/login.service';
 import { Persona } from '../../../../modelo/persona';
-import { PersonaService } from '../../../../services/persona/persona.service';
 
 const uri = 'http://localhost:3000/file/upload';
 
@@ -41,7 +41,7 @@ export class RegistroInmuebleComponent implements OnInit {
   archivo: Archivo = new Archivo();
 
   constructor(private inmuebleServie: InmuebleService, private servicios: LoginService,
-    private municipioService: MunicipioService, private personaService: PersonaService,
+    private municipioService: MunicipioService, private personaService: ClienteService,
     private router: Router) {
     this.listarTiposInmueble();
     this.listarDepartamentos();
