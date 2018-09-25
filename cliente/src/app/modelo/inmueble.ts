@@ -33,6 +33,7 @@ alcantarillado: boolean;
 sauna: boolean;
 energia: boolean;
 zonabbq: boolean;
+precio_negociable: boolean;
 persona_cedula: Login;
 cliente_cedula: Persona;
 matricula: string;

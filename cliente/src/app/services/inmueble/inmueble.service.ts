@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { RespuestaDTO } from '../../modelo/respuestaDTO';
 import 'rxjs/add/operator/map';
 import { HttpClient } from '@angular/common/http';
+import { Archivo } from '../../modelo/archivo';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,25 @@ export class InmuebleService {
     .map(res => {
       return res.data;
     });
+  }
+
+  registrarArchivo(archivo: Archivo) {
+    // console.log(archivo);
+    return this.http.post<any>(`${this.domain}/archivo/add/`, archivo)
+    .map(res => res);
+  }
+
+  /**
+   * Elimina un inmueble de la bd
+   */
+  eliminarInmueble(id: number) {
+    return this.http.post<any>(`${this.domain}/inmueble/delete/`, id)
+    .map(res => res);
+  }
+
+  editar(newInmueble: Inmueble) {
+    return this.http.post<any>(`${this.domain}/inmueble/edit/`, newInmueble)
+    .map(res => res);
   }
 
    /**
