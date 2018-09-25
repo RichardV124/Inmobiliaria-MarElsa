@@ -129,7 +129,7 @@ app.post('/inmueble/edit/:id', inmueble.save_edit);
 app.get('/tipoinmueble/search/:id', inmueble.searchTipoInmubeleId);
 
 // agregar archivos (foto, video)
-app.post('file/add', inmueble.addFile);
+app.post('/archivo/add/', inmueble.guardarArchivo);
 
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);

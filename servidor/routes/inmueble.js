@@ -23,6 +23,16 @@ exports.list = function (req, res) {
 
 };
 
+exports.guardarArchivo = function (req, res){
+
+    var input = JSON.parse(JSON.stringify(req.body));
+
+    console.log(input.nombre);
+
+    console.log('entra');
+
+};
+
 /*
  * GET type property listing.
  */
@@ -224,7 +234,7 @@ exports.delete_inmueble = function (req, res) {
 
     req.getConnection(function (err, connection) {
 
-        connection.query("DELETE FROM inmueble  WHERE id = ? ", [id], function (err, rows) {
+        connection.query("DELETE FROM inmueble WHERE id = ? ", [id], function (err, rows) {
 
             if (err)
                 console.log("Error deleting : %s ", err);
