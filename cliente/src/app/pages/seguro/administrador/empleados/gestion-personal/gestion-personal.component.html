@@ -1,3 +1,5 @@
+<br><br><br><br><br><br>
+
 <h2>Gestion del personal</h2>
 
 <div class="container">
@@ -8,7 +10,7 @@
                   <div class="row">
                     <div class="col-lg-8">
                             <div class="form-group">
-                                    <input type="text" [(ngModel)]="personaSeleccionada.cedula" placeholder="Ingrese cedula" class="form-control">
+                                    <input type="text" [(ngModel)]="cedulaBuscar" placeholder="Ingrese cedula" class="form-control">
                                 </div> </div>
                     <div class="col-lg-4" style="padding-left: 0">
                             <button (click)="buscar()" class="btn btn-warning"> 
@@ -22,46 +24,134 @@
 
             
 
-            <div class="col-lg-8">
-                    <h4>Registrar empleado</h4>
+            <div class="card mt-4">
                 <div class="card-body">
                     <div class="form-group">
-                        <input type="text" [(ngModel)]="personaSeleccionada.cedula" placeholder="Ingrese cedula" class="form-control">
+                        <div class="row">
+                            <div class="col-md-3"><label>Nombre</label></div>
+                            <div class="col-md-9">
+                                <input type="text" [(ngModel)]="selectedPersona.nombre" placeholder="Ingrese nombre" class="form-control">
+                            </div>
+                        </div>                   
                     </div>
                     <div class="form-group">
-                        <input type="text" [(ngModel)]="personaSeleccionada.nombre" placeholder="Ingrese nombre" class="form-control">
+                        <div class="row">
+                            <div class="col-md-3"><label>Apellido</label></div>
+                            <div class="col-md-9">
+                                <input type="text" [(ngModel)]="selectedPersona.apellido" placeholder="Ingrese apellido" class="form-control">
+                            </div>                   
+                        </div>                                     
                     </div>
                     <div class="form-group">
-                        <input type="text" [(ngModel)]="personaSeleccionada.apellido" placeholder="Ingrese apellido" class="form-control">
+                        <div class="row">
+                            <div class="col-md-3"><label>Fecha nacimiento</label></div>
+                            <div class="col-md-9">
+                                <input type="date" [(ngModel)]="selectedPersona.fecha_nacimiento" placeholder="Ingrese fecha de nacimiento yyyy-dd-mm" class="form-control">
+                            </div>                   
+                        </div>                                     
                     </div>
                     <div class="form-group">
-                      <input type="date" [(ngModel)]="personaSeleccionada.fecha_nacimiento" placeholder="Ingrese fecha de nacimiento yyyy-dd-mm" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" [(ngModel)]="personaSeleccionada.direccion" placeholder="Ingrese direccion" class="form-control">
-                </div>
-                <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3"><label>Cédula</label></div>
+                            <div class="col-md-9">
+                                <input type="number" [(ngModel)]="selectedPersona.cedula" placeholder="Ingrese cedula" class="form-control">    
+                            </div>                   
+                        </div>                                     
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3"><label>Dirección</label></div>
+                            <div class="col-md-9">
+                                <input type="text" [(ngModel)]="selectedPersona.direccion" placeholder="Ingrese direccion" class="form-control">
+                            </div>                   
+                        </div>                                     
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3"><label>Telefono</label></div>
+                            <div class="col-md-9">
+                                <input type="number" [(ngModel)]="selectedPersona.telefono" placeholder="Ingrese telefono" class="form-control">
+                            </div>                   
+                        </div>                                     
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3"><label>Correo</label></div>
+                            <div class="col-md-9">
+                                <input type="text" [(ngModel)]="selectedPersona.correo" placeholder="Ingrese correo" class="form-control">
+                            </div>                   
+                        </div>                                     
+                    </div>
+                    <div class="form-group">
+                            <div class="row">
+                                    <div class="col-md-3"><label>Tipo de empleado</label></div>
+                                    <div class="col-md-9">
                         <select  [(ngModel)]="tipoPersonalSeleccionado.id" class="form-control">
-                                <option [ngValue]="0" selected disabled hidden>Seleccione el tipo de usuario</option>
+                                <option [ngValue]="0" selected disabled hidden>Seleccione el tipo de empleado</option>
                                 <option *ngFor="let tp of listaTipoPersonal" [value]="tp.id">{{tp.descripcion}}</option>
                           </select>
-                </div>
-                    <div class="form-group">
-                         <input type="text" [(ngModel)]="loginSeleccionado.username" placeholder="Ingrese username" class="form-control">
+                        </div>
+                    </div>    
                     </div>
                     <div class="form-group">
-                         <input type="password" [(ngModel)]="loginSeleccionado.contrasenia" placeholder="Ingrese contraseña" class="form-control">
+                    <div class="row">
+                      <div class="col-md-3"><label>Departamento</label></div>
+                      <div class="col-md-9">
+                          <select  [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
+                             <option [ngValue]="0" selected disabled hidden>Seleccione un Departamento</option>
+                             <option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
+                         </select>
+                         </div>
+                    </div>                   
+                 </div>
+                <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-3"><label>Municipio</label></div>
+                      <div class="col-md-9">
+                        <select  [(ngModel)]="selectedMunicipio.id" class="form-control">
+                          <option [ngValue]="0" selected disabled hidden>Seleccione un Municipio</option>
+                          <option *ngFor="let ms of listaMunicipios" [value]="ms.id">{{ms.nombre}}</option>
+                        </select>
+                      </div>
+                    </div>                   
+                 </div>
+                 <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-3"><label>Genero</label></div>
+                      <div class="col-md-9">
+                        <select  [(ngModel)]="selectedPersona.genero" class="form-control">
+                          <option [ngValue]="0" selected disabled hidden>Seleccione un genero</option>
+                          <option [ngValue]="1">Masculino</option>
+                          <option [ngValue]="2">Femenino</option>
+                        </select>
+                      </div>
+                    </div>                   
+                 </div>
+
+                <h3>Datos de Inicio de sesion</h3>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3"><label>Username</label></div>
+                            <div class="col-md-9">
+                                <input type="text" [(ngModel)]="selectedLogin.username" placeholder="Ingrese username" class="form-control">
+                            </div>                   
+                        </div>                                     
                     </div>
-                    <button (click)="registrar()" class="btn btn-success" > 
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3"><label>Contraseña</label></div>
+                            <div class="col-md-9">
+                                <input type="password" [(ngModel)]="selectedLogin.contrasenia" placeholder="Ingrese contraseña" class="form-control">
+                            </div>                   
+                        </div>                                     
+                    </div>
+                    <button (click)="registrar()" class="btn btn-success"> 
                       Registrar
-                    </button>
-                    <button (click)="editar()" class="btn btn-info" style="padding-left: 5px"> 
-                       Editar
-                    </button>
-                        <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
-                        <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
-                        
-                        
+                    </button>    
+                    
+                    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                    <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                    
                 </div>
             </div>
 
@@ -70,6 +160,8 @@
             <div class="col-lg-8">
                 <br>
                 <div class="section_subtitle"> Lista de empleados </div><br>
+                <div class="col-md-3"><label>Filtro</label></div>
+                <input type="text" id="searchTextId" [(ngModel)]="campoFiltro" name="searchText" placeholder="Nombre a filtrar">
                 <table class="table">
                     <thead>
                       <tr>
@@ -77,28 +169,34 @@
                         <th scope="col">Nombre</th>
                         <th scope="col">Apellido</th>
                         <th scope="col">Fecha de nacimiento</th>
-                        <th scope="col">Experiencia</th>
-                        <th scope="col">Formacion</th>
                         <th scope="col">Direccion</th>
-                        <th scope="col">Rol</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Genero</th>
+                        <th scope="col">Cargo</th>
+                        <th scope="col">Municipio</th>
+                        <th scope="col">Usuario</th>
                         <th scope="col">Eliminar</th>
                         <th scope="col">Ver</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let p of listaPersonal">
-                        <th scope="row">{{p.cedula}}</th>
-                        <td>{{p.nombre}}</td>
-                        <td>{{p.apellido}}</td>
-                        <td>{{p.fecha_nacimiento}}</td>
-                        <td>{{p.experiencia}}</td>
-                        <td>{{p.formacion}}</td>
-                        <td>{{p.direccion}}</td>
-                        <td>{{p.rol}}</td>
-                        <td><button (click)=" eliminar()" class="btn btn-danger"> 
+                      <tr *ngFor="let e of (listaEmpleados | buscarByNombre: campoFiltro)">
+                        <th scope="row">{{e.cedula}}</th>
+                        <td>{{e.nombre}}</td>
+                        <td>{{e.apellido}}</td>
+                        <td>{{e.fecha_nacimiento}}</td>
+                        <td>{{e.direccion}}</td>
+                        <td>{{e.telefono}}</td>
+                        <td>{{e.correo}}</td>
+                        <td>{{e.genero}}</td>
+                        <td>{{e.descripcion_tipo}}</td>
+                        <td>{{e.nombre_municipio}}</td>
+                        <td>{{e.username}}</td>
+                        <td><button (click)="eliminar(e)" class="btn btn-danger"> 
                                 Eliminar
                             </button></td>
-                            <td><button (click)="ver(p)" class="btn btn-warning"> 
+                            <td><button (click)="ver(e)" class="btn btn-warning"> 
                                     Ver empleado
                                 </button></td>
                       </tr>

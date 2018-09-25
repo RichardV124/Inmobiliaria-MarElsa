@@ -1,12 +1,17 @@
+import { EmpleadoDTO } from './../../../../../modelo/dto/empleadoDTO';
+import { EmpleadoService } from './../../../../../services/empleado/empleado.service';
+import { ClienteService } from './../../../../../services/cliente/cliente.service';
+import { Departamento } from './../../../../../modelo/departamento';
+import { Municipio } from './../../../../../modelo/municipio';
 import { MunicipioService } from './../../../../../services/municipio/municipio.service';
 import { Rol } from './../../../../../modelo/rol';
 import { TipoPersonal } from './../../../../../modelo/tipo_personal';
-import { PersonaService } from './../../../../../services/persona/persona.service';
 import { Persona } from './../../../../../modelo/persona';
 import { Router } from '@angular/router';
 import { RespuestaDTO } from './../../../../../modelo/respuestaDTO';
 import { Login } from './../../../../../modelo/login';
 import { Component, OnInit } from '@angular/core';
+import { Empleado } from '../../../../../modelo/empleado';
 
 @Component({
   selector: 'app-gestion-personal',
@@ -15,132 +20,203 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestionPersonalComponent implements OnInit {
 
+  campoFiltro = '';
   show = 0;
-
-  listaPersonal: Persona[];
+  contador = 0;
+  empleadoDTO: EmpleadoDTO = new EmpleadoDTO();
+  listaEmpleados: EmpleadoDTO[];
   listaTipoPersonal: TipoPersonal[];
 
-  personaSeleccionada: Persona = new Persona();
-  loginSeleccionado: Login = new Login();
+  cedulaBuscar: string;
   tipoPersonalSeleccionado: TipoPersonal = new TipoPersonal();
-  rolSeleccionado: Rol = new Rol();
+  selectedPersona: Persona = new Persona();
+  selectedLogin: Login = new Login();
+  selectedEmpleado: Empleado = new Empleado();
+  rol: Rol = new Rol();
   respuesta: RespuestaDTO = new RespuestaDTO();
+  listaMunicipios: Municipio[];
+  listaDepartamentos: Departamento[];
+  selectedMunicipio: Municipio = new Municipio();
+  selectedDepartamento: Departamento = new Departamento();
 
-  constructor(private personaService: PersonaService,  private router: Router ,
+
+  constructor(private clienteService: ClienteService , private empleadoService: EmpleadoService,  private router: Router ,
     private municipioService: MunicipioService) {
-    //this.listarEmpleados();
-    this.listarTipoPersonal();
-    this.tipoPersonalSeleccionado.id = 0;
-  //  this.personaSeleccionada.tipo_id = this.tipoPersonalSeleccionado;
+      this.listarTipoPersonal();
+      this.listarDepartamentos();
+      this.listarEmpleados();
+      this.selectedDepartamento.id = 0;
+      this.selectedMunicipio.id = 0;
+      this.selectedPersona.genero = 0;
+      this.tipoPersonalSeleccionado.id = 0;
   }
 
   ngOnInit() {
   }
 
+  conteo() {
+this.contador++;
+  }
 
-  ver(persona: Persona) {
-    this.personaSeleccionada = persona;
-    this.buscar();
+  registrar() {
+
+    if (this.validarCampos()) {
+      this.show = 1;
+          this.respuesta.msj = 'Debe completar todos los campos';
+    } else {
+      this.empleadoDTO.nombre = this.selectedPersona.nombre;
+      this.empleadoDTO.apellido = this.selectedPersona.apellido;
+      this.empleadoDTO.cedula = this.selectedPersona.cedula;
+      this.empleadoDTO.correo = this.selectedPersona.correo;
+      this.empleadoDTO.fecha_nacimiento = this.selectedPersona.fecha_nacimiento;
+      this.empleadoDTO.direccion = this.selectedPersona.direccion;
+      this.empleadoDTO.telefono = this.selectedPersona.telefono;
+      this.empleadoDTO.rol_id = 3;
+      this.empleadoDTO.municipio_id = this.selectedMunicipio.id;
+      this.empleadoDTO.genero = this.selectedPersona.genero;
+      this.empleadoDTO.username = this.selectedLogin.username;
+      this.empleadoDTO.contrasenia = this.selectedLogin.contrasenia;
+      this.empleadoDTO.tipo_id = this.tipoPersonalSeleccionado.id;
+      /**this.selectedPersona.rol_id = this.rol;
+      this.selectedPersona.municipio_id = this.selectedMunicipio;
+      this.selectedLogin.persona_cedula = this.selectedPersona;
+      this.selectedEmpleado.persona_cedula = this.selectedPersona;
+      this.selectedEmpleado.tipo_id = this.tipoPersonalSeleccionado;*/
+      console.log(this.empleadoDTO);
+      this.empleadoService.registrarEmpleado(this.empleadoDTO)
+      .subscribe(res => {
+        this.respuesta = JSON.parse(JSON.stringify(res));
+        console.log(this.respuesta.msj + ' SAVE');
+        console.log(this.selectedPersona.nombre);
+        this.limpiarCampos();
+        this.show = 2;
+        this.listarEmpleados();
+      });
+    }
   }
 
   buscar() {
 
-    if (this.personaSeleccionada.cedula == null) {
-
-      this.show = 1;
-          this.respuesta.msj = 'Debe ingresar la cedula a buscar ';
-    } else {
-      this.personaService.buscarPersona(this.personaSeleccionada.cedula)
-      .subscribe(personal => {
-        if (personal === undefined ) {
-          this.show = 1;
-          this.respuesta.msj = 'No se encuentra ningun empleado con la cedula ' +  this.personaSeleccionada.cedula;
-          console.log('NO SE ENCUENTRA');
-        } else {
-        this.personaSeleccionada = JSON.parse(JSON.stringify(personal));
-        let tipo = JSON.parse(JSON.stringify(personal))['tipo_id'];
-        let username = JSON.parse(JSON.stringify(personal))['login_username'];
-        this.tipoPersonalSeleccionado.id = tipo;
-        this.loginSeleccionado.username = username;
-this.loginSeleccionado.persona_cedula = this.personaSeleccionada;
-       //this.personaSeleccionada.tipo_id = this.tipoPersonalSeleccionada;
-      //  console.log(this.selectedPersonal.tipo_id.id);
-        //console.log(this.selectedPersonal.nombre + ' SEARCH');
-        }
-      });
-    }
-}
-
-
- 
-  registrar() {
-
-      if (this.personaSeleccionada.nombre == null || this.personaSeleccionada.apellido == null
-        || this.personaSeleccionada.fecha_nacimiento == null || this.personaSeleccionada.direccion == null
-        || this.personaSeleccionada.cedula == null) {
-
+       if (this.cedulaBuscar == null) {
+        this.show = 1;
+        this.respuesta.msj = 'Debe ingresar la cedula a buscar';
       } else {
-       // this.personaSeleccionada.tipo_id = this.selectedTipoPersonal;
-        this.loginSeleccionado.persona_cedula = this.personaSeleccionada;
-        //Le quemamos el rol de empleado el cual es 2
-        this.rolSeleccionado.id = 2;
-       this.personaSeleccionada.rol_id = this.rolSeleccionado;
-        this.personaService.registrarPersona(this.personaSeleccionada)
-        .subscribe(res => {
-          this.respuesta = JSON.parse(JSON.stringify(res));
-          console.log(this.respuesta.msj + ' SAVE');
-          console.log(this.personaSeleccionada.nombre);
-          this.personaSeleccionada = new Persona();
-          this.loginSeleccionado = new Login();
-          this.show = 2;
-        });
-      }
-  }
+         this.empleadoService.buscarEmpleado(this.cedulaBuscar)
+         .subscribe(empleado => {
+           if (empleado === undefined ) {
+             this.respuesta.msj = 'No se encuentra ningun empleado con la cedula ' +  this.cedulaBuscar;
+             console.log('NO SE ENCUENTRA');
+             this.limpiarCampos();
+           } else {
+              console.log(empleado);
+              this.empleadoDTO = empleado;
 
-  editar() {
+              /** Inicio del machete serio */
+              this.selectedPersona.nombre = this.empleadoDTO.nombre;
+              this.selectedPersona.apellido = this.empleadoDTO.apellido;
+              this.selectedPersona.cedula = this.empleadoDTO.cedula;
+              this.selectedPersona.correo = this.empleadoDTO.correo;
+              this.selectedPersona.fecha_nacimiento = this.empleadoDTO.fecha_nacimiento;
+              this.selectedPersona.direccion = this.empleadoDTO.direccion;
+              this.selectedPersona.telefono = this.empleadoDTO.telefono;
+             // this.empleadoDTO.rol_id = 3;
+              this.selectedDepartamento.id = 1;
+              this.selectedMunicipio.id = this.empleadoDTO.municipio_id;
+              this.selectedPersona.genero = this.empleadoDTO.genero;
+              this.selectedLogin.username = this.empleadoDTO.username;
+              this.selectedLogin.contrasenia = this.empleadoDTO.contrasenia;
+              this.tipoPersonalSeleccionado.id = this.empleadoDTO.tipo_id;
+              /** Fin del machete serio */
 
-    if (this.personaSeleccionada.nombre == null || this.personaSeleccionada.apellido == null
-      || this.personaSeleccionada.fecha_nacimiento == null || this.personaSeleccionada.direccion == null
-      || this.personaSeleccionada.cedula == null) {
+             }
+           });
+       }
+     }
 
-    } else {
-      //this.selectedPersonal.login = this.selectedLogin;
-      //this.selectedPersonal.tipo_id = this.selectedTipoPersonal;
-      //console.log(JSON.parse(JSON.stringify(this.selectedPersonal)));
-      this.personaService.editarPersona(this.personaSeleccionada)
-      .subscribe(res => {
-        this.respuesta = JSON.parse(JSON.stringify(res));
-        console.log(this.respuesta.msj + ' EDIT');
-        this.personaSeleccionada = new Persona();
-        this.loginSeleccionado = new Login();
-      });
-    }
+limpiarCampos() {
+  this.selectedPersona = new Persona();
+  this.selectedLogin = new Login();
+  this.selectedEmpleado = new Empleado();
+  this.selectedMunicipio.id = 0;
+  this.selectedDepartamento.id = 0;
+  this.listaMunicipios = [];
+  this.tipoPersonalSeleccionado.id = 0;
 }
 
-  eliminar(personal: Persona) {
-    if (confirm('¿ Estas seguro que quieres eliminarlo ?')) {
-      this.personaService.eliminarPersonal(personal)
-      .subscribe(res => {
-        this.respuesta = JSON.parse(JSON.stringify(res));
-        console.log(this.respuesta.msj + ' DELETE');
-        this.personaSeleccionada = new Persona();
-        this.loginSeleccionado = new Login();
-        this.show = 2;
-      });
+  validarCampos(): boolean {
+    if (this.selectedPersona.nombre == null || this.selectedPersona.apellido == null
+      || this.selectedPersona.fecha_nacimiento == null || this.selectedPersona.cedula == null
+      || this.selectedPersona.telefono == null || this.selectedPersona.direccion == null
+      || this.selectedPersona.correo == null || this.selectedLogin.username || this.selectedLogin.contrasenia) {
+        return false;
+    } else {
+      return true;
     }
   }
 
-  listarEmpleados() {
-    this.personaService.listarPersona()
-    .subscribe(personal => {
-      this.listaPersonal = personal;
+  listarDepartamentos() {
+    this.municipioService.listarDepartamentos().
+    subscribe(departamento => {
+      this.listaDepartamentos = departamento;
+    });
+  }
+
+  listarMunicipios() {
+    this.selectedMunicipio.id = 0;
+    this.municipioService.listarMunicipios(this.selectedDepartamento.id).
+    subscribe(municipio => {
+      this.listaMunicipios = municipio;
     });
   }
 
   listarTipoPersonal() {
-    this.personaService.listarTipoPersonal()
+    this.empleadoService.listarTipoPersonal()
     .subscribe(tipoPersonal => {
       this.listaTipoPersonal = tipoPersonal;
     });
   }
+
+  listarEmpleados() {
+    this.empleadoService.listarEmpleados()
+    .subscribe(empleados => {
+      this.listaEmpleados = empleados;
+    });
+  }
+
+  eliminar (empleado: EmpleadoDTO) {
+
+    if (confirm('¿ Estas seguro que quieres eliminarlo ?')) {
+      this.empleadoService.eliminarEmpleado(empleado)
+      .subscribe(res => {
+        this.respuesta = JSON.parse(JSON.stringify(res));
+        console.log(this.respuesta.msj + ' DELETE');
+        this.show = 2;
+        this.listarEmpleados();
+      });
+    }
+  }
+
+  ver(empleado: EmpleadoDTO) {
+    this.cedulaBuscar = empleado.cedula;
+    this.buscar();
+  }
+
+  editar() {
+
+    if (this.validarCampos()) {
+      this.show = 1;
+          this.respuesta.msj = 'Debe completar todos los campos';
+
+    } else {
+      this.empleadoService.editarEmpleado(this.empleadoDTO)
+      .subscribe(res => {
+        this.respuesta = JSON.parse(JSON.stringify(res));
+        console.log(this.respuesta.msj + ' EDIT');
+        this.limpiarCampos();
+        this.show = 2;
+      });
+    }
 }
+
+}
+

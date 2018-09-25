@@ -1,3 +1,4 @@
+import { DataService } from './prueba/data.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 
@@ -14,6 +15,7 @@ import { RegistroInmuebleComponent } from './pages/seguro/empleado/registro-inmu
 import { BusquedaClienteComponent } from './pages/seguro/cliente/busqueda-cliente/busqueda-cliente.component';
 import { HeaderComponent } from './pages/publico/header/header.component';
 import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acceso/asignar-acceso.component';
+import { BuscarByNombrePipe } from './filtros/buscar-by-nombre.pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acc
     RegistroInmuebleComponent,
     BusquedaClienteComponent,
     HeaderComponent,
-    AsignarAccesoComponent
+    AsignarAccesoComponent,
+    BuscarByNombrePipe
   ],
   imports: [
     BrowserModule,
@@ -33,6 +36,7 @@ import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acc
     FormsModule,
     AppRoutingModule
   ],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
