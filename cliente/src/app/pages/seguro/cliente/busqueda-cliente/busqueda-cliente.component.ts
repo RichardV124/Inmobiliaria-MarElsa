@@ -41,33 +41,37 @@ export class BusquedaClienteComponent implements OnInit {
   }
 
    buscar() {
+    if (this.selectedPersona.cedula == null) {
 
-  //   if (this.selectedCliente.cedula == null) {
-
-  //   } else {
-  //     this.clienteService.buscarPersona(this.selectedCliente.cedula)
-  //     .subscribe(cliente => {
-  //       if (cliente === undefined ) {
-  //         this.respuesta.msj = 'No se encuentra ningun cliente con la cedula ' +  this.selectedCliente.cedula;
-  //         console.log('NO SE ENCUENTRA');
-  //         this.limpiarcampos();
-  //       } else {
-  //         this.selectedCliente = JSON.parse(JSON.stringify(cliente));
-  //         let username = JSON.parse(JSON.stringify(cliente))['login_username'];
-  //         console.log(username + ' CONCHETUMADRE!!! .l.');
-  //         this.loginService.(username)
-  //           .subscribe(login => {
-  //             if (login === undefined ) {
-  //               this.respuesta.msj = 'No se encuentra ningun login con el username ' +  this.selectedCliente.cedula;
-  //               console.log('NO SE ENCUENTRA EL LOGIN');
-  //             } else {
-  //             this.selectedLogin = JSON.parse(JSON.stringify(login));
-  //             console.log(this.selectedLogin.username + ' SEARCH');
-  //             }
-  //           });
-  //         }
-  //       });
-  //   }
+    } else {
+      this.clienteService.buscarPersona(this.selectedPersona.cedula)
+      .subscribe(cliente => {
+        if (cliente === undefined ) {
+          this.respuesta.msj = 'No se encuentra ningun cliente con la cedula ' +  this.selectedPersona.cedula;
+          console.log('NO SE ENCUENTRA');
+          this.limpiarcampos();
+        } else {
+          this.selectedPersona = JSON.parse(JSON.stringify(cliente));
+          this.municipioService.buscarMunicipio(cliente['municipio_id'])
+          .subscribe(mun => {
+              console.log('DEPTOOOOOO!!!!!!!!!!!!' + mun['departamento_id']);
+              this.selectedDepartamento.id = mun['departamento_id'];
+              this.listarMunicipios();
+              this.selectedMunicipio = mun;
+            });
+          this.clienteService.buscarLoginPersona(cliente.cedula)
+          .subscribe(login => {
+              if (login === undefined ) {
+                this.respuesta.msj = 'No se encuentra ningun login con el username ' +  this.selectedPersona.cedula;
+                console.log('NO SE ENCUENTRA EL LOGIN');
+              } else {
+              this.selectedLogin = JSON.parse(JSON.stringify(login));
+              console.log(this.selectedLogin.username + ' SEARCH');
+              }
+            });
+          }
+        });
+    }
    }
 
   eliminar(cliente: Persona) {
@@ -86,6 +90,11 @@ export class BusquedaClienteComponent implements OnInit {
   ver(cliente: Persona) {
     this.listarDepartamentos();
     this.selectedPersona = cliente;
+    this.clienteService.buscarLoginPersona(cliente.cedula)
+    .subscribe(login => {
+      this.selectedLogin = login;
+    });
+    // this.selectedLogin.username = cliente.
     // this.municipioService.buscarDepartamento(JSON.parse(JSON.stringify(cliente.municipio['departamento_id'])))
     //   .subscribe(dep => {
     //             this.selectedDepartamento = JSON.parse(JSON.stringify(dep));
@@ -133,14 +142,10 @@ export class BusquedaClienteComponent implements OnInit {
   }
 
   limpiarcampos() {
-    this.selectedPersona.nombre = null;
-    this.selectedPersona.apellido = null;
-    this.selectedPersona.correo = null;
-    this.selectedPersona.direccion = null;
-    this.selectedPersona.telefono = null;
-    this.selectedPersona.fecha_nacimiento = null;
-
-    this.selectedLogin.username = null;
-    this.selectedLogin.contrasenia = null;
+    this.selectedPersona = new Persona();
+    this.selectedLogin = new Login();
+    this.selectedDepartamento.id = 0;
+    this.selectedMunicipio.id = 0;
+    this.selectedPersona.genero = 0;
   }
 }

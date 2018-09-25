@@ -6,7 +6,7 @@ exports.list = function(req, res){
 
     req.getConnection(function(err,connection){
          
-          var query = connection.query('SELECT * FROM persona WHERE rol_id=2;',function(err,rows)
+          var query = connection.query('SELECT * FROM persona WHERE rol_id=3;',function(err,rows)
           {
               
               if(err)
@@ -27,7 +27,7 @@ exports.list = function(req, res){
       var cedula = req.params.cedula;
       req.getConnection(function(err,connection){
          
-          var query = connection.query('SELECT * FROM persona WHERE cedula = ?',[cedula],function(err,rows)
+          var query = connection.query('SELECT * FROM persona WHERE cedula = ? AND rol_id=3',[cedula],function(err,rows)
           {
               
               if(err)
@@ -75,23 +75,38 @@ exports.list = function(req, res){
   
   
   exports.delete = function(req,res){
+          
+    var input = JSON.parse(JSON.stringify(req.body));
+    console.log(input);
+    
+     req.getConnection(function (err, connection) {
+        
+        var query= connection.query("DELETE FROM login  WHERE username = ? ",[input.username], function(err, rows)
+        {
+             if(err){
+                 connection.rollback();
+                 res.send('{"id": 404,"msj": "Hubo un error al eliminar el login"}');
+                }
             
-       var cedula = req.params.cedula;
-      
-       req.getConnection(function (err, connection) {
-          
-          connection.query("DELETE FROM persona  WHERE cedula = ? ",[cedula], function(err, rows)
-          {
-              
-               if(err)
-                   console.log("Error deleting : %s ",err );
-              
-                   res.send('{"id": 505,"msj": "Se elimino correctamente"}');
-               
-          });
-          
-       });
-  };
+                 res.send('{"id": 505,"msj": "Se elimino correctamente"}');
+             
+        });
+
+       var query2 = connection.query("DELETE FROM persona  WHERE cedula = ? ",[input.persona_cedula.cedula], function(err, rows)
+        {
+            
+             if(err)
+                 res.send('{"id": 404,"msj": "Hubo un error al eliminar el cliente"}');
+            
+              //   res.send('{"id": 505,"msj": "Se elimino correctamente"}');
+             
+        });
+
+        console.log(query.sql); //get raw query   
+        console.log(query2.sql);
+           
+     });
+};
   
   /*Save the login customer*/
   exports.save = function(req,res){

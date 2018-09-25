@@ -48,10 +48,10 @@ export class ClienteService {
   }
 
   /**
-   * Metodo para buscar una persona
+   * Metodo para buscar un cliente
    * @param cedula, cedula por el cual se buscara el cliente, se envia por la ruta
    */
-  buscarLoginPersona(cedula: number) {
+  buscarLoginPersona(cedula: string) {
     return this.http.get<any>(`${this.domain}/login/usuario-by-persona/${cedula}`)
     .map(res => {
       return res.data;
