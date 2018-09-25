@@ -1,3 +1,4 @@
+import { ClienteService } from './../../../../services/cliente/cliente.service';
 import { Archivo } from './../../../../modelo/archivo';
 import { MunicipioService } from './../../../../services/municipio/municipio.service';
 import { Departamento } from './../../../../modelo/departamento';
@@ -12,7 +13,6 @@ import { Router } from '@angular/router';
 import { Login } from '../../../../modelo/login';
 import { LoginService } from '../../../../services/login/login.service';
 import { Persona } from '../../../../modelo/persona';
-import { PersonaService } from '../../../../services/persona/persona.service';
 
 const uri = 'http://localhost:3000/file/upload';
 
@@ -23,6 +23,7 @@ const uri = 'http://localhost:3000/file/upload';
 })
 export class RegistroInmuebleComponent implements OnInit {
 
+  img;
   show = 0;
 
   listaInmuebles: Inmueble[];
@@ -40,7 +41,7 @@ export class RegistroInmuebleComponent implements OnInit {
   archivo: Archivo = new Archivo();
 
   constructor(private inmuebleServie: InmuebleService, private servicios: LoginService,
-    private municipioService: MunicipioService, private personaService: PersonaService,
+    private municipioService: MunicipioService, private personaService: ClienteService,
     private router: Router) {
     this.listarTiposInmueble();
     this.listarDepartamentos();
@@ -173,6 +174,36 @@ export class RegistroInmuebleComponent implements OnInit {
     });
   }
 
+  crearArchivo() {
+    for (const file of this.selectedFile) {
+      const ext = file.name.substr(file.name.lastIndexOf('.') + 1);
+      if (ext === 'jpg' || ext === 'png' || ext === 'jpeg') {
+        this.convertirArchivoBase64(file, true);
+      } else if (ext === 'mp4') {
+
+      } else {
+        this.show = 1;
+        this.respuesta.msj = 'El archivo ' + file.name + ' tiene una extensión no permitida';
+      }
+    }
+  }
+
+  convertirArchivoBase64(file: File, imgn: boolean) {
+    const myReader: FileReader = new FileReader();
+    myReader.onloadend = (e) => {
+      this.img = myReader.result;
+      const archivoIngresado: Archivo = new Archivo();
+      archivoIngresado.nombre = this.img;
+      if (imgn) {
+        archivoIngresado.archivo = 'imagen';
+      } else {
+        archivoIngresado.archivo = 'video';
+      }
+      this.inmuebleServie.registrarArchivo(archivoIngresado);
+    }
+    myReader.readAsDataURL(file);
+  }
+
   /**
    * Obtiene los datos que se registraron en los cambos para llenarlos en la lista
    */
@@ -245,6 +276,26 @@ export class RegistroInmuebleComponent implements OnInit {
    */
   obtenerDatosJSON(atributo: string) {
     return JSON.parse(JSON.stringify(this.selectedInmueble[atributo]));
+  }
+
+  /**
+   * Elimina un inmubele de la base de datos
+   * @param inmueble inmueble que se desea eliminar
+   */
+  eliminar(inmueble: Inmueble) {
+    console.log(inmueble);
+    this.inmuebleServie.eliminarInmueble(inmueble.id);
+    this.listarInmuebles();
+  }
+
+  editar() {
+    if (this.selectedInmueble.id == null) {
+      this.show = 1;
+      this.respuesta.msj = 'Debe buscar un inmueble previamente';
+    } else {
+    this.inmuebleServie.editar(this.selectedInmueble);
+    this.listarInmuebles();
+    }
   }
 
   /**
