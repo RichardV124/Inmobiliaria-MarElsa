@@ -1,3 +1,4 @@
+import { DataService } from './prueba/data.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 
@@ -14,7 +15,11 @@ import { RegistroInmuebleComponent } from './pages/seguro/empleado/registro-inmu
 import { BusquedaClienteComponent } from './pages/seguro/cliente/busqueda-cliente/busqueda-cliente.component';
 import { HeaderComponent } from './pages/publico/header/header.component';
 import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acceso/asignar-acceso.component';
+<<<<<<< HEAD
 import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/editar-cliente.component';
+=======
+import { BuscarByNombrePipe } from './filtros/buscar-by-nombre.pipe';
+>>>>>>> 2637aa86592b239881f410f314098a967d2ad969
 
 @NgModule({
   declarations: [
@@ -27,7 +32,8 @@ import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/ed
     BusquedaClienteComponent,
     EditarClienteComponent,
     HeaderComponent,
-    AsignarAccesoComponent
+    AsignarAccesoComponent,
+    BuscarByNombrePipe
   ],
   imports: [
     BrowserModule,
@@ -35,6 +41,7 @@ import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/ed
     FormsModule,
     AppRoutingModule
   ],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

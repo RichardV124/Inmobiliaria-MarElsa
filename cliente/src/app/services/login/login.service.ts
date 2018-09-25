@@ -50,7 +50,7 @@ export class LoginService {
           this.router.navigate(['/login']);
       } else {
           // Validamos si el usuario tiene acceso a la pagina
-          if (this.pageInArray(page, this.usuario.persona_cedula.rol.accesos)) {
+          if (this.pageInArray(page, this.usuario.persona_cedula.rol_id.accesos)) {
               // Como no tiene acceso, lo redirigimos al inicio
               this.router.navigate(['/']);
           }

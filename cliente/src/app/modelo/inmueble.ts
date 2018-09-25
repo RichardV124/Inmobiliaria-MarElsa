@@ -1,5 +1,7 @@
+import { Persona } from './persona';
 import { Municipio } from './municipio';
 import { TipoInmueble } from './tipo_inmueble';
+import { Login } from './login';
 export class Inmueble {
 id: number;
 direccion: string;
@@ -12,7 +14,7 @@ num_banios: number;
 pisos: number;
 seguridad: boolean;
 zonas_verdes: boolean;
-garajes: number;
+garaje: number;
 salon_comunal: boolean;
 conjunto_cerrado: boolean;
 cocina_integral: boolean;
@@ -25,4 +27,13 @@ piscina: boolean;
 balcon: boolean;
 num_closets: number;
 municipio_id: Municipio;
+num_cocinas: number;
+zona: number;
+alcantarillado: boolean;
+sauna: boolean;
+energia: boolean;
+zonabbq: boolean;
+persona_cedula: Login;
+cliente_cedula: Persona;
+matricula: string;
 }

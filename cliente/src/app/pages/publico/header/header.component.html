@@ -1,57 +1,71 @@
 	<!-- Header section -->
-	<header class="header-section">
-		<div class="header-top">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-6 header-top-left">
-						<div class="top-info">
-							<i class="fa fa-phone"></i>
-							(+88) 666 121 4321
-						</div>
-						<div class="top-info">
-							<i class="fa fa-envelope"></i>
-							info.leramiz@colorlib.com
-						</div>
-					</div>
-					<div class="col-lg-6 text-lg-right header-top-right">
-						<div class="top-social">
-							<a href=""><i class="fa fa-facebook"></i></a>
-							<a href=""><i class="fa fa-twitter"></i></a>
-							<a href=""><i class="fa fa-instagram"></i></a>
-							<a href=""><i class="fa fa-pinterest"></i></a>
-							<a href=""><i class="fa fa-linkedin"></i></a>
-						</div>
-						<div class="user-panel">
-							<!-- Menu usuario logeado -->
-							<ul *ngIf="usuario">	
-									<li *ngFor="let acceso of accesos"><a href="{{acceso.url}}">{{acceso.nombre}}</a></li>	
-									<li><a (click)="logout($event)" href="">Salir</a></li>						
-								</ul>
-							<a href="/login"><i class="fa fa-sign-in"></i> Login</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="site-navbar">
-						<a href="#" class="site-logo"><img src="https://colorlib.com/preview/theme/leramiz/img/logo.png" alt=""></a>
-						<div class="nav-switch">
-							<i class="fa fa-bars"></i>
-						</div>
-						<ul class="main-menu">
-							<li><a href="index.html">Home</a></li>
-							<li><a href="categories.html">FEATURED LISTING</a></li>
-							<li><a href="about.html">ABOUT US</a></li>
-							<li><a href="single-list.html">Pages</a></li>
-							<li><a href="blog.html">Blog</a></li>
-							<li><a href="contact.html">Contact</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
-	<!-- Header section end -->
+    <!-- ##### Header Area Start ##### -->
+    <header class="header-area">
+
+        <!-- Top Header Area -->
+        <div class="top-header-area">
+            <div class="h-100 d-md-flex justify-content-between align-items-center">
+                <div class="email-address">
+                    <a href="mailto:contact@southtemplate.com">Ingesoft@eam.edu.com</a>
+                </div>
+                <div class="phone-number d-flex">
+                    <div class="icon">
+                        <img src="https://colorlib.com/preview/theme/south/img/icons/phone-call.png" alt="">
+                    </div>
+                    <div class="number">
+                        <a href="tel:+57 313 6912510">+57 313 6912510</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Header Area -->
+        <div class="main-header-area" id="stickyHeader">
+            <div class="classy-nav-container breakpoint-off">
+                <!-- Classy Menu -->
+                <nav class="classy-navbar justify-content-between" id="southNav">
+
+                    <!-- Logo -->
+                    <a class="nav-brand" href="index.html"><img src="https://colorlib.com/preview/theme/south/img/core-img/logo.png" alt=""></a>
+
+                    <!-- Navbar Toggler -->
+                    <div class="classy-navbar-toggler">
+                        <span class="navbarToggler"><span></span><span></span><span></span></span>
+                    </div>
+
+                    <!-- Menu -->
+                    <div class="classy-menu">
+
+                        <!-- close btn -->
+                        <div class="classycloseIcon">
+                            <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                        </div>
+
+                        <!-- Nav Start -->
+                        <div class="classynav">
+                                <ul *ngIf="usuario">	
+                                        <li *ngFor="let acceso of accesos"><a href="{{acceso.url}}">{{acceso.nombre}}</a></li>	
+                                        <li><a (click)="logout($event)" href="">Salir</a></li>						
+                                    </ul>
+                                    <div *ngIf="!usuario">
+                                <a  href="/login"><i class="fa fa-sign-in" ></i> Login</a>
+                            </div>
+                            
+
+                            <!-- Search Form -->
+                            <div class="south-search-form">
+                                <form action="#" method="post">
+                                    <input type="search" name="search" id="search" placeholder="Search Anything ...">
+                                    <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </form>
+                            </div>
+
+                            <!-- Search Button -->
+                            <a href="#" class="searchbtn"><i class="fa" aria-hidden="true"></i></a>
+                        </div>
+                        <!-- Nav End -->
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>

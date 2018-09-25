@@ -13,7 +13,7 @@ var path = require('path');
 //cargamos el route de customers
 var customers = require('./routes/customers'); 
 //cargamos el route de persona
-var persona = require('./routes/persona');
+var empleado = require('./routes/empleado');
 //cargamos el route de login
 var login = require('./routes/login');
 //cargamos el route de personal
@@ -99,9 +99,13 @@ app.get('/customers/delete/:id', customers.delete_customer);
 app.get('/customers/search/:id', customers.search);
 app.post('/customers/edit/',customers.save_edit);
 
-// ------- Servicios de persona ------- //
-app.get('/persona/search/:cedula', persona.search);
-app.get('/tipopersonal/listar', persona.listTipoPersonal);
+// ------- Servicios de empleado ------- //
+app.get('/persona/search/:cedula', empleado.search);
+app.post('/empleado/save', empleado.save);
+app.post('/empleado/edit', empleado.edit);
+app.get('/empleado/listar', empleado.list);
+app.get('/empleado/search/:cedula', empleado.searchEmpleado);
+app.get('/tipopersonal/listar', empleado.listTipoPersonal);
 
 // ------- Servicios de login ------- //
 app.get('/login/login/:username/:contrasenia', login.login);
@@ -117,11 +121,12 @@ app.post('/cliente/save', cliente.save);
 
 // ------- Servicios de inmuebles ------- //
 app.get('/inmueble', inmueble.list);
-app.get('/inmueble/search/:id', inmueble.search);
+app.get('/inmueble/search/:matricula', inmueble.search);
 app.get('/tipoinmueble', inmueble.listTipoInmueble);
 app.post('/inmueble/add', inmueble.save);
 app.post('/inmueble/delete/:id', inmueble.delete_inmueble);
 app.post('/inmueble/edit/:id', inmueble.save_edit);
+app.get('/tipoinmueble/search/:id', inmueble.searchTipoInmubeleId);
 
 // agregar archivos (foto, video)
 app.post('file/add', inmueble.addFile);
