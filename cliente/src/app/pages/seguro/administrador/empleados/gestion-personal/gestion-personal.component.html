@@ -181,7 +181,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let e of (listaEmpleados | buscarByNombre: campoFiltro)">
+                      <tr *ngFor="let e of (listaEmpleados )">
                         <th scope="row">{{e.cedula}}</th>
                         <td>{{e.nombre}}</td>
                         <td>{{e.apellido}}</td>
