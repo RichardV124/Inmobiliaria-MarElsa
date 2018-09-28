@@ -263,8 +263,6 @@ export class RegistroInmuebleComponent implements OnInit {
     this.inmuebleServie.listarArchivos(this.selectedInmueble.id)
     .subscribe(archivo => {
       this.archivo = archivo;
-      const file = this.archivo[0];
-      console.log(atob(file.nombre[0]));
     });
   }
 
