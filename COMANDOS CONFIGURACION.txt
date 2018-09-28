@@ -45,3 +45,15 @@ ng generate c pages/customer
 1) cd servidor
 2) node app.js 
 
+
+-- Instrucciones pruebas unitarias -- 
+   -- lanza servidor karma, por defecto de angular
+  npm test
+  -- Mantiene activo
+  ng test
+   -- Solo se ejecuta una vez
+  ng test --single-run
+   -- reporte coverage (Crea una carpta coverage donde se podra ver el reporte)
+  ng test --code-coverage
+   -- ruta para ver los reportes coverage de las pruebas
+  file:///C:/Users/krlox/Inmobiliaria/coverage/src/app/Paginas/publico/ver-inmueble/index.html
