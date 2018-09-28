@@ -311,6 +311,9 @@ ADD CONSTRAINT `FOTO_INMUEBLE_FK`
   REFERENCES `inmobiliaria`.`inmueble` (`id`)
   ON DELETE CASCADE;
 
+  ALTER TABLE ARCHIVO 
+CHANGE COLUMN `nombre` `nombre` LONGTEXT NOT NULL ;
+
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 

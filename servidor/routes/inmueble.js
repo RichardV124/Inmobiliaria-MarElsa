@@ -66,7 +66,6 @@ exports.searchFile = function (req, res) {
                 data: rows
             });
 
-
         });
 
         //console.log(query.sql);
