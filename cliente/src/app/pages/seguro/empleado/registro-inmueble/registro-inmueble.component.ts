@@ -201,7 +201,7 @@ export class RegistroInmuebleComponent implements OnInit {
       }
       this.inmuebleServie.registrarArchivo(archivoIngresado);
     }
-    myReader.readAsDataURL(file);
+    myReader.readAsDataURL(file); 
   }
 
   /**

@@ -7,6 +7,9 @@ import { Inmueble } from '../../modelo/inmueble';
 import { TipoInmueble } from '../../modelo/tipo_inmueble';
 import { Persona } from '../../modelo/persona';
 import { Rol } from '../../modelo/rol';
+import { Login } from '../../modelo/login';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 
 describe('InmuebleService', () => {
   beforeEach(() => {
@@ -20,34 +23,60 @@ describe('InmuebleService', () => {
   }));
 
   describe('Inmueble con todos los datos',()=>{
+    let service: InmuebleService;
+    let dep: Departamento;
+    let mun: Municipio;
+    let tipo: TipoInmueble;
+    let rol: Rol;
+    let per: Persona;
+    let inm: Inmueble;
+    let log: Login;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [InmuebleService]
+        providers: [InmuebleService],
+        imports: [HttpClientModule],
       });
+      service = TestBed.get(InmuebleService);
+      dep = new Departamento();
+      mun = new Municipio();
+      tipo = new TipoInmueble();
+      rol = new Rol();
+      per = new Persona();
+      inm = new Inmueble();
+      log = new Login();
     });
 
-    it('deberia registrar un inmbuele', inject([InmuebleService], (service: InmuebleService) => {
+    afterEach(()=>{
+      dep = null;
+      mun = null;
+      tipo = null;
+      rol = null;
+      per =null;
+      inm = null;
+      log = null;
+    })
 
-    var dep = new Departamento();
+    it('deberia registrar un inmbuele con todos los datos', inject([InmuebleService], (service: InmuebleService) => {
+ 
     dep.nombre ="Quindio";
     dep.id = 1;
 
-    var mun = new Municipio();
+    
     mun.nombre = "Armenia";
     mun.id = 1;
     mun.departamento_id = dep;
 
-    var tipo = new TipoInmueble();
+   
     tipo.id = 1;
     tipo.descripcion = "sda";
 
-    var rol = new Rol();
+    
     rol.id = 1;
     rol.nombre = "empleado";
     rol.descripcion = "empleado";
     
-    var per = new Persona();
+    
     per.nombre = "David";
     per.apellido = "Roman";
     per.fecha_nacimiento = new Date(1998,08,21);
@@ -59,7 +88,7 @@ describe('InmuebleService', () => {
     per.municipio_id = mun;
     per.genero = 0;
 
-    var inm = new Inmueble();
+    
     inm.id = 1;
     inm.direccion = "puerto";
     inm.area = 200;
@@ -80,7 +109,7 @@ describe('InmuebleService', () => {
     inm.zona_para_ninios = true;
     inm.terraza = true;
     inm.gimnasio = true;
-    inm.piscina = true;
+    inm.piscina = true; 
     inm.balcon = true;
     inm.num_closets = 4;
     inm.municipio_id = mun;
@@ -90,8 +119,75 @@ describe('InmuebleService', () => {
     inm.sauna = true; 
     inm.energia = true;
     inm.zonabbq = true;
+    inm.cliente_cedula = per;
+    inm.matricula = "123";
+
+    service.registrarInmueble(inm)
+    service.buscarInmueble(inm.matricula).subscribe(rta =>{
+      expect(inm.matricula).toEqual(rta.matricula);
+    });
+    
+    }));
+
+    it('deberia registrar un inmbuele con solo los datos obligatorios',() => {
+
+    dep.nombre ="Quindio";
+    dep.id = 1;
+
+    mun.nombre = "Armenia";
+    mun.id = 1;
+    mun.departamento_id = dep;
+
+    tipo.id = 1;
+    tipo.descripcion = "sda";
+
+    rol.id = 1;
+    rol.nombre = "empleado";
+    rol.descripcion = "empleado";
+
+    per.nombre = "David";
+    per.apellido = "Roman";
+    per.fecha_nacimiento = new Date(1998,08,21);
+    per.cedula = "123";
+    per.direccion= "por ahi";
+    per.telefono = 23423423;
+    per.correo = "david";
+    per.rol_id = rol;
+    per.municipio_id = mun;
+    per.genero = 0;
+
+    
+    log.username = "david";
+    log.contrasenia = "123";
+    log.persona_cedula = per;
+
+    inm.id = 1;
+    inm.direccion = "puerto";
+    inm.area = 500;
+    inm.tipo_inmueble_id = tipo;
+    inm.valor = 50000000;
+    inm.municipio_id = mun;
+    inm.persona_cedula = log;
+
+    service.registrarInmueble(inm)
+    service.buscarInmueble(inm.matricula).subscribe(rta =>{
+    expect(inm.matricula).toEqual(rta.matricula);
+    }); 
   
     }));
 
+    it('si no se ingresan datos deberia retornar un mensaje indicandolo', inject([InmuebleService], (service: InmuebleService) => {
+
+
+    }));
+    
   })
+
+  describe('busquedaInmueble', () => {
+
+    it('deberia registrar un inmbuele con solo los datos obligatorios',() => {
+
+
+    });
+  });
 });
