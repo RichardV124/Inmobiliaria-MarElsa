@@ -124,12 +124,11 @@ app.get('/inmueble', inmueble.list);
 app.get('/inmueble/search/:matricula', inmueble.search);
 app.get('/tipoinmueble', inmueble.listTipoInmueble);
 app.post('/inmueble/add', inmueble.save);
-app.post('/inmueble/delete/:id', inmueble.delete_inmueble);
-app.post('/inmueble/edit/:id', inmueble.save_edit);
+app.post('/inmueble/delete/', inmueble.delete_inmueble);
+app.post('/inmueble/edit/', inmueble.save_edit);
 app.get('/tipoinmueble/search/:id', inmueble.searchTipoInmubeleId);
-
-// agregar archivos (foto, video)
-app.post('/archivo/add/', inmueble.guardarArchivo);
+app.post('/file/add', inmueble.saveFile);
+app.get('/file/search/:inmueble_id', inmueble.searchFile);
 
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);
