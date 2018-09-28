@@ -49,9 +49,20 @@ app.use(express.methodOverride());
 app.use('/file', fileRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
 
+/**
+ * Permitimos acceso al cliente por el puerto 4200 y a Karma por el puerto 9876
+ */
 app.use(function (req, res, next) {
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+    /**
+     * Lista de dominios permitidos
+     */
+    var allowedOrigins = ['http://localhost:4200', 'http://localhost:9876'];
+    // obtenemos el origin
+    var origin = req.headers.origin;
+    if(allowedOrigins.indexOf(origin) > -1){
+        // permitimos el acceso del origin, siempre y cuando este en el array allowedOrigins
+         res.setHeader('Access-Control-Allow-Origin', origin);
+    }
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     // Request headers you wish to allow
@@ -62,6 +73,7 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+
 
 // development only
 if ('development' == app.get('env')) {

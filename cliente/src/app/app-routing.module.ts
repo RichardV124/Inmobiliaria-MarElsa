@@ -8,6 +8,7 @@ import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RegistroClienteComponent } from './pages/publico/registro-cliente/registro-cliente.component';
 import { BusquedaClienteComponent } from './pages/seguro/cliente/busqueda-cliente/busqueda-cliente.component';
+import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/editar-cliente.component';
 
 
 const appRoutes: Routes = [
@@ -16,6 +17,7 @@ const appRoutes: Routes = [
   {path: 'gestion-personal', component: GestionPersonalComponent},
   {path: 'registro-cliente', component: RegistroClienteComponent},
   {path: 'busqueda-cliente', component: BusquedaClienteComponent},
+  {path: 'editar-cliente', component: EditarClienteComponent},
   {path: 'asignar-acceso', component: AsignarAccesoComponent},
   {path: 'registro-inmueble', component: RegistroInmuebleComponent}
 ];
