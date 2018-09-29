@@ -6,7 +6,7 @@ export class Cliente {
     nombre: string;
     apellido: string;
     fecha_nacimiento: Date;
-    cedula: number;
+    cedula: number; 
     direccion: string;
     telefono: number;
     correo: string;

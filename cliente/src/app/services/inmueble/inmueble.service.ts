@@ -1,9 +1,9 @@
+import { Archivo } from './../../modelo/archivo';
 import { Inmueble } from './../../modelo/inmueble';
 import { Injectable } from '@angular/core';
 import { RespuestaDTO } from '../../modelo/respuestaDTO';
 import 'rxjs/add/operator/map';
 import { HttpClient } from '@angular/common/http';
-import { Archivo } from '../../modelo/archivo';
 
 @Injectable({
   providedIn: 'root'
@@ -34,17 +34,25 @@ export class InmuebleService {
     });
   }
 
-  registrarArchivo(archivo: Archivo) {
-    // console.log(archivo);
-    return this.http.post<any>(`${this.domain}/archivo/add/`, archivo)
+  registrarArchivo(newArchivo: Archivo) {
+    console.log(newArchivo);
+    return this.http.post<any>(`${this.domain}/file/add`, newArchivo)
     .map(res => res);
   }
+
+  listarArchivos(inmueble_id: number) {
+    return this.http.get<any>(`${this.domain}/file/search/${inmueble_id}`)
+    .map(res => {
+      return res.data;
+    });
+  }
+
 
   /**
    * Elimina un inmueble de la bd
    */
-  eliminarInmueble(id: number) {
-    return this.http.post<any>(`${this.domain}/inmueble/delete/`, id)
+  eliminarInmueble(inmueble: Inmueble) {
+    return this.http.post<any>(`${this.domain}/inmueble/delete/`, inmueble)
     .map(res => res);
   }
 
@@ -70,10 +78,6 @@ listarTiposInmueble() {
   registrarInmueble(newInmueble: Inmueble) {
    return this.http.post<any>(`${this.domain}/inmueble/add`, newInmueble)
     .map(res => res);
-  }
-
-  addFile(newFile: File) {
-    // return this.http.post<any>(`${this.domain}/file/add`, newFile).map(res => res);
   }
 
   /**

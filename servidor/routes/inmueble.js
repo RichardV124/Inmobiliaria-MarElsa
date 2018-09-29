@@ -6,7 +6,9 @@ exports.list = function (req, res) {
 
     req.getConnection(function (err, connection) {
 
-        var query = connection.query('SELECT * FROM inmueble', function (err, rows) {
+        var query = connection.query('SELECT i.*, m.nombre as municipio, d.id as dpto_id, ' 
+        + ' d.nombre as depto FROM inmueble i JOIN municipio m ON m.id = i.municipio_id ' 
+        + ' JOIN departamento d ON d.id = m.departamento_id', function (err, rows) {
 
             if (err)
                 console.log("Error Selecting : %s ", err);
@@ -23,15 +25,66 @@ exports.list = function (req, res) {
 
 };
 
-exports.guardarArchivo = function (req, res){
+exports.saveFile = function (req, res) {
 
     var input = JSON.parse(JSON.stringify(req.body));
+    // console.log(input);
 
-    console.log(input.nombre);
+    req.getConnection(function (err, connection) {
 
-    console.log('entra');
+        var data = {
+            // id: input.id,
+            nombre: input.nombre,
+            inmueble_id: input.inmueble_id.id,
+            archivo: input.archivo
+            
+        };
 
+        var query = connection.query("INSERT INTO archivo set ? ", data, function (err, rows) {
+
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al registrar los archivos"}');
+       
+        res.send('{"id": 505,"msj": "Registro exitoso"}');
+
+        });
+
+    });
 };
+
+exports.searchFile = function (req, res) {
+
+    var id = req.params.inmueble_id;
+    req.getConnection(function (err, connection) {
+
+        var query = connection.query('SELECT * FROM archivo WHERE inmueble_id = ?', [id], function (err, rows) {
+
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            res.send({
+                data: rows
+            });
+
+        });
+
+        //console.log(query.sql);
+    });
+};
+
+function decodeBase64Image(dataString) {
+    var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+      response = {};
+  
+    if (matches.length !== 3) {
+      return new Error('Invalid input string');
+    }
+  
+    response.type = matches[1];
+    response.data = new Buffer(matches[2], 'base64');
+  
+    return response;
+  };
 
 /*
  * GET type property listing.
@@ -66,10 +119,6 @@ exports.searchTipoInmubeleId = function (req, res) {
             if (err)
                 console.log("Error Selecting : %s ", err);
 
-            console.log(query.sql);
-            console.log({
-                data: rows[0]
-            })
             res.send({
                 data: rows[0]
             });
@@ -95,10 +144,6 @@ exports.search = function (req, res) {
             if (err)
                 console.log("Error Selecting : %s ", err);
 
-            console.log(query.sql);
-            console.log({
-                data: rows[0]
-            })
             res.send({
                 data: rows[0]
             });
@@ -158,13 +203,11 @@ exports.save = function (req, res) {
         var query = connection.query("INSERT INTO inmueble set ? ", data, function (err, rows) {
 
             if (err)
-                console.log("Error inserting : %s ", err);
-
-            res.send('{"id": 505,"msj": "Se registro correctamente"}');
+            res.send('{"id": 404,"msj": "Hubo un error al registrar el inmueble"}');
+       
+        res.send('{"id": 505,"msj": "Registro exitoso"}');
 
         });
-
-        console.log(query.sql); //get raw query
 
     });
 };
@@ -218,56 +261,28 @@ exports.save_edit = function (req, res) {
         connection.query("UPDATE inmueble set ? WHERE id = ? ", [data, input.id], function (err, rows) {
 
             if (err)
-                console.log("Error Updating : %s ", err);
-            res.send('Se edito correctamente');
-            // res.redirect('/customers');
+            res.send('{"id": 404,"msj": "Hubo un error al editar"}');
+       
+        res.send('{"id": 505,"msj": "Se editó correctamente"}');
 
         });
 
     });
 };
-
 
 exports.delete_inmueble = function (req, res) {
 
-    var id = req.params.id;
-
-    req.getConnection(function (err, connection) {
-
-        connection.query("DELETE FROM inmueble WHERE id = ? ", [id], function (err, rows) {
-
-            if (err)
-                console.log("Error deleting : %s ", err);
-
-            res.send('{"id": 505,"msj": "Se elimino correctamente"}');
-
-        });
-
-    });
-};
-
-/*add the files*/
-exports.addFile = function (req, res) {
-
     var input = JSON.parse(JSON.stringify(req.body));
-
     req.getConnection(function (err, connection) {
 
-        var data = {
-            id: input.id,
-            archivo: input.archivo
-        };
-
-        var query = connection.query("INSERT INTO archivo set ? ", data, function (err, rows) {
+        connection.query("DELETE FROM inmueble WHERE id = ? ", [input.id], function (err, rows) {
 
             if (err)
-                console.log("Error inserting : %s ", err);
-
-            res.send('{"id": 505,"msj": "Se registro correctamente"}');
+            res.send('{"id": 404,"msj": "Hubo un error al eliminar"}');
+       
+        res.send('{"id": 505,"msj": "Se eliminó correctamente"}');
 
         });
-
-        console.log(query.sql); //get raw query
 
     });
 };

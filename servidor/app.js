@@ -44,14 +44,25 @@ app.set('view engine', 'ejs');
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(express.methodOverride());
+app.use(express.methodOverride()); 
 
 app.use('/file', fileRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
 
+/**
+ * Permitimos acceso al cliente por el puerto 4200 y a Karma por el puerto 9876
+ */
 app.use(function (req, res, next) {
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+    /**
+     * Lista de dominios permitidos
+     */
+    var allowedOrigins = ['http://localhost:4200', 'http://localhost:9876'];
+    // obtenemos el origin
+    var origin = req.headers.origin;
+    if(allowedOrigins.indexOf(origin) > -1){
+        // permitimos el acceso del origin, siempre y cuando este en el array allowedOrigins
+         res.setHeader('Access-Control-Allow-Origin', origin);
+    }
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     // Request headers you wish to allow
@@ -62,6 +73,7 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+
 
 // development only
 if ('development' == app.get('env')) {
@@ -103,6 +115,7 @@ app.post('/customers/edit/',customers.save_edit);
 app.get('/persona/search/:cedula', empleado.search);
 app.post('/empleado/save', empleado.save);
 app.post('/empleado/edit', empleado.edit);
+app.post('/empleado/delete', empleado.delete);
 app.get('/empleado/listar', empleado.list);
 app.get('/empleado/search/:cedula', empleado.searchEmpleado);
 app.get('/tipopersonal/listar', empleado.listTipoPersonal);
@@ -124,12 +137,11 @@ app.get('/inmueble', inmueble.list);
 app.get('/inmueble/search/:matricula', inmueble.search);
 app.get('/tipoinmueble', inmueble.listTipoInmueble);
 app.post('/inmueble/add', inmueble.save);
-app.post('/inmueble/delete/:id', inmueble.delete_inmueble);
-app.post('/inmueble/edit/:id', inmueble.save_edit);
+app.post('/inmueble/delete/', inmueble.delete_inmueble);
+app.post('/inmueble/edit/', inmueble.save_edit);
 app.get('/tipoinmueble/search/:id', inmueble.searchTipoInmubeleId);
-
-// agregar archivos (foto, video)
-app.post('/archivo/add/', inmueble.guardarArchivo);
+app.post('/file/add', inmueble.saveFile);
+app.get('/file/search/:inmueble_id', inmueble.searchFile);
 
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);

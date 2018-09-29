@@ -1,4 +1,3 @@
-import { DataService } from './prueba/data.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 
@@ -6,7 +5,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/publico/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './/app-routing.module';
 import { InicioComponent } from './pages/publico/inicio/inicio.component';
 import { GestionPersonalComponent } from './pages/seguro/administrador/empleados/gestion-personal/gestion-personal.component';
@@ -36,9 +35,10 @@ import { BuscarByNombrePipe } from './filtros/buscar-by-nombre.pipe';
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
-  providers: [DataService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

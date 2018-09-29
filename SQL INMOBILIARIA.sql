@@ -303,6 +303,17 @@ ADD UNIQUE INDEX `matricula_UNIQUE` (`matricula`);
 ALTER TABLE INMUEBLE 
 ADD COLUMN `precio_negociable` CHAR(1) NULL AFTER `matricula`;
 
+ALTER TABLE ARCHIVO 
+DROP FOREIGN KEY `FOTO_INMUEBLE_FK`;
+ALTER TABLE ARCHIVO 
+ADD CONSTRAINT `FOTO_INMUEBLE_FK`
+  FOREIGN KEY (`inmueble_id`)
+  REFERENCES `inmobiliaria`.`inmueble` (`id`)
+  ON DELETE CASCADE;
+
+  ALTER TABLE ARCHIVO 
+CHANGE COLUMN `nombre` `nombre` LONGTEXT NOT NULL ;
+
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
