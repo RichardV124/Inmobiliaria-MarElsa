@@ -29,7 +29,7 @@ export class EditarClienteComponent implements OnInit {
 
   constructor(private clienteService: ClienteService, private loginService: LoginService
     , private municipioService: MunicipioService) {
-      this.loginService.esAccesible('editar-cliente');
+      // this.loginService.esAccesible('editar-cliente');
       this.listarDepartamentos();
       this.user = this.loginService.getUsuario();
       this.buscar(this.user.persona_cedula.cedula);

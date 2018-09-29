@@ -25,6 +25,7 @@ export class RegistroClienteComponent implements OnInit {
   listaDepartamentos: Departamento[];
   selectedMunicipio: Municipio = new Municipio();
   selectedDepartamento: Departamento = new Departamento();
+  show: number;
 
   constructor(private clienteService: ClienteService, private router: Router,
     private municipioService: MunicipioService) {
@@ -54,6 +55,7 @@ export class RegistroClienteComponent implements OnInit {
     } else {
       this.rol.id = 3;
       this.selectedPersona.rol_id = this.rol;
+      // this.selectedPersona.activo = 1;
       this.selectedPersona.municipio_id = this.selectedMunicipio;
       this.selectedLogin.persona_cedula = this.selectedPersona;
       this.clienteService.registrarPersona(this.selectedLogin)
