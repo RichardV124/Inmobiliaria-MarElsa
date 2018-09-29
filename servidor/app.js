@@ -115,6 +115,7 @@ app.post('/customers/edit/',customers.save_edit);
 app.get('/persona/search/:cedula', empleado.search);
 app.post('/empleado/save', empleado.save);
 app.post('/empleado/edit', empleado.edit);
+app.post('/empleado/delete', empleado.delete);
 app.get('/empleado/listar', empleado.list);
 app.get('/empleado/search/:cedula', empleado.searchEmpleado);
 app.get('/tipopersonal/listar', empleado.listTipoPersonal);

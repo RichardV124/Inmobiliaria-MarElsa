@@ -186,6 +186,7 @@ limpiarCampos() {
   eliminar (empleado: EmpleadoDTO) {
 
     if (confirm('¿ Estas seguro que quieres eliminarlo ?')) {
+      empleado.activo = 0;
       this.empleadoService.eliminarEmpleado(empleado)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
