@@ -76,6 +76,7 @@ export class BusquedaClienteComponent implements OnInit {
 
   eliminar(cliente: Persona) {
     if (confirm('¿ Estas seguro que quieres eliminarlo ?')) {
+      cliente.activo = 0;
       this.clienteService.eliminarPersona(cliente)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
@@ -83,6 +84,7 @@ export class BusquedaClienteComponent implements OnInit {
         this.selectedPersona = new Persona();
         this.selectedLogin = new Login();
         this.show = 2;
+        this.listarClientes();
       });
     }
   }

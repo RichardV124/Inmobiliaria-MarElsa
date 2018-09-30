@@ -7,7 +7,7 @@ import { Persona } from './../../../../modelo/persona';
 import { Component, OnInit } from '@angular/core';
 import { Login } from '../../../../modelo/login';
 import { RespuestaDTO } from '../../../../modelo/respuestaDTO';
-import { Acceso } from '../../../../modelo/Acceso';
+import { Rol } from '../../../../modelo/rol';
 
 @Component({
   selector: 'app-editar-cliente',
@@ -18,6 +18,7 @@ export class EditarClienteComponent implements OnInit {
 
   selectedPersona: Persona = new Persona();
   selectedLogin: Login = new Login();
+  rol: Rol = new Rol();
   user: Login = new Login();
   respuesta: RespuestaDTO = new RespuestaDTO();
   listaMunicipios: Municipio[];
@@ -25,11 +26,10 @@ export class EditarClienteComponent implements OnInit {
   selectedMunicipio: Municipio = new Municipio();
   selectedDepartamento: Departamento = new Departamento();
   show = 0;
-  accesos: Array<Acceso> = [];
 
   constructor(private clienteService: ClienteService, private loginService: LoginService
     , private municipioService: MunicipioService) {
-      this.loginService.esAccesible('editar-cliente');
+      // this.loginService.esAccesible('editar-cliente');
       this.listarDepartamentos();
       this.user = this.loginService.getUsuario();
       this.buscar(this.user.persona_cedula.cedula);
@@ -48,7 +48,7 @@ export class EditarClienteComponent implements OnInit {
           this.selectedPersona = JSON.parse(JSON.stringify(cliente));
           this.municipioService.buscarMunicipio(cliente['municipio_id'])
           .subscribe(mun => {
-              console.log('DEPTOOOOOO!!!!!!!!!!!!' + mun['departamento_id']);
+              console.log('DEPTOOOOOO !!!!!!!!!!!!' + mun['departamento_id']);
               this.selectedDepartamento.id = mun['departamento_id'];
               this.listarMunicipios();
               this.selectedMunicipio = mun;
@@ -79,5 +79,37 @@ export class EditarClienteComponent implements OnInit {
     subscribe(municipio => {
       this.listaMunicipios = municipio;
     });
+  }
+
+  validarCampos(): boolean {
+    if (this.selectedPersona.nombre == null || this.selectedPersona.apellido == null
+      || this.selectedPersona.fecha_nacimiento == null || this.selectedPersona.cedula == null
+      || this.selectedPersona.telefono == null || this.selectedPersona.direccion == null
+      || this.selectedPersona.correo == null || this.selectedLogin.username || this.selectedLogin.contrasenia) {
+        return false;
+    } else {
+      return true;
+    }
+  }
+
+  editar() {
+
+    if (this.validarCampos()) {
+    } else {
+      this.rol.id = 3;
+      this.selectedPersona.rol_id = this.rol;
+      this.selectedPersona.activo = 1;
+      this.selectedLogin.activo = 1;
+      this.selectedPersona.municipio_id = this.selectedMunicipio;
+      this.selectedLogin.persona_cedula = this.selectedPersona;
+      this.clienteService.editarPersona(this.selectedLogin)
+      .subscribe(res => {
+        this.respuesta = JSON.parse(JSON.stringify(res));
+        console.log(this.respuesta.msj + ' UPDATE');
+        console.log(this.selectedPersona.nombre);
+        // this.selectedPersona = new Persona();
+        // this.selectedLogin = new Login();
+      });
+    }
   }
 }
