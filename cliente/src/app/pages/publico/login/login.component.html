@@ -1,3 +1,5 @@
+<br><br><br><br>
+
 <div class="card mt-4">
   <div class="card-body">
     <form>
@@ -11,6 +13,8 @@
      Iniciar Sesion
    </button> 
   </form>   
-
+  <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{msj}}</div>
+  <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{msj}}</div>
+  
   </div>
 </div>

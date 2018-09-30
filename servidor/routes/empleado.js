@@ -8,7 +8,7 @@ exports.list = function(req, res){
     req.getConnection(function(err,connection){
          
           var query = connection.query
-          ('SELECT p.*,l.*,tp.id tipo_id,tp.descripcion descripcion_tipo,m.nombre nombre_municipio FROM persona p JOIN empleado e ON e.persona_cedula=cedula JOIN login l ON p.cedula=l.persona_cedula JOIN tipo_personal tp ON e.tipo_id=tp.id JOIN municipio m ON m.id=p.municipio_id WHERE rol_id=3;',function(err,rows)
+          ('SELECT p.*,l.*,tp.id tipo_id,tp.descripcion descripcion_tipo,m.nombre nombre_municipio FROM persona p JOIN empleado e ON e.persona_cedula=cedula JOIN login l ON p.cedula=l.persona_cedula JOIN tipo_personal tp ON e.tipo_id=tp.id JOIN municipio m ON m.id=p.municipio_id WHERE rol_id=2 AND l.activo = 1;',function(err,rows)
           {
               
               if(err)
@@ -220,5 +220,36 @@ exports.listTipoPersonal = function(req, res){
 
         console.log(query.sql); //get raw query
         console.log(query2.sql);
+    });
+};
+
+
+exports.delete = function(req,res){
+    
+    console.log(req.body);
+    var input = JSON.parse(JSON.stringify(req.body));
+
+    console.log(input);
+    
+    req.getConnection(function (err, connection) {
+        
+        var persona = {
+            
+            persona_cedula    : input.cedula,
+            activo : 0
+        };
+
+      var query = connection.query("UPDATE login set ? WHERE persona_cedula = ? ",[persona,persona.persona_cedula], function(err, rows)
+        {
+  
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al editar el personal"}');
+  
+            res.send('{"id": 505,"msj": "Se elimino correctamente"}');
+           // res.redirect('/customers');
+            
+          });
+
+        console.log(query.sql); //get raw query
     });
 };

@@ -43,7 +43,7 @@ ng generate c pages/customer
 **-- Servidor--**
 
 1) cd servidor
-2) node app.js
+2) node app.js 
 
 
 -- Instrucciones pruebas unitarias -- 

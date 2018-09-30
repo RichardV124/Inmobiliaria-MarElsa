@@ -14,4 +14,5 @@ contrasenia: string;
 tipo_id: number;
 descripcion_tipo: string;
 nombre_municipio: string;
+activo = 1;
     }

@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
  // usuario que iniciara sesion
  usuario: Login = new Login();
 
- username: string = 'david';
- password: string = '123';
+ username: string = 'xandrescirocx';
+ password: string = '1234';
 
  constructor(private servicios: LoginService, private router: Router) {}
 

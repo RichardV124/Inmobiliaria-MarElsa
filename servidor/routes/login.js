@@ -6,7 +6,7 @@ exports.login = function(req, res){
     var username = req.params.username;
     var contrasenia = req.params.contrasenia
     req.getConnection(function(err,connection){
-        var query = connection.query('SELECT * FROM login WHERE username = ? and contrasenia = ?',[username,contrasenia],function(err,rows){
+        var query = connection.query('SELECT * FROM login WHERE username = ? and contrasenia = ? and activo = 1',[username,contrasenia],function(err,rows){
             if(err)
                 console.log("Error Selecting : %s ",err );
                 res.send({data:rows[0]});

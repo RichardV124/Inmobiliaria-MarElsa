@@ -44,7 +44,7 @@ app.set('view engine', 'ejs');
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(express.methodOverride());
+app.use(express.methodOverride()); 
 
 app.use('/file', fileRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -115,6 +115,7 @@ app.post('/customers/edit/',customers.save_edit);
 app.get('/persona/search/:cedula', empleado.search);
 app.post('/empleado/save', empleado.save);
 app.post('/empleado/edit', empleado.edit);
+app.post('/empleado/delete', empleado.delete);
 app.get('/empleado/listar', empleado.list);
 app.get('/empleado/search/:cedula', empleado.searchEmpleado);
 app.get('/tipopersonal/listar', empleado.listTipoPersonal);

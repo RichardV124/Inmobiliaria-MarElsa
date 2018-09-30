@@ -71,7 +71,7 @@ this.contador++;
       this.empleadoDTO.fecha_nacimiento = this.selectedPersona.fecha_nacimiento;
       this.empleadoDTO.direccion = this.selectedPersona.direccion;
       this.empleadoDTO.telefono = this.selectedPersona.telefono;
-      this.empleadoDTO.rol_id = 3;
+      this.empleadoDTO.rol_id = 2;
       this.empleadoDTO.municipio_id = this.selectedMunicipio.id;
       this.empleadoDTO.genero = this.selectedPersona.genero;
       this.empleadoDTO.username = this.selectedLogin.username;
