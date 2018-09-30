@@ -14,5 +14,5 @@ export class Persona {
     rol_id: Rol;
     municipio_id: Municipio;
     genero: number;
-
+    activo: number;
 }

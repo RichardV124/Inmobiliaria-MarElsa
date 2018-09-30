@@ -55,7 +55,9 @@ export class RegistroClienteComponent implements OnInit {
     } else {
       this.rol.id = 3;
       this.selectedPersona.rol_id = this.rol;
-      // this.selectedPersona.activo = 1;
+      //  Dejamos el Login y la Persona activos en el sistema
+      this.selectedLogin.activo = 1;
+      this.selectedPersona.activo = 1;
       this.selectedPersona.municipio_id = this.selectedMunicipio;
       this.selectedLogin.persona_cedula = this.selectedPersona;
       this.clienteService.registrarPersona(this.selectedLogin)

@@ -139,29 +139,27 @@
                 <div class="section_subtitle"><p>LISTADO DE CLIENTES</p> </div>
                 <table class="table">
                     <thead>
-                      <tr>
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Ver</p></th>
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Eliminar</p></th>
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Cédula</p></th>
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Nombre</p></th>
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Apellido</p></th>
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Fecha de nacimiento</p></th>                    
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Direccion</p></th>
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Telefono</p></th>
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Correo</p></th>
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Genero</p></th>
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Rol</p></th>
-                        <th scope="col"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Municipio</p></th>                      
+                      <tr>                        
+                        <th scope="col"><p class="coltabla">Cédula</p></th>
+                        <th scope="col"><p class="coltabla">Nombre</p></th>
+                        <th scope="col"><p class="coltabla">Apellido</p></th>
+                        <!-- <th scope="col"><p class="coltabla">Fecha de nacimiento</p></th> -->                  
+                        <th scope="col"><p class="coltabla">Direccion</p></th>
+                        <th scope="col"><p class="coltabla">Telefono</p></th>
+                        <th scope="col"><p class="coltabla">Correo</p></th>
+                        <th scope="col"><p class="coltabla">Genero</p></th>
+                        <th scope="col"><p class="coltabla">Rol</p></th>
+                        <th scope="col"><p class="coltabla">Municipio</p></th> 
+                        <th scope="col"><p class="coltabla">Ver</p></th>
+                        <th scope="col"><p class="coltabla">Eliminar</p></th>                     
                       </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let p of listaClientes">                       
-                        <td><button (click)="ver(p)" class="btn south-btn btn-2 m-1">Ver</button></td>
-                        <td><button (click)="eliminar(p)" class="btn south-btn active m-1"> Eliminar</button></td>
+                        <tr *ngFor="let p of listaClientes">      
                         <th scope="row">{{p.cedula}}</th>
                         <td>{{p.nombre}}</td>
                         <td>{{p.apellido}}</td>
-                        <td>{{p.fecha_nacimiento}}</td>
+                        <!-- <td>{{p.fecha_nacimiento}}</td> -->
                         <td>{{p.direccion}}</td>
                         <td>{{p.telefono}}</td>
                         <td>{{p.correo}}</td>
@@ -170,7 +168,9 @@
                             <label *ngIf="p.genero==2">Femenino</label>
                         </td>
                         <td>{{p.rol_id.nombre}}</td>
-                        <td>{{p.municipio_id.nombre}}</td>                        
+                        <td>{{p.municipio_id.nombre}}</td>  
+                        <td><button (click)="ver(p)" class="btn south-btn btn-2 m-1">Ver</button></td>
+                        <td><button (click)="eliminar(p)" class="btn south-btn active m-1"> Eliminar</button></td>                      
                       </tr>
                     </tbody>
                   </table>

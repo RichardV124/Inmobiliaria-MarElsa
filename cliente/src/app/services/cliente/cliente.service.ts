@@ -63,7 +63,7 @@ export class ClienteService {
    * Metodo que edita un cliente en la BD
    * @param newPersona, el cliente que se va a editar en la BD
    */
-  editarPersona(newPersona: Persona) {
+  editarPersona(newPersona: Login) {
     return this.http.post<any>(`${this.domain}/cliente/edit/`, newPersona)
       .map(res => res);
   }
