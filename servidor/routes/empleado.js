@@ -236,7 +236,7 @@ exports.delete = function(req,res){
         var persona = {
             
             persona_cedula    : input.cedula,
-            activo : input.activo,
+            activo : 0
         };
 
       var query = connection.query("UPDATE login set ? WHERE persona_cedula = ? ",[persona,persona.persona_cedula], function(err, rows)
