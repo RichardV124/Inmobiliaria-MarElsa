@@ -30,6 +30,10 @@ var departamento = require('./routes/departamento');
 var experiencia = require('./routes/experiencia');
 //Cargamos el route de estudio
 var estudio = require('./routes/estudio');
+//Cargamos el route de arriendo
+var arriendo = require('./routes/arriendo');
+//Cargamos el route de ventas
+var venta = require('./routes/venta');
 
 // ------ SERVICIOS ------ //
 
@@ -155,6 +159,16 @@ app.post('/inmueble/edit/', inmueble.save_edit);
 app.get('/tipoinmueble/search/:id', inmueble.searchTipoInmubeleId);
 app.post('/file/add', inmueble.saveFile);
 app.get('/file/search/:inmueble_id', inmueble.searchFile);
+
+// ------------ Arriendos ----------------//
+app.post('/arriendo/add', arriendo.save);
+app.get('/arriendo/search/:inmueble_id', arriendo.buscarPorInmuebleId);
+app.post('/arriendo/delete/', arriendo.delete);
+
+// ------------ Ventas --------------- //
+app.post('/venta/add', venta.save);
+app.get('/venta/search/:inmueble_id', venta.buscarPorInmuebleId);
+app.post('/venta/delete/', venta.delete);
 
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);

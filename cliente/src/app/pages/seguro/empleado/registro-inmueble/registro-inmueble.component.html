@@ -51,6 +51,15 @@
                       <div class="south-tab-text">
                         <div class="form-group">
                           <div class="row">
+                            <div class="col-md-2"><label>Publicación en</label><span style="color: red">*</span></div>
+                            <div class="col-md-2">
+                              <input type="checkbox" [(ngModel)]="publicarEnArriendo" name="">Arriendos
+                            </div>
+                            <div class="col-md-2">
+                              <input type="checkbox" [(ngModel)]="publicarEnVenta" name="">Ventas
+                            </div>
+                          </div> <br>
+                          <div class="row">
                             <div class="col-md-2"><label>Cédula propietario</label><span style="color: red">*</span></div>
                             <div class="col-md-4">
                               <input type="text" [(ngModel)]="propietario.cedula" placeholder="Ingrese el número de cédula del propietario"
@@ -236,7 +245,7 @@
                           <br>
                           <div class="row">
                             <div class="col-md-10">
-                              <input type="file" class="form-control" multiple (change)="onFileSelected($event)">
+                              <input type="file" class="form-control" [(ngModel)]="selectedFile" multiple (change)="onFileSelected($event)">
                             </div>
                             <div class="col-md-2">
                             </div>
@@ -290,8 +299,8 @@
             <br>
             <h6>Lista de inmuebles</h6><br>
           </div>
-          <div class="col-md-12" style="overflow-x:auto;">
-            <table class="table" style="width:100%">
+          <div class="col-md-12" style="overflow-x:auto; overflow-y:auto;">
+            <table class="table" style="width:100%;">
               <thead>
                 <tr>
                   <th scope="col">Id</th>
