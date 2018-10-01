@@ -1,3 +1,7 @@
+import { VentasService } from './../../../../services/ventas/ventas.service';
+import { ArriendosService } from './../../../../services/arriendos/arriendos.service';
+import { Venta } from './../../../../modelo/venta';
+import { Arriendo } from './../../../../modelo/arriendo';
 import { ClienteService } from './../../../../services/cliente/cliente.service';
 import { Archivo } from './../../../../modelo/archivo';
 import { MunicipioService } from './../../../../services/municipio/municipio.service';
@@ -39,10 +43,16 @@ export class RegistroInmuebleComponent implements OnInit {
   usuario: Login = new Login();
   propietario: Persona = new Persona();
   archivo: Archivo = new Archivo();
+  publicarEnArriendo: boolean;
+  publicarEnVenta: boolean;
+  // Obtiene el arriendo y venta buscados
+  arriendoBuscado: Arriendo;
+  ventaBuscada: Venta;
 
   constructor(private inmuebleServie: InmuebleService, private servicios: LoginService,
     private municipioService: MunicipioService, private personaService: ClienteService,
-    private router: Router) {
+    private router: Router, private arriendoService: ArriendosService,
+    private ventaService: VentasService) {
     this.listarTiposInmueble();
     this.listarDepartamentos();
     this.listarInmuebles();
@@ -100,10 +110,39 @@ export class RegistroInmuebleComponent implements OnInit {
     this.validarCamposNoIngresados();
       if (!this.validarCamposVacios()) {
       this.respuesta.msj = 'Debe ingresar los campos obligatorios';
-      this.show = 1;
+      this.show = 404;
       } else {
-        this.clienteExiste();
+        if (this.tipoDePublicacionSeleccionado()) {
+         if (this.archivosAgregados()) {
+          this.clienteExiste();
+         }
+       }
       }
+  }
+
+  /**
+   * Verifica si se seleccionó por lo menos un archivo
+   */
+  archivosAgregados() {
+    if (this.selectedFile === null) {
+      this.respuesta.msj = 'Debe agregar por lo menos un archivo';
+      this.show = 404;
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Verifica si se seleccionó por lo menos una opción de publicación
+   */
+  tipoDePublicacionSeleccionado() {
+    if (!this.publicarEnArriendo && !this.publicarEnVenta) {
+      this.respuesta.msj = 'Debe seleccionar por lo menos una de las '
+      + ' opciones de publicación (arriendo y/o venta)';
+      this.show = 404;
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -118,16 +157,54 @@ export class RegistroInmuebleComponent implements OnInit {
     this.inmuebleServie.registrarInmueble(this.selectedInmueble)
     .subscribe(inmueble => {
       this.respuesta = JSON.parse(JSON.stringify(inmueble));
-      this.combosPorDefecto();
       this.show = this.respuesta.id;
 
       if (this.show === 505) {
-        this.buscar();
-        this.crearArchivo();
+        this.obtenerIdInmuebleRegistrado();
       }
 
       this.listarInmuebles();
     });
+  }
+
+  /**
+   * Obtiene el id del inmueble que se registró
+   */
+  obtenerIdInmuebleRegistrado() {
+    this.inmuebleServie.buscarInmueble(this.selectedInmueble.matricula)
+    .subscribe (inmueble => {
+      if (inmueble !== undefined) {
+        this.verificarTipoPublicacion(inmueble);
+        this.crearArchivo(inmueble);
+      }
+    });
+  }
+
+  verificarTipoPublicacion(inmueble: Inmueble) {
+    if (this.publicarEnArriendo) {
+      this.registrarInmuebleEnArriendo(inmueble);
+    }
+    if (this.publicarEnVenta) {
+      this.registrarInmuebleVentas(inmueble);
+    }
+  }
+
+  registrarInmuebleEnArriendo(inmueble: Inmueble) {
+    const arriendo: Arriendo = new Arriendo();
+    arriendo.cliente_cedula = this.propietario;
+    arriendo.empleado_cedula = this.usuario.persona_cedula;
+    arriendo.inmueble_id = inmueble;
+    this.arriendoService.registrarInmubeleArriendo(arriendo)
+    .subscribe(res => res);
+  }
+
+  registrarInmuebleVentas(inmueble: Inmueble) {
+    const venta: Venta = new Venta();
+    venta.cliente_cedula = this.propietario;
+    venta.empleado_cedula = this.usuario.persona_cedula;
+    venta.inmueble_id = inmueble;
+    this.ventaService.registrarInmuebleVenta(venta)
+    .subscribe(res => res);
   }
 
   /**
@@ -143,10 +220,18 @@ export class RegistroInmuebleComponent implements OnInit {
         return true;
       } else {
         this.respuesta.msj = 'La cédula del cliente ingresado no existe';
-        this.show = 1;
-        return false;
+        this.show = 404;
       }
     });
+  }
+
+  limpiarCampos() {
+    this.combosPorDefecto();
+    this.propietario = new Persona();
+    this.selectedInmueble = new Inmueble();
+    this.publicarEnArriendo = false;
+    this.publicarEnVenta = false;
+    this.selectedFile = null;
   }
 
   /**
@@ -178,27 +263,28 @@ export class RegistroInmuebleComponent implements OnInit {
     });
   }
 
-  crearArchivo() {
+  crearArchivo(inmueble: Inmueble) {
     for (const file of this.selectedFile) {
       const ext = file.name.substr(file.name.lastIndexOf('.') + 1);
       if (ext === 'jpg' || ext === 'png' || ext === 'jpeg') {
-        this.convertirArchivoBase64(file, true);
+        this.convertirArchivoBase64(file, true, inmueble);
       } else if (ext === 'mp4') {
 
       } else {
-        this.show = 1;
+        this.show = 404;
         this.respuesta.msj = 'El archivo ' + file.name + ' tiene una extensión no permitida';
       }
     }
+    this.limpiarCampos();
   }
 
-  convertirArchivoBase64(file: File, imgn: boolean) {
+  convertirArchivoBase64(file: File, imgn: boolean, inmueble: Inmueble) {
     const myReader: FileReader = new FileReader();
     myReader.onloadend = (e) => {
       this.img = myReader.result;
       const archivoIngresado: Archivo = new Archivo();
       archivoIngresado.nombre = this.img;
-      archivoIngresado.inmueble_id = this.selectedInmueble;
+      archivoIngresado.inmueble_id = inmueble;
       if (imgn) {
         archivoIngresado.archivo = 'imagen';
       } else {
@@ -206,8 +292,7 @@ export class RegistroInmuebleComponent implements OnInit {
       }
       this.inmuebleServie.registrarArchivo(archivoIngresado)
       .subscribe(res => {
-        this.selectedInmueble = new Inmueble();
-        this.propietario = new Persona();
+        // registrado
       });
     };
     myReader.readAsDataURL(file);
@@ -334,32 +419,86 @@ export class RegistroInmuebleComponent implements OnInit {
     });
   }
 
+  /**
+   * Verifica si el inmueble se debe eliminar o registrar en arriendo y en ventas
+   */
+  verificarPublicacionInmueble() {
+      // Si el inmueble estaba publicado en arriendos y en este
+      // caso no se chequea se debe eliminar de arriendos
+      if (!this.publicarEnArriendo && this.arriendoBuscado !== undefined) {
+        this.arriendoService.eliminar(this.arriendoBuscado).subscribe(res => res);
+        // de lo contrario si se seleccionó el check y el inmubele no esta en arriendos,
+        // se debe registrar
+      } else if (this.publicarEnArriendo && this.arriendoBuscado === undefined) {
+        this.registrarInmuebleEnArriendo(this.selectedInmueble);
+      }
+      if (!this.publicarEnVenta && this.ventaBuscada !== undefined) {
+        this.ventaService.eliminar(this.ventaBuscada).subscribe(res => res);
+      } else if (this.publicarEnVenta && this.ventaBuscada === undefined) {
+        this.registrarInmuebleVentas(this.selectedInmueble);
+      }
+  }
+
   editar() {
     if (this.selectedInmueble.id == null) {
-      this.show = 1;
+      this.show = 404;
       this.respuesta.msj = 'Debe buscar un inmueble previamente';
     } else {
-      this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
-      this.selectedInmueble.municipio_id = this.selectedMunicipio;
-      this.selectedInmueble.persona_cedula = this.usuario;
-      this.selectedInmueble.cliente_cedula = this.propietario;
-      this.convertirBoolean();
-    this.inmuebleServie.editar(this.selectedInmueble)
-    .subscribe(inmueble => {
-      this.respuesta = JSON.parse(JSON.stringify(inmueble));
-      this.selectedInmueble = new Inmueble();
-      this.propietario = new Persona();
-      this.combosPorDefecto();
-      this.show = this.respuesta.id;
-      this.listarInmuebles();
-    });
-    this.listarInmuebles();
+      if (this.tipoDePublicacionSeleccionado()) {
+        if (this.archivosAgregados()) {
+         this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
+         this.selectedInmueble.municipio_id = this.selectedMunicipio;
+         this.selectedInmueble.persona_cedula = this.usuario;
+         this.selectedInmueble.cliente_cedula = this.propietario;
+         this.verificarPublicacionInmueble();
+         this.convertirBoolean();
+         this.inmuebleServie.editar(this.selectedInmueble)
+        .subscribe(inmueble => {
+          this.respuesta = JSON.parse(JSON.stringify(inmueble));
+          this.show = this.respuesta.id;
+          if (this.show === 505) {
+            this.crearArchivo(this.selectedInmueble);
+            this.listarInmuebles();
+          }
+        });
+       }
+      }
     }
   }
 
+  /**
+   * Permite ver los datos de un inmueble
+   * @param inmueble inmueble del cual se desea ver los datos
+   */
   ver(inmueble: Inmueble) {
     this.selectedInmueble.matricula = inmueble.matricula;
     this.buscar();
+  }
+
+  /**
+   * Verifica si el inmueble esta registrado en la tabla de arriendos
+   */
+  buscarInmuebleEnArriendos() {
+    this.arriendoService.buscarInmuebleArriendo(this.selectedInmueble.id)
+    .subscribe(arriendo => {
+      if (arriendo !== undefined) {
+        this.publicarEnArriendo = true;
+        this.arriendoBuscado = arriendo;
+      }
+    });
+  }
+
+  /**
+   * Verifica si el inmueble esta registrado en la tabla de ventas
+   */
+  buscarInmuebleEnVentas() {
+    this.ventaService.buscarInmuebleVenta(this.selectedInmueble.id)
+    .subscribe(venta => {
+      if (venta !== undefined) {
+        this.publicarEnVenta = true;
+        this.ventaBuscada = venta;
+      }
+    });
   }
 
   /**
@@ -381,6 +520,8 @@ export class RegistroInmuebleComponent implements OnInit {
           this.show = 505;
           this.listarArchivos();
           this.obtenerDatosCombosBusqueda();
+          this.buscarInmuebleEnArriendos();
+          this.buscarInmuebleEnVentas();
         }
       });
     }

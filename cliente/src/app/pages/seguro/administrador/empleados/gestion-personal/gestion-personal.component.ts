@@ -1,3 +1,5 @@
+import { Estudio } from './../../../../../modelo/estudio';
+import { Experiencia } from './../../../../../modelo/experiencia';
 import { EmpleadoDTO } from './../../../../../modelo/dto/empleadoDTO';
 import { EmpleadoService } from './../../../../../services/empleado/empleado.service';
 import { ClienteService } from './../../../../../services/cliente/cliente.service';
@@ -12,6 +14,7 @@ import { RespuestaDTO } from './../../../../../modelo/respuestaDTO';
 import { Login } from './../../../../../modelo/login';
 import { Component, OnInit } from '@angular/core';
 import { Empleado } from '../../../../../modelo/empleado';
+import { ExperienciaService } from '../../../../../services/experiencia/experiencia.service';
 
 @Component({
   selector: 'app-gestion-personal',
@@ -26,12 +29,20 @@ export class GestionPersonalComponent implements OnInit {
   empleadoDTO: EmpleadoDTO = new EmpleadoDTO();
   listaEmpleados: EmpleadoDTO[];
   listaTipoPersonal: TipoPersonal[];
+   // Listado de estudios de un empleado
+   listaEstudios: Array<Estudio> = [];
+   // Listado de Experiencias de un empleado
+   listaExperiencias: Array<Experiencia> = [];
 
   cedulaBuscar: string;
   tipoPersonalSeleccionado: TipoPersonal = new TipoPersonal();
   selectedPersona: Persona = new Persona();
   selectedLogin: Login = new Login();
   selectedEmpleado: Empleado = new Empleado();
+  /**Experiencias y Estudios*/
+  experienciaSeleccionada: Experiencia = new Experiencia();
+  estudioSeleccionado: Estudio = new Estudio();
+
   rol: Rol = new Rol();
   respuesta: RespuestaDTO = new RespuestaDTO();
   listaMunicipios: Municipio[];
@@ -41,7 +52,7 @@ export class GestionPersonalComponent implements OnInit {
 
 
   constructor(private clienteService: ClienteService , private empleadoService: EmpleadoService,  private router: Router ,
-    private municipioService: MunicipioService) {
+    private municipioService: MunicipioService, private experienciaService: ExperienciaService) {
       this.listarTipoPersonal();
       this.listarDepartamentos();
       this.listarEmpleados();
@@ -199,6 +210,22 @@ limpiarCampos() {
   ver(empleado: EmpleadoDTO) {
     this.cedulaBuscar = empleado.cedula;
     this.buscar();
+  }
+
+  verEstudio(estudio: Estudio) {
+    this.experienciaService.buscarEstudio(estudio.id)
+         .subscribe(est => {
+              console.log(est);
+              this.estudioSeleccionado = est;
+           });
+  }
+
+  verExperiencia(experiencia: Experiencia) {
+    this.experienciaService.buscarExperiencia(experiencia.id)
+    .subscribe(exper => {
+         console.log(exper);
+         this.experienciaSeleccionada = exper;
+      });
   }
 
   editar() {
