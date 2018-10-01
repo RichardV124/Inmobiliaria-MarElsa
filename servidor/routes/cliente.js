@@ -34,11 +34,13 @@ exports.list = function(req, res){
                   console.log("Error Selecting : %s ",err );
        
               res.send({data:rows[0]});
+              
                   
              
            });
            
            console.log(query.sql);
+           
       }); 
   };
   
