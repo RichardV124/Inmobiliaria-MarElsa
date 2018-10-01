@@ -106,6 +106,46 @@ this.contador++;
     }
   }
 
+  registrarExperiencia() {
+
+    if (this.validarCamposExperiencias()) {
+      this.show = 1;
+          this.respuesta.msj = 'Debe completar todos los campos';
+    } else {
+      this.experienciaSeleccionada.persona_cedula = this.selectedPersona;
+      console.log(this.experienciaSeleccionada);
+      this.experienciaService.registrarExperiencia(this.experienciaSeleccionada)
+      .subscribe(res => {
+        this.respuesta = JSON.parse(JSON.stringify(res));
+        console.log(this.respuesta.msj + ' SAVE');
+        console.log(this.experienciaSeleccionada.cargo);
+        this.listarExperienciasEmpleado(this.experienciaSeleccionada.persona_cedula.cedula);
+        this.limpiarCampos();
+        this.show = 2;
+      });
+    }
+  }
+
+  registrarEstudio() {
+
+    if (this.validarCamposEstudios()) {
+      this.show = 1;
+          this.respuesta.msj = 'Debe completar todos los campos';
+    } else {
+      this.estudioSeleccionado.persona_cedula = this.selectedPersona;
+      console.log(this.estudioSeleccionado);
+      this.experienciaService.registrarEstudio(this.estudioSeleccionado)
+      .subscribe(res => {
+        this.respuesta = JSON.parse(JSON.stringify(res));
+        console.log(this.respuesta.msj + ' SAVE');
+        console.log(this.estudioSeleccionado.descripcion);
+        this.listarEstudiosEmpleado(this.estudioSeleccionado.persona_cedula.cedula);
+        this.limpiarCampos();
+        this.show = 2;
+      });
+    }
+  }
+
   buscar() {
 
        if (this.cedulaBuscar == null) {
@@ -139,6 +179,9 @@ this.contador++;
               this.tipoPersonalSeleccionado.id = this.empleadoDTO.tipo_id;
               /** Fin del machete serio */
 
+              /** Listamos las experiencias del empleado buscado */
+              this.listarExperienciasEmpleado(this.selectedPersona.cedula);
+              this.listarEstudiosEmpleado(this.selectedPersona.cedula);
              }
            });
        }
@@ -150,8 +193,9 @@ limpiarCampos() {
   this.selectedEmpleado = new Empleado();
   this.selectedMunicipio.id = 0;
   this.selectedDepartamento.id = 0;
-  this.listaMunicipios = [];
   this.tipoPersonalSeleccionado.id = 0;
+  this.listaEstudios = [];
+  this.listaExperiencias = [];
 }
 
   validarCampos(): boolean {
@@ -159,6 +203,26 @@ limpiarCampos() {
       || this.selectedPersona.fecha_nacimiento == null || this.selectedPersona.cedula == null
       || this.selectedPersona.telefono == null || this.selectedPersona.direccion == null
       || this.selectedPersona.correo == null || this.selectedLogin.username || this.selectedLogin.contrasenia) {
+        return false;
+    } else {
+      return true;
+    }
+  }
+
+  validarCamposExperiencias(): boolean {
+    if (this.experienciaSeleccionada.fecha_inicio == null || this.experienciaSeleccionada.fecha_fin == null
+      || this.experienciaSeleccionada.cargo == null || this.experienciaSeleccionada.nombre_certificado == null
+      || this.experienciaSeleccionada.telefono == null || this.experienciaSeleccionada.direccion == null) {
+        return false;
+    } else {
+      return true;
+    }
+  }
+
+  validarCamposEstudios(): boolean {
+    if (this.estudioSeleccionado.descripcion == null || this.estudioSeleccionado.institucion == null ||
+      this.estudioSeleccionado.nombre_certificado == null || this.estudioSeleccionado.telefono == null ||
+       this.experienciaSeleccionada.direccion == null) {
         return false;
     } else {
       return true;
@@ -225,6 +289,22 @@ limpiarCampos() {
     .subscribe(exper => {
          console.log(exper);
          this.experienciaSeleccionada = exper;
+      });
+  }
+
+  listarExperienciasEmpleado(cedula: string) {
+    this.experienciaService.listarExperiencias(cedula)
+    .subscribe(experiencias => {
+         console.log(experiencias);
+         this.listaExperiencias = experiencias;
+      });
+  }
+
+  listarEstudiosEmpleado(cedula: string) {
+    this.experienciaService.listarEstudios(cedula)
+    .subscribe(estudios => {
+         console.log(estudios);
+         this.listaEstudios = estudios;
       });
   }
 

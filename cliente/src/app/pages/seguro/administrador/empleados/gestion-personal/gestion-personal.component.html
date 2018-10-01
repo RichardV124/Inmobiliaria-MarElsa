@@ -46,13 +46,13 @@
             <div class="south-tabs-content">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="tab--1" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Datos del empleado</a>
+                        <a class="nav-link active show" id="tab--1" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Datos del empleado</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="tab--2" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Experiencias</a>
+                        <a class="nav-link" id="tab--2" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Experiencias laborales</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="tab--3" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Estudios</a>
+                        <a class="nav-link" id="tab--3" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Formacion academica</a>
                     </li>
                 </ul>
 
@@ -141,7 +141,13 @@
                                             <div class="col-md-4">
                                                 <input type="password" [(ngModel)]="selectedLogin.contrasenia" placeholder="Ingrese contraseña" class="form-control">
                                             </div>                   
-                                        </div>                                     
+                                        </div>  
+                                        <button (click)="registrar()" class="btn south-btn m-1"> 
+                                            Registrar empleado
+                                          </button> 
+                                        <button (click)="editar()" class="btn south-btn btn-3 m-1"> 
+                                            Editar empleado
+                                          </button>                                      
                                     </div>                     
                                 </div>
                         </div>
@@ -167,7 +173,7 @@
                                             </div>
                                         <div class="col-md-2"><label>Nombre de la empresa</label></div>
                                             <div class="col-md-4">
-                                                <input type="password" [(ngModel)]="experienciaSeleccionada.nom_empresa" placeholder="Ingrese nombre de la empresa" class="form-control">
+                                                <input type="text" [(ngModel)]="experienciaSeleccionada.nom_empresa" placeholder="Ingrese nombre de la empresa" class="form-control">
                                             </div>                   
                                     </div> 
                                     <div class="row">
@@ -177,12 +183,17 @@
                                                 </div>
                                             <div class="col-md-2"><label>Direccion</label></div>
                                                 <div class="col-md-4">
-                                                    <input type="password" [(ngModel)]="experienciaSeleccionada.direccion" placeholder="Ingrese direccion" class="form-control">
+                                                    <input type="text" [(ngModel)]="experienciaSeleccionada.direccion" placeholder="Ingrese direccion" class="form-control">
                                                 </div>                   
                                     </div> 
+
+                                    <button (click)="registrarExperiencia()" class="btn south-btn m-1"> 
+                                        Registrar experiencia
+                                      </button> 
+
                                     <br>
-                                    <div class="col-lg-8">
-                                      <div class="section_subtitle"> Experiencias del Empleado ({{experiencias.length}})</div><br>
+                                    <div class="col-lg-12">
+                                      <div class="section_subtitle"><p> Experiencias del Empleado ({{listaExperiencias.length}})</p></div><br>
                                       <table class="table">
                                           <thead>
                                             <tr>
@@ -194,10 +205,10 @@
                                           </thead>
                                           <tbody>
                                             <tr *ngFor="let e of listaExperiencias">
-                                              <th>{{e.nom_empresa}}</th>
+                                              <td>{{e.nom_empresa}}</td>
                                               <td>{{e.telefono}}</td>
                                               <td>{{e.cargo}}</td>
-                                              <td><button (click)="verExperiencia(e)" class="btn">Ver </button></td>
+                                              <td><button (click)="verExperiencia(e)" class="btn">Ver Experiencia</button></td>
                                             </tr>
                                           </tbody>
                                       </table>
@@ -226,12 +237,15 @@
                                                     </div>
                                                 <div class="col-md-2"><label>Direccion</label></div>
                                                     <div class="col-md-4">
-                                                        <input type="password" [(ngModel)]="estudioSeleccionado.direccion" placeholder="Ingrese direccion" class="form-control">
-                                                    </div>                   
+                                                        <input type="text" [(ngModel)]="estudioSeleccionado.direccion" placeholder="Ingrese direccion" class="form-control">
+                                                </div>                   
                                         </div> 
-<br>
-                                        <div class="col-lg-8">
-                                                <div class="section_subtitle">Formaciones del Empleado ({{listaEstudios.length}})</div><br>
+                                        <button (click)="registrarEstudio()" class="btn south-btn m-1"> 
+                                            Registrar formacion
+                                        </button> 
+                                        <br>
+                                        <div class="col-lg-12">
+                                                <div class="section_subtitle"><p>Formaciones del Empleado ({{listaEstudios.length}})</p></div><br>
                                                 <table class="table">
                                                     <thead>
                                                       <tr>
@@ -244,11 +258,11 @@
                                                       <tr *ngFor="let e of listaEstudios">
                                                         <td>{{e.institucion}}</td>
                                                         <td>{{e.descripcion}}</td>
-                                                        <td><button (click)="verEstudio(e)" class="btn">Ver</button></td>
+                                                        <td><button (click)="verEstudio(e)" class="btn">Ver Estudio</button></td>
                                                       </tr>
                                                     </tbody>
                                                 </table>
-                                                </div>
+                                        </div>
                                               </div>
                              </div>
                         </div>

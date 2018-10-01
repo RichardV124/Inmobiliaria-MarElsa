@@ -38,7 +38,7 @@ export class ExperienciaService {
    /**
    * Lista las experiencias por la cedula del empleado
    */
-  listarExperiencias(cedula: number) {
+  listarExperiencias(cedula: string) {
     return this.http.get<any>(`${this.domain}/experiencia/listar/${cedula}`)
     .map(res => {
       return res.data;
@@ -48,7 +48,7 @@ export class ExperienciaService {
   /**
    * Lista los estudios por la cedula del empleado
    */
-  listarEstudios(cedula: number) {
+  listarEstudios(cedula: string) {
     return this.http.get<any>(`${this.domain}/estudio/listar/${cedula}`)
     .map(res => {
       return res.data;
