@@ -1,3 +1,4 @@
+<br><br><br><br>
 <div class="card mt-4">
   <div class="card-body">
       <div class="form-group">
@@ -6,7 +7,6 @@
               <option [ngValue]="0" selected disabled hidden>Seleccione el rol a asignar</option>
               <option *ngFor="let r of listaRoles" [value]="r.id">{{r.nombre}}</option>
           </select>
-          <br>
           <span>Acceso</span>
           <select  [(ngModel)]="accesoSeleccionado.id" class="form-control">
             <option [ngValue]="0" selected disabled hidden>Seleccione el acceso a asignar</option>

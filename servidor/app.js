@@ -22,10 +22,14 @@ var cliente = require('./routes/cliente');
 var inmueble = require('./routes/inmueble');
 //Cargamos el route de roles
 var roles = require('./routes/rol');
-//Cargamos el route de roles
+//Cargamos el route de municipio
 var municipio = require('./routes/municipio');
-//Cargamos el route de roles
+//Cargamos el route de departamento
 var departamento = require('./routes/departamento');
+//Cargamos el route de experiencias
+var experiencia = require('./routes/experiencia');
+//Cargamos el route de estudio
+var estudio = require('./routes/estudio');
 
 // ------ SERVICIOS ------ //
 
@@ -119,6 +123,15 @@ app.post('/empleado/delete', empleado.delete);
 app.get('/empleado/listar', empleado.list);
 app.get('/empleado/search/:cedula', empleado.searchEmpleado);
 app.get('/tipopersonal/listar', empleado.listTipoPersonal);
+
+// ------- Servicios de experiencias y estudios ------- //
+app.post('/experiencia/save', experiencia.saveExperiencia);
+app.post('/estudio/save', estudio.saveEstudio);
+app.get('/experiencia/listar/:cedula', experiencia.listarExperiencias);
+app.get('/estudio/listar/:cedula', estudio.listarEstudios);
+app.get('/experiencia/search/:id', experiencia.searchExperiencia);
+app.get('/estudio/search/:id', estudio.searchEstudio);
+
 
 // ------- Servicios de login ------- //
 app.get('/login/login/:username/:contrasenia', login.login);

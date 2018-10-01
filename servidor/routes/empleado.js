@@ -100,7 +100,8 @@ console.log(input);
             
             username    : input.username,
             contrasenia : input.contrasenia,
-            persona_cedula : input.cedula
+            persona_cedula : input.cedula,
+            activo : 1
         
         };
 
