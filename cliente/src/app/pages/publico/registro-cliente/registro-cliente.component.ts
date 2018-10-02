@@ -26,6 +26,7 @@ export class RegistroClienteComponent implements OnInit {
   selectedMunicipio: Municipio = new Municipio();
   selectedDepartamento: Departamento = new Departamento();
   show: number;
+  validacionLogin: Login = new Login();
 
   constructor(private clienteService: ClienteService, private router: Router,
     private municipioService: MunicipioService) {
@@ -33,16 +34,21 @@ export class RegistroClienteComponent implements OnInit {
     this.selectedDepartamento.id = 0;
     this.selectedMunicipio.id = 0;
     this.selectedPersona.genero = 0;
+    this.show = 0;
    }
 
   ngOnInit() {
   }
 
+  cerrarMsj() {
+    this.show = 0;
+  }
+
   validarCampos(): boolean {
     if (this.selectedPersona.nombre == null || this.selectedPersona.apellido == null
-      || this.selectedPersona.fecha_nacimiento == null || this.selectedPersona.cedula == null
-      || this.selectedPersona.telefono == null || this.selectedPersona.direccion == null
-      || this.selectedPersona.correo == null || this.selectedLogin.username || this.selectedLogin.contrasenia) {
+      || this.selectedPersona.cedula == null || this.selectedPersona.telefono == null
+      || this.selectedLogin.username == null || this.selectedLogin.contrasenia == null
+      || this.selectedMunicipio.id === 0) {
         return false;
     } else {
       return true;
@@ -51,23 +57,31 @@ export class RegistroClienteComponent implements OnInit {
 
   registrar() {
 
-    if (this.validarCampos()) {
+    if (this.validarCampos() === false) {
+      this.respuesta.msj = 'Debe ingresar todos los campos obligatorios';
+      this.show = 1;
     } else {
-      this.rol.id = 3;
-      this.selectedPersona.rol_id = this.rol;
-      //  Dejamos el Login y la Persona activos en el sistema
-      this.selectedLogin.activo = 1;
-      this.selectedPersona.activo = 1;
-      this.selectedPersona.municipio_id = this.selectedMunicipio;
-      this.selectedLogin.persona_cedula = this.selectedPersona;
-      this.clienteService.registrarPersona(this.selectedLogin)
-      .subscribe(res => {
-        this.respuesta = JSON.parse(JSON.stringify(res));
-        console.log(this.respuesta.msj + ' SAVE');
-        console.log(this.selectedPersona.nombre);
-        this.selectedPersona = new Persona();
-        this.selectedLogin = new Login();
-      });
+              // debemos buscar el login por cedula
+              this.rol.id = 3;
+              this.selectedPersona.rol_id = this.rol;
+              //  Dejamos el Login y la Persona activos en el sistema
+              this.selectedLogin.activo = 1;
+              this.selectedPersona.activo = 1;
+              this.selectedPersona.municipio_id = this.selectedMunicipio;
+              this.selectedLogin.persona_cedula = this.selectedPersona;
+              this.clienteService.registrarPersona(this.selectedLogin)
+              .subscribe(res => {
+                this.respuesta = JSON.parse(JSON.stringify(res));
+                console.log(this.respuesta.msj + ' SAVE');
+                console.log(this.selectedPersona.nombre);
+                this.selectedPersona = new Persona();
+                this.selectedLogin = new Login();
+                if (this.respuesta.id === 404) {
+                  this.show = 1;
+                } else {
+                  this.show = 2;
+                }
+              });
     }
   }
 

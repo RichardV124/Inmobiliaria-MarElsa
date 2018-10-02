@@ -35,26 +35,34 @@ export class BusquedaClienteComponent implements OnInit {
     this.selectedDepartamento.id = 0;
     this.selectedMunicipio.id = 0;
     this.selectedPersona.genero = 0;
+    this.show = 0;
   }
 
   ngOnInit() {
   }
 
+  cerrarMsj() {
+    this.show = 0;
+  }
+
    buscar() {
     if (this.selectedPersona.cedula == null) {
-
+      this.show = 1;
+      this.respuesta.msj = 'Debe ingresar la cedula a buscar';
     } else {
       this.clienteService.buscarPersona(this.selectedPersona.cedula)
       .subscribe(cliente => {
         if (cliente === undefined ) {
-          this.respuesta.msj = 'No se encuentra ningun cliente con la cedula ' +  this.selectedPersona.cedula;
+          this.respuesta.msj = 'No se encuentra ningun cliente con la cedula ';
+          this.show = 1;
           console.log('NO SE ENCUENTRA');
           this.limpiarcampos();
         } else {
+          this.respuesta.msj = 'Despliegue los datos del cliente';
+          this.show = 2;
           this.selectedPersona = JSON.parse(JSON.stringify(cliente));
           this.municipioService.buscarMunicipio(cliente['municipio_id'])
           .subscribe(mun => {
-              console.log('DEPTOOOOOO!!!!!!!!!!!!' + mun['departamento_id']);
               this.selectedDepartamento.id = mun['departamento_id'];
               this.listarMunicipios();
               this.selectedMunicipio = mun;
