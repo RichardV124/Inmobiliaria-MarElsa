@@ -99,15 +99,12 @@ export class RegistroInmuebleComponent implements OnInit {
   validarCamposNoIngresados() {
     if (this.selectedInmueble.promocion == null) {
       this.selectedInmueble.promocion = 0;
-      
     }
     if (this.selectedInmueble.garaje == null) {
       this.selectedInmueble.garaje = 0;
-    
     }
     if (this.selectedInmueble.num_closets == null) {
       this.selectedInmueble.num_closets = 0;
-     
     }
     return true;
   }

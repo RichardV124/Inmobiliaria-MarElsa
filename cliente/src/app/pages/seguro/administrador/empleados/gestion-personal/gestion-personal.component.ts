@@ -25,6 +25,7 @@ import { DatePipe } from '@angular/common';
 })
 export class GestionPersonalComponent implements OnInit {
 
+  labelFile;
   campoFiltro = '';
   show = 0;
   contador = 0;
@@ -51,6 +52,7 @@ export class GestionPersonalComponent implements OnInit {
   listaDepartamentos: Departamento[];
   selectedMunicipio: Municipio = new Municipio();
   selectedDepartamento: Departamento = new Departamento();
+  selectedFile: File = null;
 
 
   constructor(private clienteService: ClienteService , private empleadoService: EmpleadoService,  private router: Router ,
@@ -64,6 +66,7 @@ export class GestionPersonalComponent implements OnInit {
       this.tipoPersonalSeleccionado.id = 0;
        // Validamos si el usuario tiene acceso a la pagina
      this.usuarioServicio.esAccesible('gestion-personal');
+      this.labelFile = 'Ningún archivo seleccionado';
   }
 
   ngOnInit() {
@@ -71,6 +74,41 @@ export class GestionPersonalComponent implements OnInit {
 
   conteo() {
 this.contador++;
+  }
+
+  convertirArchivoBase64Experiencia() {
+    const myReader: FileReader = new FileReader();
+    myReader.onloadend = (e) => {
+      let pdf = myReader.result;
+      this.experienciaSeleccionada.nombre_certificado = pdf;
+      this.registrarExperiencia();
+    };
+    myReader.readAsDataURL(this.selectedFile);
+  }
+
+  convertirArchivoBase64Estudio() {
+    const myReader: FileReader = new FileReader();
+    myReader.onloadend = (e) => {
+      let pdf = myReader.result;
+      this.estudioSeleccionado.nombre_certificado = pdf;
+      this.registrarEstudio();
+    };
+    myReader.readAsDataURL(this.selectedFile);
+  }
+
+
+  /**
+   * Para agregar un archivo
+   * @param event archivo seleccionado
+   */
+  onFileSelected(event) {
+    this.selectedFile = event.target.files[0];
+
+    if (this.selectedFile === null) {
+      this.labelFile = 'Ningún archivo seleccionado';
+    } else {
+    this.labelFile = this.selectedFile.name;
+   }
   }
 
   registrar() {
@@ -124,7 +162,7 @@ this.contador++;
         console.log(this.respuesta.msj + ' SAVE');
         console.log(this.experienciaSeleccionada.cargo);
         this.listarExperienciasEmpleado(this.experienciaSeleccionada.persona_cedula.cedula);
-        this.limpiarCampos();
+        this.limpiarCamposExperiencia();
         this.show = 2;
       });
     }
@@ -144,10 +182,14 @@ this.contador++;
         console.log(this.respuesta.msj + ' SAVE');
         console.log(this.estudioSeleccionado.descripcion);
         this.listarEstudiosEmpleado(this.estudioSeleccionado.persona_cedula.cedula);
-        this.limpiarCampos();
+        this.limpiarCamposEstudio();
         this.show = 2;
       });
     }
+  }
+
+  cerrarMsj() {
+    this.show = 0;
   }
 
   buscar() {
@@ -205,6 +247,14 @@ limpiarCampos() {
   this.tipoPersonalSeleccionado.id = 0;
   this.listaEstudios = [];
   this.listaExperiencias = [];
+}
+
+limpiarCamposEstudio() {
+  this.estudioSeleccionado = new Estudio();
+}
+
+limpiarCamposExperiencia() {
+this.experienciaSeleccionada = new Experiencia();
 }
 
   validarCampos(): boolean {
