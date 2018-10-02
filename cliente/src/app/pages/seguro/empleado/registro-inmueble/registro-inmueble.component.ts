@@ -99,15 +99,15 @@ export class RegistroInmuebleComponent implements OnInit {
   validarCamposNoIngresados() {
     if (this.selectedInmueble.promocion == null) {
       this.selectedInmueble.promocion = 0;
-      
+
     }
     if (this.selectedInmueble.garaje == null) {
       this.selectedInmueble.garaje = 0;
-    
+
     }
     if (this.selectedInmueble.num_closets == null) {
       this.selectedInmueble.num_closets = 0;
-     
+
     }
     return true;
   }
@@ -390,9 +390,8 @@ export class RegistroInmuebleComponent implements OnInit {
   listarArchivos() {
     this.inmuebleServie.listarArchivos(this.selectedInmueble.id)
     .subscribe(archivo => {
-      console.log("archivoooooooo "+archivo.archivo)
       this.archivo = archivo;
-      return true; 
+      return true;
     });
   }
 
@@ -568,9 +567,8 @@ export class RegistroInmuebleComponent implements OnInit {
           this.respuesta.msj = 'El inmueble no existe';
           this.show = 404;
         } else {
-          this.mostrarTabArchivos = true;
+          this.mostrarTabArchivos = false;
           this.selectedInmueble = inmueble;
-          this.show = 505;
           this.listarArchivos();
           this.obtenerDatosCombosBusqueda();
           this.buscarInmuebleEnArriendos();
