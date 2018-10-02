@@ -3,6 +3,13 @@
 <div class="container" style="margin-top: 90px">
   <div class="row">
 
+    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 404">
+      <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+    </div>
+    <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 505">
+      <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+    </div>
+
     <div class="card mt-4" style="width: 100%;">
       <div class="card-body" style="width: 100%;">
 
@@ -14,7 +21,7 @@
                 class="form-control">
             </div>
             <div class="col-md-2">
-              <button (click)="buscar()" class="btn south-btn active m-1">
+              <button (click)="buscar()" class="btn south-btn btn-2 m-1">
                 Buscar
               </button>
             </div>
@@ -39,8 +46,8 @@
                       aria-selected="false">Datos inmueble</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="tab--2" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2"
-                      aria-selected="false">Fotos y videos</a>
+                    <a class="nav-link" id="tab--2" *ngIf="mostrarFotos() == true" data-toggle="tab" href="#tab2" role="tab"
+                      aria-controls="tab2" aria-selected="false">Fotos y videos</a>
                   </li>
                 </ul>
 
@@ -82,9 +89,9 @@
                             <div class="col-md-2"><label>Zona</label><span style="color: red">*</span></div>
                             <div class="col-md-4">
                               <select class="form-control" [(ngModel)]="selectedInmueble.zona">
-                                <option value="0" selected disabled hidden>Seleccione la zona del inmubele</option>
-                                <option value="1">Rural</option>
-                                <option value="2">Urbano</option>
+                                <option [ngValue]="0" selected disabled hidden>Seleccione la zona del inmubele</option>
+                                <option [ngValue]="1">Rural</option>
+                                <option [ngValue]="2">Urbano</option>
                               </select>
                             </div>
                           </div>
@@ -165,75 +172,100 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-md-3"><label>Observaciones</label></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Observaciones</label></div>
+                            <div class="col-md-10">
                               <textarea [(ngModel)]="selectedInmueble.observaciones" placeholder="Ingrese los comentarios que desee acerca del inmueble"
                                 class="form-control"></textarea>
                             </div>
                           </div>
                           <div class="row">
+                            <div class="col-md-12">
+                              <div class="upload-btn-wrapper">
+                                <button id="btnArchivo">ELEGIR ARCHIVOS</button>
+                                <input type="file" id="file" multiple name="myfile" (change)="onFileSelected($event)" />
+                                <input for="file" [(ngModel)]="labelFile" readonly style="border: 0; margin-left: 10px; width: 60%;" />
+                              </div>
+                            </div>
+                          </div> <br>
+                          <!--<div class="row">
+                            <div class="col-md-12">
+                              <input type="file" class="form-control" [(ngModel)]="selectedFile" multiple (change)="onFileSelected($event)">
+                            </div>
+                          </div> -->
+                          <div class="row">
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.cocina_integral" name="" value="selectedInmueble.cocina_integral">Cocina
-                              integral<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.cocina_integral">Cocina
+                              integral
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.conjunto_cerrado" name="" value="selectedInmueble.conjunto_cerrado">Conjunto
-                              cerrado<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.conjunto_cerrado">Conjunto
+                              cerrado
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.salon_comunal" name="" value="selectedInmueble.salon_comunal">Salon
-                              Comunal<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.salon_comunal">Salon
+                              Comunal
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.zonas_verdes" value="selectedInmueble.zonas_verdes">Zonas
-                              Verdes<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.zonas_verdes">Zonas
+                              Verdes
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.seguridad" value="selectedInmueble.seguridad">Seguridad
-                              Privada<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.seguridad">Seguridad
+                              Privada
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.zona_para_ninios" name="" value="selectedInmueble.zona_para_ninios">Zona
-                              para niños<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.zona_para_ninios">Zona
+                              para niños
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.alarma" name="" value="selectedInmueble.alarma">Alarma<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.alarma">Alarma
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.energia" name="" value="selectedInmueble.energia">Energia<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.energia">Energia
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.alcantarillado" name="" value="selectedInmueble.alcantarillado">Alcantarillado<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.alcantarillado">Alcantarillado
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.gas" name="" value="selectedInmueble.gas">Gas
-                              residencial<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.gas">Gas
+                              residencial
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.precio_negociable" name="" value="selectedInmueble.precio_negociable">Precio
-                              Negociable<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.precio_negociable">Precio
+                              Negociable
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.gimnasio" name="">Gimnasio<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.gimnasio">Gimnasio
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.terraza" name="">Terraza<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.terraza">Terraza
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.balcon" name="">Balcón<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.balcon">Balcón
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.piscina" name="" [value]="selectedInmueble.piscina">Piscina<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.piscina">Piscina
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.sauna" name="">Sauna<br>
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.sauna">Sauna
                             </div>
                             <div class="col-md-4">
-                              <input type="checkbox" [(ngModel)]="selectedInmueble.zonabbq" name="">Zona
+                              <input type="checkbox" [(ngModel)]="selectedInmueble.zonabbq">Zona
                               BBQ
                             </div>
                           </div>
                         </div>
+                      </div>
+                      <div style="float: right">
+                        <button (click)="registrar()" class="btn south-btn m-1">
+                          Registrar
+                        </button>
+                        <button (click)="editar()" class="btn south-btn btn-3 m-1">
+                          Editar
+                        </button>
+                        <button (click)="limpiarCampos()" class="btn south-btn btn-2 m-1">
+                          Limpiar Campos
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -242,27 +274,10 @@
                       <!-- Tab Text -->
                       <div class="south-tab-text">
                         <div class="form-group">
-                          <br>
-                          <div class="row">
-                            <div class="col-md-10">
-                              <input type="file" class="form-control" [(ngModel)]="selectedFile" multiple (change)="onFileSelected($event)">
-                            </div>
-                            <div class="col-md-2">
-                            </div>
+                          <br>                          
+                          <div  *ngFor="let image of selectedFile" >
+                            <img src='{{image}}'/>
                           </div>
-
-                          <table class="table" style="width:100%">
-                            <tr *ngFor="let i of selectedFile">
-                              <td><img src="i"></td>
-                            </tr>
-                          </table>
-
-                          <button (click)="registrar()" class="btn south-btn m-1">
-                            Registrar
-                          </button>
-                          <button (click)="editar()" class="btn south-btn btn-2 m-1">
-                            Editar
-                          </button>
                         </div>
                       </div>
                     </div>
@@ -270,13 +285,8 @@
                 </div>
               </div>
             </div>
-
           </div>
-
-
-
         </div>
-
       </div>
 
       <!-- </form> -->
@@ -284,10 +294,10 @@
     </div>
 
     <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 404">
-      <div id="close" title="Cerrar">x</div>{{respuesta.msj}}
+      <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
     </div>
     <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 505">
-      <div id="close" title="Cerrar">x</div>{{respuesta.msj}}
+      <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
     </div>
 
     <br><br>
@@ -337,7 +347,7 @@
                   <td>{{i.num_cocinas}}</td>
                   <td>{{i.municipio_id.departamento_id.nombre}}</td>
                   <td>{{i.municipio_id.nombre}}</td>
-                  <td><button (click)="eliminar(i)" class="btn south-btn btn-3 m-1">
+                  <td><button (click)="eliminar(i)" class="btn south-btn active m-1">
                       Eliminar
                     </button></td>
                   <td><button (click)="ver(i)" class="btn south-btn btn-2 m-1">
@@ -350,5 +360,11 @@
         </div>
       </div>
     </div>
-  </div>
+    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 404">
+      <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+    </div>
+    <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 505">
+      <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+    </div>
+  </div> <br>
 </div>

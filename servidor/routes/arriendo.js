@@ -8,7 +8,8 @@ exports.save = function (req, res) {
             descripcion: input.descripcion,
             inmueble_id: input.inmueble_id.id,
             cliente_cedula: input.cliente_cedula.cedula,
-            empleado_cedula: input.empleado_cedula.cedula
+            empleado_cedula: input.empleado_cedula.cedula,
+            activo: 1
         };
 
         var query = connection.query("INSERT INTO arriendo set ? ", data, function (err, rows) {
@@ -44,12 +45,29 @@ exports.buscarPorInmuebleId = function (req, res) {
     });
 };
 
+exports.activar = function (req, res) {
+
+    var input = JSON.parse(JSON.stringify(req.body));
+    req.getConnection(function (err, connection) {
+
+        connection.query("UPDATE arriendo SET activo = 1 WHERE id = ? ", [input.id], function (err, rows) {
+
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al activar"}');
+       
+        res.send('{"id": 505,"msj": "Se activó correctamente"}');
+
+        });
+
+    });
+};
+
 exports.delete = function (req, res) {
 
     var input = JSON.parse(JSON.stringify(req.body));
     req.getConnection(function (err, connection) {
 
-        connection.query("DELETE FROM arriendo WHERE id = ? ", [input.id], function (err, rows) {
+        connection.query("UPDATE arriendo SET activo = 0 WHERE id = ? ", [input.id], function (err, rows) {
 
             if (err)
             res.send('{"id": 404,"msj": "Hubo un error al eliminar"}');
