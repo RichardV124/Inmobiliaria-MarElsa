@@ -99,13 +99,17 @@ export class RegistroInmuebleComponent implements OnInit {
   validarCamposNoIngresados() {
     if (this.selectedInmueble.promocion == null) {
       this.selectedInmueble.promocion = 0;
+      
     }
     if (this.selectedInmueble.garaje == null) {
       this.selectedInmueble.garaje = 0;
+    
     }
     if (this.selectedInmueble.num_closets == null) {
       this.selectedInmueble.num_closets = 0;
+     
     }
+    return true;
   }
 
   /**
@@ -223,6 +227,7 @@ export class RegistroInmuebleComponent implements OnInit {
       console.log('nombre cliente: ' + this.propietario.nombre);
       if (this.propietario.nombre != null) {
         this.continuarRegistro();
+        return true;
       } else {
         this.respuesta.msj = 'La cédula del cliente ingresado no existe';
         this.show = 404;
@@ -365,6 +370,7 @@ export class RegistroInmuebleComponent implements OnInit {
     this.inmuebleServie.listarTiposInmueble()
     .subscribe(tipoInmueble => {
       this.listaTiposInmueble = tipoInmueble;
+
     });
   }
 
@@ -384,7 +390,9 @@ export class RegistroInmuebleComponent implements OnInit {
   listarArchivos() {
     this.inmuebleServie.listarArchivos(this.selectedInmueble.id)
     .subscribe(archivo => {
+      console.log("archivoooooooo "+archivo.archivo)
       this.archivo = archivo;
+      return true; 
     });
   }
 
@@ -562,6 +570,7 @@ export class RegistroInmuebleComponent implements OnInit {
         } else {
           this.mostrarTabArchivos = true;
           this.selectedInmueble = inmueble;
+          this.show = 505;
           this.listarArchivos();
           this.obtenerDatosCombosBusqueda();
           this.buscarInmuebleEnArriendos();
@@ -624,7 +633,7 @@ export class RegistroInmuebleComponent implements OnInit {
     if (!this.selectedInmueble.piscina) {
       this.selectedInmueble.piscina = null;
     }
-
+    return true;
   }
 
 }

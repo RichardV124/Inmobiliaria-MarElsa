@@ -46,18 +46,18 @@
             <div class="south-tabs-content">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="tab--1" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Datos del empleado</a>
+                        <a class="nav-link active show" id="tab--1" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Datos del empleado</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="tab--2" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Experiencias</a>
+                        <a class="nav-link" id="tab--2" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Experiencias laborales</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="tab--3" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Estudios</a>
+                        <a class="nav-link" id="tab--3" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Formacion academica</a>
                     </li>
                 </ul>
 
                 <div class="tab-content mb-100" id="myTabContent">
-                    <div class="tab-pane fade" id="tab1" role="tabpanel" aria-labelledby="tab--1">
+                    <div class="tab-pane show active" id="tab1" role="tabpanel" aria-labelledby="tab--1">
                         <div class="south-tab-content">
                             <!-- Tab Text -->
                             <div class="card-body">                  
@@ -141,12 +141,20 @@
                                             <div class="col-md-4">
                                                 <input type="password" [(ngModel)]="selectedLogin.contrasenia" placeholder="Ingrese contraseña" class="form-control">
                                             </div>                   
-                                        </div>                                     
-                                    </div>                     
+                                        </div>  
+                                        <button (click)="registrar()" class="btn south-btn m-1"> 
+                                            Registrar empleado
+                                          </button> 
+                                        <button (click)="editar()" class="btn south-btn btn-3 m-1"> 
+                                            Editar empleado
+                                          </button>                                      
+                                    </div>                
+                                    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                                    <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>                               
                                 </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show active" id="tab2" role="tabpanel" aria-labelledby="tab--2">
+                    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab--2">
                         <div class="south-tab-content">
                             <!-- Tab Text -->
                             <div class="south-tab-text">
@@ -167,7 +175,7 @@
                                             </div>
                                         <div class="col-md-2"><label>Nombre de la empresa</label></div>
                                             <div class="col-md-4">
-                                                <input type="password" [(ngModel)]="experienciaSeleccionada.nom_empresa" placeholder="Ingrese nombre de la empresa" class="form-control">
+                                                <input type="text" [(ngModel)]="experienciaSeleccionada.nom_empresa" placeholder="Ingrese nombre de la empresa" class="form-control">
                                             </div>                   
                                     </div> 
                                     <div class="row">
@@ -177,27 +185,36 @@
                                                 </div>
                                             <div class="col-md-2"><label>Direccion</label></div>
                                                 <div class="col-md-4">
-                                                    <input type="password" [(ngModel)]="experienciaSeleccionada.direccion" placeholder="Ingrese direccion" class="form-control">
+                                                    <input type="text" [(ngModel)]="experienciaSeleccionada.direccion" placeholder="Ingrese direccion" class="form-control">
                                                 </div>                   
                                     </div> 
+
+                                    <button (click)="registrarExperiencia()" class="btn south-btn m-1"> 
+                                        Registrar experiencia
+                                      </button> 
+
                                     <br>
-                                    <div class="col-lg-8">
-                                      <div class="section_subtitle"> Experiencias del Empleado ({{experiencias.length}})</div><br>
+                                    <div class="col-lg-12">
+                                      <div class="section_subtitle"><p> Experiencias del Empleado ({{listaExperiencias.length}})</p></div><br>
                                       <table class="table">
                                           <thead>
                                             <tr>
                                               <th scope="col">Empresa</th>
                                               <th scope="col">Telefono</th>
                                               <th scope="col">Cargo</th>
-                                              <th scope="col">Acciones</th>
+                                              <th scope="col">Ver</th>
+                                              <th scope="col">Eliminar</th>
                                             </tr>
                                           </thead>
                                           <tbody>
                                             <tr *ngFor="let e of listaExperiencias">
-                                              <th>{{e.nom_empresa}}</th>
+                                              <td>{{e.nom_empresa}}</td>
                                               <td>{{e.telefono}}</td>
                                               <td>{{e.cargo}}</td>
-                                              <td><button (click)="verExperiencia(e)" class="btn">Ver </button></td>
+                                              <td><button (click)="verExperiencia(e)" class="btn south-btn btn-2 m-1">Ver Experiencia</button></td>
+                                              <td><button (click)=" eliminarExperiencia(e)" class="btn south-btn active m-1"> 
+                                                    Eliminar
+                                                </button></td>
                                             </tr>
                                           </tbody>
                                       </table>
@@ -226,29 +243,36 @@
                                                     </div>
                                                 <div class="col-md-2"><label>Direccion</label></div>
                                                     <div class="col-md-4">
-                                                        <input type="password" [(ngModel)]="estudioSeleccionado.direccion" placeholder="Ingrese direccion" class="form-control">
-                                                    </div>                   
+                                                        <input type="text" [(ngModel)]="estudioSeleccionado.direccion" placeholder="Ingrese direccion" class="form-control">
+                                                </div>                   
                                         </div> 
-<br>
-                                        <div class="col-lg-8">
-                                                <div class="section_subtitle">Formaciones del Empleado ({{listaEstudios.length}})</div><br>
+                                        <button (click)="registrarEstudio()" class="btn south-btn m-1"> 
+                                            Registrar formacion
+                                        </button> 
+                                        <br>
+                                        <div class="col-lg-12">
+                                                <div class="section_subtitle"><p>Formaciones del Empleado ({{listaEstudios.length}})</p></div><br>
                                                 <table class="table">
                                                     <thead>
                                                       <tr>
                                                         <th scope="col">Institucion Graduacion</th>
                                                         <th scope="col">Titulo Obtenido</th>
                                                         <th scope="col">Ver</th>
+                                                        <th scope="col">Eliminar</th>
                                                       </tr>
                                                     </thead>
                                                     <tbody>
                                                       <tr *ngFor="let e of listaEstudios">
                                                         <td>{{e.institucion}}</td>
                                                         <td>{{e.descripcion}}</td>
-                                                        <td><button (click)="verEstudio(e)" class="btn">Ver</button></td>
+                                                        <td><button (click)="verEstudio(e)" class="btn south-btn btn-2 m-1">Ver Estudio</button></td>
+                                                        <td><button (click)=" eliminarEstudio(e)" class="btn south-btn active m-1"> 
+                                                                Eliminar
+                                                            </button></td>
                                                       </tr>
                                                     </tbody>
                                                 </table>
-                                                </div>
+                                        </div>
                                               </div>
                              </div>
                         </div>
@@ -275,8 +299,8 @@
                             <th scope="col">Cargo</th>
                             <th scope="col">Municipio</th>
                             <th scope="col">Usuario</th>
-                            <th scope="col">Eliminar</th>
                             <th scope="col">Ver</th>
+                            <th scope="col">Eliminar</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -292,12 +316,14 @@
                             <td>{{e.descripcion_tipo}}</td>
                             <td>{{e.nombre_municipio}}</td>
                             <td>{{e.username}}</td>
-                            <td><button (click)="eliminar(e)" class="btn btn-danger"> 
-                                    Eliminar
-                                </button></td>
-                                <td><button (click)="ver(e)" class="btn btn-warning"> 
+                            <td><button (click)="ver(e)" class="btn south-btn btn-2 m-1"> 
                                         Ver empleado
-                                    </button></td>
+                                </button>
+                            </td>
+                            <td><button (click)="eliminar(e)" class="btn south-btn active m-1"> 
+                                            Eliminar
+                                </button>
+                            </td>
                           </tr>
                         </tbody>
                       </table>

@@ -135,7 +135,8 @@ app.get('/experiencia/listar/:cedula', experiencia.listarExperiencias);
 app.get('/estudio/listar/:cedula', estudio.listarEstudios);
 app.get('/experiencia/search/:id', experiencia.searchExperiencia);
 app.get('/estudio/search/:id', estudio.searchEstudio);
-
+app.post('/experiencia/delete', experiencia.deleteExperiencia);
+app.post('/estudio/delete', estudio.deleteEstudio);
 
 // ------- Servicios de login ------- //
 app.get('/login/login/:username/:contrasenia', login.login);
