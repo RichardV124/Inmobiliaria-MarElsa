@@ -7,6 +7,9 @@ import { Rol } from '../../modelo/rol';
 import { Municipio } from '../../modelo/municipio';
 import { Departamento } from '../../modelo/departamento';
 import { HttpClientModule } from '@angular/common/http';
+import { Router, RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
 
 
 let dep: Departamento;
@@ -25,8 +28,8 @@ let login: Login;
 
     beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LoginService],
-      imports: [HttpClientModule]
+      providers: [Router],
+      imports: [RouterTestingModule, FormsModule, HttpClientModule]
     });
   }); 
 
@@ -60,6 +63,7 @@ let login: Login;
 
     const servicio: LoginService = TestBed.get(LoginService);
     servicio.login(login).subscribe(rta =>{
+      console.log("userrrrrr "+rta.username);
       expect(rta.username).toEqual("david");
 
   });

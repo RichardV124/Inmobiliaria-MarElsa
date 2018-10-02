@@ -9,6 +9,7 @@ exports.list = function(req, res){
               res.send('{"id": 404,"msj": "Hubo un error al listar los departamentos"}');    
 
             res.send({data:rows});  
+            console.log("origen: "+req.headers.origin+" - peticion: SELECT * FROM departamento");
                 
            });
       });

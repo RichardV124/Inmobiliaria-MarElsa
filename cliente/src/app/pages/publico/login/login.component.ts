@@ -16,8 +16,15 @@ export class LoginComponent implements OnInit {
  // usuario que iniciara sesion
  usuario: Login = new Login();
 
+<<<<<<< HEAD
  username: string = '';
  password: string = '';
+=======
+ username: string = 'kuro';
+ password: string = '123';
+
+ inicio = false;
+>>>>>>> d860b6ee1e47a5d93013a1185a466e17e7ccac4c
 
  constructor(private servicios: LoginService, private router: Router) {}
 
@@ -46,6 +53,7 @@ export class LoginComponent implements OnInit {
      } else {
        // --- El usuario se encuentra registrado ---//
        this.usuario = rta.data;
+       this.inicio = true;
        // Obtenemos la persona del usuario
        this.servicios.getUsuarioPersona(this.usuario).subscribe(rta2 => {
          if (rta2.data == null) {
@@ -79,9 +87,15 @@ export class LoginComponent implements OnInit {
      }
    });
  }
+<<<<<<< HEAD
 
  cerrarMsj() {
   this.show = 0;
 }
 
+=======
+ validarInicio():boolean{
+  return this.inicio;
+}
+>>>>>>> d860b6ee1e47a5d93013a1185a466e17e7ccac4c
 }
