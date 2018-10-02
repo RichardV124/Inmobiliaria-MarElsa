@@ -27,9 +27,14 @@ export class EditarClienteComponent implements OnInit {
   selectedDepartamento: Departamento = new Departamento();
   show = 0;
 
+  // variables de verificacion
+  editado = false;
+  listandoDepartamentos = false;
+  listandoMunicipios = false;
+
   constructor(private clienteService: ClienteService, private loginService: LoginService
     , private municipioService: MunicipioService) {
-      // this.loginService.esAccesible('editar-cliente');
+      this.loginService.esAccesible('editar-cliente');
       this.listarDepartamentos();
       this.user = this.loginService.getUsuario();
       this.buscar(this.user.persona_cedula.cedula);
@@ -40,6 +45,18 @@ export class EditarClienteComponent implements OnInit {
 
   cerrarMsj() {
     this.show = 0;
+  }
+
+  verificarEditar(): boolean {
+    return this.editado ;
+  }
+
+  verificarListarDepartamentos(): boolean {
+    return this.listandoDepartamentos;
+  }
+
+  verificarListarMunicipios(): boolean {
+    return this.listandoMunicipios;
   }
 
   buscar(cedula: string) {
@@ -75,6 +92,12 @@ export class EditarClienteComponent implements OnInit {
     this.municipioService.listarDepartamentos().
     subscribe(departamento => {
       this.listaDepartamentos = departamento;
+
+      if (this.listaDepartamentos === undefined) {
+          this.listandoDepartamentos = false;
+      } else {
+        this.listandoDepartamentos = true;
+      }
     });
   }
 
@@ -82,6 +105,12 @@ export class EditarClienteComponent implements OnInit {
     this.municipioService.listarMunicipios(this.selectedDepartamento.id).
     subscribe(municipio => {
       this.listaMunicipios = municipio;
+
+      if (this.listaMunicipios === undefined) {
+          this.listandoMunicipios = false;
+      } else {
+        this.listandoMunicipios = true;
+      }
     });
   }
 
@@ -100,6 +129,8 @@ export class EditarClienteComponent implements OnInit {
     if (this.validarCampos() === false) {
       this.respuesta.msj = 'Debe ingresar todos los campos obligatorios';
       this.show = 1;
+
+      this.editado = false;
     } else {
       this.rol.id = 3;
       this.selectedPersona.rol_id = this.rol;
@@ -114,8 +145,10 @@ export class EditarClienteComponent implements OnInit {
         console.log(this.selectedPersona.nombre);
         if (this.respuesta.id === 404) {
           this.show = 1;
+          this.editado = false;
         } else {
           this.show = 2;
+          this.editado = true;
         }
       });
     }

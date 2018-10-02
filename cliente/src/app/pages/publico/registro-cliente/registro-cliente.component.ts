@@ -28,6 +28,13 @@ export class RegistroClienteComponent implements OnInit {
   show: number;
   validacionLogin: Login = new Login();
 
+  // Variables para verificar los metodos
+    registrado = false;
+    listandoDepartamentos = false;
+    listandoMunicipios = false;
+
+  // ------------------------------------
+
   constructor(private clienteService: ClienteService, private router: Router,
     private municipioService: MunicipioService) {
     this.listarDepartamentos();
@@ -42,6 +49,18 @@ export class RegistroClienteComponent implements OnInit {
 
   cerrarMsj() {
     this.show = 0;
+  }
+
+  validarRegistro(): boolean {
+    return this.registrado;
+  }
+
+  validarListarDepartamento(): boolean {
+    return this.listandoDepartamentos;
+  }
+
+  validarListarMunicipios(): boolean {
+    return this.listandoMunicipios;
   }
 
   validarCampos(): boolean {
@@ -60,6 +79,7 @@ export class RegistroClienteComponent implements OnInit {
     if (this.validarCampos() === false) {
       this.respuesta.msj = 'Debe ingresar todos los campos obligatorios';
       this.show = 1;
+      this.registrado = false;
     } else {
               // debemos buscar el login por cedula
               this.rol.id = 3;
@@ -76,6 +96,8 @@ export class RegistroClienteComponent implements OnInit {
                 console.log(this.selectedPersona.nombre);
                 this.selectedPersona = new Persona();
                 this.selectedLogin = new Login();
+                // variable de verificacion
+                this.registrado = true;
                 if (this.respuesta.id === 404) {
                   this.show = 1;
                 } else {
@@ -89,6 +111,11 @@ export class RegistroClienteComponent implements OnInit {
     this.municipioService.listarDepartamentos().
     subscribe(departamento => {
       this.listaDepartamentos = departamento;
+      if (this.listaDepartamentos === undefined) {
+          this.listandoDepartamentos = false;
+      } else {
+        this.listandoDepartamentos = true;
+      }
     });
   }
 
@@ -97,6 +124,12 @@ export class RegistroClienteComponent implements OnInit {
     this.municipioService.listarMunicipios(this.selectedDepartamento.id).
     subscribe(municipio => {
       this.listaMunicipios = municipio;
+
+      if (this.listaMunicipios === undefined) {
+          this.listandoMunicipios = false;
+      } else {
+        this.listandoMunicipios = true;
+      }
     });
   }
 }

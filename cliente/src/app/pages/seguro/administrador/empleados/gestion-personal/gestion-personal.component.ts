@@ -36,6 +36,8 @@ export class GestionPersonalComponent implements OnInit {
   listandoTipoPersonal = false;
   listandoMunicipios = false;
   listandoDepartamentos = false;
+  listandoExperiencias = false;
+  listandoEstudios = false;
 
   // -----------------------------------
   contador = 0;
@@ -117,9 +119,19 @@ this.contador++;
       return this.listandoDepartamentos;
     }
 
-  registrar() {
+    validarlistarExperiencias(): boolean {
+      return this.listandoExperiencias;
+    }
 
-    if (this.validarCampos()) {
+    validarlistarEstudios(): boolean {
+      return this.listandoEstudios;
+    }
+
+  registrar() {
+console.log(this.validarCampos);
+
+    if ( this.selectedPersona.cedula == null) {
+      console.log('ENTROOO MANO');
       this.show = 1;
           this.respuesta.msj = 'Debe completar todos los campos';
           this.registrado = false;
@@ -410,6 +422,12 @@ this.contador++;
     .subscribe(experiencias => {
          console.log(experiencias);
          this.listaExperiencias = experiencias;
+
+         if (this.listaExperiencias === undefined) {
+          this.listandoExperiencias = false;
+         } else {
+          this.listandoExperiencias = true;
+         }
       });
   }
 
@@ -418,6 +436,12 @@ this.contador++;
     .subscribe(estudios => {
          console.log(estudios);
          this.listaEstudios = estudios;
+
+         if (this.listaEstudios === undefined) {
+            this.listandoEstudios = false;
+         } else {
+          this.listandoEstudios = true;
+         }
       });
   }
 

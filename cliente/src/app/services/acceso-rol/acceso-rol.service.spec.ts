@@ -6,11 +6,12 @@ import { Acceso } from '../../modelo/Acceso';
 import { Rol } from '../../modelo/rol';
 import { AccesoRol } from '../../modelo/acceso_rol';
 import { RespuestaDTO } from '../../modelo/respuestaDTO';
-
+/**
 let respuesta: RespuestaDTO;
 let accs: Acceso;
 let rol: Rol;
 let accesoRol: AccesoRol;
+
 
 describe('AccesoRolService', () => {
 
@@ -50,7 +51,7 @@ describe('AccesoRolService', () => {
     console.log(this.respuesta.msj + ' SAVE');
     expect(rta.id).toEqual(505);
     })
-    
+
   });
 });
-  
+  */

@@ -24,7 +24,7 @@ import {
 } from '@angular/http';
 import { Inject } from '@angular/core';
 
-describe('GestionPersonalComponent', () => {
+fdescribe('GestionPersonalComponent', () => {
 
 
   let component: GestionPersonalComponent;
@@ -66,17 +66,17 @@ describe('GestionPersonalComponent', () => {
        component.selectedPersona.apellido = 'Arias';
        const fe = new Date('02/06/1997');
        component.selectedPersona.fecha_nacimiento = fe;
-       component.selectedPersona.cedula = '10010';
+       component.selectedPersona.cedula = null;
        component.selectedPersona.direccion = 'calle 20';
        component.selectedPersona.telefono = 3114802039;
-       component.selectedPersona.correo = 'clts10@';
+       component.selectedPersona.correo = 'clts1000@';
        component.selectedPersona.rol_id = component.rol;
        component.selectedPersona.municipio_id = component.selectedMunicipio;
        component.selectedPersona.genero = 2 ;
        component.selectedPersona.activo = 1;
 
     // Creamos el login
-    component.selectedLogin.username = 'cr10';
+    component.selectedLogin.username = 'cr1000';
     component.selectedLogin.contrasenia = '1234';
     component.selectedLogin.persona_cedula = component.selectedPersona;
     component.selectedLogin.activo = component.selectedPersona.activo;
@@ -230,6 +230,14 @@ describe('GestionPersonalComponent', () => {
     const buscado = component.listarMunicipios();
     console.log('--------------Listando-------------');
     expect(component.validarlistarMunicipios).toBeTruthy();
+  });
+
+  fit('Listar experiencias', () => {
+
+    // Listando los municipios
+    const buscado = component.listarExperienciasEmpleado('111');
+    console.log('--------------Listando-------Ex------');
+    expect(component.validarlistarExperiencias).toBeTruthy();
   });
 
   it('Eliminar empleado', () => {

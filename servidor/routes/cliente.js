@@ -148,8 +148,6 @@ exports.list = function(req, res){
               cedula : input.cedula,
               activo : input.activo
           };
-
-            console.log(login);
   
             var query = connection.query("UPDATE persona set ? WHERE cedula = ?",[persona,persona.cedula], function(err, rows)
             {
