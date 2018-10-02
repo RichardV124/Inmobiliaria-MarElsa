@@ -31,7 +31,7 @@ exports.list = function(req, res){
           {
               
               if(err)
-                  console.log("Error Selecting : %s ",err );
+                res.send('{"id": 404,"msj": "Hubo un error al buscar el cliente"}');
        
               res.send({data:rows[0]});
                   
@@ -69,7 +69,8 @@ exports.list = function(req, res){
                 
                 username    : input.username,
                 contrasenia : input.contrasenia,
-                persona_cedula : input.persona_cedula.cedula
+                persona_cedula : input.persona_cedula.cedula,
+                activo : input.activo
             
             };
             console.log(login);
@@ -145,12 +146,7 @@ exports.list = function(req, res){
               cedula : input.cedula,
               activo : input.activo
           };
-  
-          var login = {
-                persona_cedula : input.cedula,
-                activo : input.activo
-            
-            };
+
             console.log(login);
   
             var query = connection.query("UPDATE persona set ? WHERE cedula = ?",[persona,persona.cedula], function(err, rows)
@@ -163,7 +159,7 @@ exports.list = function(req, res){
               
             });
   
-            var query2 = connection.query("UPDATE login set ? WHERE = ?",[login,login.username], function(err, rows)
+            var query2 = connection.query("UPDATE login set activo = 0 WHERE persona_cedula = ?",[persona.cedula], function(err, rows)
             {
                 if (err)
                 console.log("Error inserting : %s ",err );
@@ -205,7 +201,8 @@ exports.list = function(req, res){
               
               username    : input.username,
               contrasenia : input.contrasenia,
-              persona_cedula : input.persona_cedula.cedula
+              persona_cedula : input.persona_cedula.cedula,
+              activo : input.activo
           
           };
           console.log(login);
@@ -213,23 +210,34 @@ exports.list = function(req, res){
           var query = connection.query("INSERT INTO persona set ? ",persona, function(err, rows)
           {
     
-            if (err)
-                console.log("Error inserting : %s ",err );                
-           
-            //res.send('{"id": 505,"msj": "Se registró correctamente el cliente"}');
-            
-          });
+            if (err) {
+                res.send('{"id": 404,"msj": "La cédula ya se encuentra registrada"}');
+            } else {
+                var query2 = connection.query("INSERT INTO login set ? ",login, function(err, rows)
+                {
+                if (err) {
+                    res.send('{"id": 404,"msj": "El username ya se encuentra registrado"}');
+                    var query3 = connection.query("DELETE FROM persona WHERE cedula = ? ",persona.cedula, function(err, rows)
+                    {
+        
+                        if (err)
+                            // res.send('{"id": 404,"msj": "La cédula ya se encuentra registrada"}');
 
-          var query2 = connection.query("INSERT INTO login set ? ",login, function(err, rows)
-          {
-              if (err)
-              console.log("Error inserting : %s ",err );
-         
-          res.send('{"id": 505,"msj": "Se registró correctamente"}');
+                        res.send('{"id": 505,"msj": "Se Eliminó correctamente"}');          
+                    });
+                    console.log(query3.sql);
+                }
+                      
+                res.send('{"id": 505,"msj": "Registro exitoso"}');
           
-        });
-       
+                });
+                console.log(query2.sql);
+            }
+                          
+          });
+              
           console.log(query.sql); //get raw query
-          console.log(query2.sql);
+          
+          
       });
   };

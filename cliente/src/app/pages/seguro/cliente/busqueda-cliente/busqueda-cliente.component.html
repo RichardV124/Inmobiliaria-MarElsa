@@ -30,6 +30,8 @@
                 </div> 
             </div>
         </div>
+        <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+        <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
         <br>
 
         <div class="panel single-accordion">
@@ -40,7 +42,7 @@
                             </a>
                 </h6>
                 <div id="collapseTwo" class="accordion-content collapse">
-                        <div class="card mt-4" style="width: 100%;">
+                        <div class="card mt-4" style="width: 100%;" id="link">
                                 <div class="card-body">                  
                                     <div class="form-group">
                                         <div class="row">
@@ -127,8 +129,7 @@
                                         </div>                                     
                                     </div>                     
                                 </div>
-                                <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
-                                <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                                
                         </div>
                 </div>
             </div>
