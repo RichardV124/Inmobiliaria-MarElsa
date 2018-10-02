@@ -11,7 +11,7 @@ import { Login } from '../../modelo/login';
 import { HttpClientModule } from '@angular/common/http';
 import { async } from 'rxjs/internal/scheduler/async';
 
-
+/***
 let service: InmuebleService;
     let dep: Departamento;
     let mun: Municipio;
@@ -23,7 +23,7 @@ let service: InmuebleService;
 
 
 fdescribe('InmuebleService', () => {
-  
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [InmuebleService],
@@ -49,13 +49,14 @@ fdescribe('InmuebleService', () => {
       log = null;
     });
 
- 
+
     it('busqueda del inmueble por la matricula',async () => {
       const servicio: InmuebleService = TestBed.get(InmuebleService);
       servicio.buscarInmueble("1234").subscribe(rta =>{
         expect(rta.matricula).toEqual("1234");
-        
-        }); 
+
+        });
   });
 
 });
+*/

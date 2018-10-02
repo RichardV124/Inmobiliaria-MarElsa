@@ -12,6 +12,7 @@ import { RespuestaDTO } from './../../../../../modelo/respuestaDTO';
 import { Login } from './../../../../../modelo/login';
 import { Component, OnInit } from '@angular/core';
 import { Empleado } from '../../../../../modelo/empleado';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-gestion-personal',
@@ -22,6 +23,17 @@ export class GestionPersonalComponent implements OnInit {
 
   campoFiltro = '';
   show = 0;
+  // Variables de validacion de cada metodo
+  registrado = false;
+  buscado = false;
+  eliminado = false;
+  editado = false;
+  listandoEmpleados = false;
+  listandoTipoPersonal = false;
+  listandoMunicipios = false;
+  listandoDepartamentos = false;
+
+  // -----------------------------------
   contador = 0;
   empleadoDTO: EmpleadoDTO = new EmpleadoDTO();
   listaEmpleados: EmpleadoDTO[];
@@ -38,6 +50,7 @@ export class GestionPersonalComponent implements OnInit {
   listaDepartamentos: Departamento[];
   selectedMunicipio: Municipio = new Municipio();
   selectedDepartamento: Departamento = new Departamento();
+
 
 
   constructor(private clienteService: ClienteService , private empleadoService: EmpleadoService,  private router: Router ,
@@ -58,11 +71,45 @@ export class GestionPersonalComponent implements OnInit {
 this.contador++;
   }
 
+  validarRegistro(): boolean {
+    return this.registrado;
+      }
+
+  validarBusqueda(): boolean {
+      return this.buscado;
+     }
+
+  validarEliminar(): boolean {
+      return this.eliminado;
+    }
+
+  validarEditar(): boolean {
+    return this.editado;
+    }
+
+  validarlistarEmpledos(): boolean {
+     return this.listandoEmpleados;
+    }
+
+  validarlistarTipoPersonal(): boolean {
+    return this.listandoTipoPersonal;
+    }
+
+  validarlistarMunicipios(): boolean {
+      return this.listandoMunicipios;
+    }
+
+  validarlistarDepartamentos(): boolean {
+      return this.listandoDepartamentos;
+    }
+
   registrar() {
 
     if (this.validarCampos()) {
       this.show = 1;
           this.respuesta.msj = 'Debe completar todos los campos';
+          this.registrado = false;
+
     } else {
       this.empleadoDTO.nombre = this.selectedPersona.nombre;
       this.empleadoDTO.apellido = this.selectedPersona.apellido;
@@ -91,6 +138,8 @@ this.contador++;
         this.limpiarCampos();
         this.show = 2;
         this.listarEmpleados();
+        this.registrado = true;
+
       });
     }
   }
@@ -100,9 +149,11 @@ this.contador++;
        if (this.cedulaBuscar == null) {
         this.show = 1;
         this.respuesta.msj = 'Debe ingresar la cedula a buscar';
+        this.buscado = false;
       } else {
          this.empleadoService.buscarEmpleado(this.cedulaBuscar)
          .subscribe(empleado => {
+           console.log(empleado);
            if (empleado === undefined ) {
              this.respuesta.msj = 'No se encuentra ningun empleado con la cedula ' +  this.cedulaBuscar;
              console.log('NO SE ENCUENTRA');
@@ -128,12 +179,15 @@ this.contador++;
               this.tipoPersonalSeleccionado.id = this.empleadoDTO.tipo_id;
               /** Fin del machete serio */
 
+              this.buscado = true;
+
+
              }
            });
        }
      }
 
-limpiarCampos() {
+  limpiarCampos() {
   this.selectedPersona = new Persona();
   this.selectedLogin = new Login();
   this.selectedEmpleado = new Empleado();
@@ -141,7 +195,7 @@ limpiarCampos() {
   this.selectedDepartamento.id = 0;
   this.listaMunicipios = [];
   this.tipoPersonalSeleccionado.id = 0;
-}
+  }
 
   validarCampos(): boolean {
     if (this.selectedPersona.nombre == null || this.selectedPersona.apellido == null
@@ -158,6 +212,12 @@ limpiarCampos() {
     this.municipioService.listarDepartamentos().
     subscribe(departamento => {
       this.listaDepartamentos = departamento;
+
+      if (this.listaDepartamentos === undefined) {
+          this.listandoDepartamentos = false;
+      } else {
+        this.listandoDepartamentos = true;
+      }
     });
   }
 
@@ -166,6 +226,12 @@ limpiarCampos() {
     this.municipioService.listarMunicipios(this.selectedDepartamento.id).
     subscribe(municipio => {
       this.listaMunicipios = municipio;
+
+      if (this.listaMunicipios === undefined) {
+          this.listandoMunicipios = false;
+      } else {
+        this.listandoMunicipios = true;
+      }
     });
   }
 
@@ -173,6 +239,11 @@ limpiarCampos() {
     this.empleadoService.listarTipoPersonal()
     .subscribe(tipoPersonal => {
       this.listaTipoPersonal = tipoPersonal;
+      if (this.listaTipoPersonal === undefined) {
+        this.listandoTipoPersonal = false;
+      } else {
+        this.listandoTipoPersonal = true;
+      }
     });
   }
 
@@ -180,6 +251,11 @@ limpiarCampos() {
     this.empleadoService.listarEmpleados()
     .subscribe(empleados => {
       this.listaEmpleados = empleados;
+      if (this.listaEmpleados === undefined) {
+            this.listandoEmpleados = false;
+      } else {
+        this.listandoEmpleados = true;
+      }
     });
   }
 
@@ -192,8 +268,10 @@ limpiarCampos() {
         console.log(this.respuesta.msj + ' DELETE');
         this.show = 2;
         this.listarEmpleados();
+        this.eliminado = true;
       });
     }
+    this.eliminado = false;
   }
 
   ver(empleado: EmpleadoDTO) {
@@ -206,6 +284,7 @@ limpiarCampos() {
     if (this.validarCampos()) {
       this.show = 1;
           this.respuesta.msj = 'Debe completar todos los campos';
+          this.editado = false;
 
     } else {
       this.empleadoService.editarEmpleado(this.empleadoDTO)
@@ -214,9 +293,12 @@ limpiarCampos() {
         console.log(this.respuesta.msj + ' EDIT');
         this.limpiarCampos();
         this.show = 2;
+        this.editado = true;
       });
     }
 }
+
+
 
 }
 
