@@ -79,4 +79,25 @@ export class ExperienciaService {
   });
 
   }
+
+  /**
+ * Metodo que elimina una experiencia a un empleado en la BD
+ * @param experiencia, la experiencia que se va a eliminar en la BD
+ */
+eliminarExperiencia(experiencia: Experiencia) {
+  console.log(experiencia);
+  return this.http.post<any>(`${this.domain}/experiencia/delete/`, experiencia)
+    .map(res => res);
+}
+
+ /**
+ * Metodo que elimina una formacion a un empleado en la BD
+ * @param estudio, el estudio que se va a eliminar en la BD
+ */
+eliminarEstudio(estudio: Estudio) {
+  console.log(estudio);
+  return this.http.post<any>(`${this.domain}/estudio/delete/`, estudio)
+    .map(res => res);
+}
+
 }

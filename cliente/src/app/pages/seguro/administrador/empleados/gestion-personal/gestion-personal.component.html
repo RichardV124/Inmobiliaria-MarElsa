@@ -57,7 +57,7 @@
                 </ul>
 
                 <div class="tab-content mb-100" id="myTabContent">
-                    <div class="tab-pane fade" id="tab1" role="tabpanel" aria-labelledby="tab--1">
+                    <div class="tab-pane show active" id="tab1" role="tabpanel" aria-labelledby="tab--1">
                         <div class="south-tab-content">
                             <!-- Tab Text -->
                             <div class="card-body">                  
@@ -148,11 +148,13 @@
                                         <button (click)="editar()" class="btn south-btn btn-3 m-1"> 
                                             Editar empleado
                                           </button>                                      
-                                    </div>                     
+                                    </div>                
+                                    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                                    <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>                               
                                 </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show active" id="tab2" role="tabpanel" aria-labelledby="tab--2">
+                    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab--2">
                         <div class="south-tab-content">
                             <!-- Tab Text -->
                             <div class="south-tab-text">
@@ -200,7 +202,8 @@
                                               <th scope="col">Empresa</th>
                                               <th scope="col">Telefono</th>
                                               <th scope="col">Cargo</th>
-                                              <th scope="col">Acciones</th>
+                                              <th scope="col">Ver</th>
+                                              <th scope="col">Eliminar</th>
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -208,7 +211,10 @@
                                               <td>{{e.nom_empresa}}</td>
                                               <td>{{e.telefono}}</td>
                                               <td>{{e.cargo}}</td>
-                                              <td><button (click)="verExperiencia(e)" class="btn">Ver Experiencia</button></td>
+                                              <td><button (click)="verExperiencia(e)" class="btn south-btn btn-2 m-1">Ver Experiencia</button></td>
+                                              <td><button (click)=" eliminarExperiencia(e)" class="btn south-btn active m-1"> 
+                                                    Eliminar
+                                                </button></td>
                                             </tr>
                                           </tbody>
                                       </table>
@@ -252,13 +258,17 @@
                                                         <th scope="col">Institucion Graduacion</th>
                                                         <th scope="col">Titulo Obtenido</th>
                                                         <th scope="col">Ver</th>
+                                                        <th scope="col">Eliminar</th>
                                                       </tr>
                                                     </thead>
                                                     <tbody>
                                                       <tr *ngFor="let e of listaEstudios">
                                                         <td>{{e.institucion}}</td>
                                                         <td>{{e.descripcion}}</td>
-                                                        <td><button (click)="verEstudio(e)" class="btn">Ver Estudio</button></td>
+                                                        <td><button (click)="verEstudio(e)" class="btn south-btn btn-2 m-1">Ver Estudio</button></td>
+                                                        <td><button (click)=" eliminarEstudio(e)" class="btn south-btn active m-1"> 
+                                                                Eliminar
+                                                            </button></td>
                                                       </tr>
                                                     </tbody>
                                                 </table>
@@ -289,8 +299,8 @@
                             <th scope="col">Cargo</th>
                             <th scope="col">Municipio</th>
                             <th scope="col">Usuario</th>
-                            <th scope="col">Eliminar</th>
                             <th scope="col">Ver</th>
+                            <th scope="col">Eliminar</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -306,12 +316,14 @@
                             <td>{{e.descripcion_tipo}}</td>
                             <td>{{e.nombre_municipio}}</td>
                             <td>{{e.username}}</td>
-                            <td><button (click)="eliminar(e)" class="btn btn-danger"> 
-                                    Eliminar
-                                </button></td>
-                                <td><button (click)="ver(e)" class="btn btn-warning"> 
+                            <td><button (click)="ver(e)" class="btn south-btn btn-2 m-1"> 
                                         Ver empleado
-                                    </button></td>
+                                </button>
+                            </td>
+                            <td><button (click)="eliminar(e)" class="btn south-btn active m-1"> 
+                                            Eliminar
+                                </button>
+                            </td>
                           </tr>
                         </tbody>
                       </table>

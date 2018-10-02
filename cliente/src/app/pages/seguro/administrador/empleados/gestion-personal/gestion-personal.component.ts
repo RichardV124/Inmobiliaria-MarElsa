@@ -1,3 +1,4 @@
+import { LoginService } from './../../../../../services/login/login.service';
 import { Estudio } from './../../../../../modelo/estudio';
 import { Experiencia } from './../../../../../modelo/experiencia';
 import { EmpleadoDTO } from './../../../../../modelo/dto/empleadoDTO';
@@ -15,6 +16,7 @@ import { Login } from './../../../../../modelo/login';
 import { Component, OnInit } from '@angular/core';
 import { Empleado } from '../../../../../modelo/empleado';
 import { ExperienciaService } from '../../../../../services/experiencia/experiencia.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-gestion-personal',
@@ -52,7 +54,7 @@ export class GestionPersonalComponent implements OnInit {
 
 
   constructor(private clienteService: ClienteService , private empleadoService: EmpleadoService,  private router: Router ,
-    private municipioService: MunicipioService, private experienciaService: ExperienciaService) {
+    private municipioService: MunicipioService, private experienciaService: ExperienciaService, private usuarioServicio: LoginService) {
       this.listarTipoPersonal();
       this.listarDepartamentos();
       this.listarEmpleados();
@@ -60,6 +62,8 @@ export class GestionPersonalComponent implements OnInit {
       this.selectedMunicipio.id = 0;
       this.selectedPersona.genero = 0;
       this.tipoPersonalSeleccionado.id = 0;
+       // Validamos si el usuario tiene acceso a la pagina
+     this.usuarioServicio.esAccesible('gestion-personal');
   }
 
   ngOnInit() {
@@ -171,8 +175,13 @@ this.contador++;
               this.selectedPersona.direccion = this.empleadoDTO.direccion;
               this.selectedPersona.telefono = this.empleadoDTO.telefono;
              // this.empleadoDTO.rol_id = 3;
-              this.selectedDepartamento.id = 1;
-              this.selectedMunicipio.id = this.empleadoDTO.municipio_id;
+             this.municipioService.buscarMunicipio(this.empleadoDTO.municipio_id)
+             .subscribe(mun => {
+                 console.log('DEPTOOOOOO!!!!!!!!!!!!' + mun['departamento_id']);
+                 this.selectedDepartamento.id = mun['departamento_id'];
+                 this.listarMunicipios();
+                 this.selectedMunicipio = mun;
+               });
               this.selectedPersona.genero = this.empleadoDTO.genero;
               this.selectedLogin.username = this.empleadoDTO.username;
               this.selectedLogin.contrasenia = this.empleadoDTO.contrasenia;
@@ -271,6 +280,33 @@ limpiarCampos() {
     }
   }
 
+  eliminarExperiencia (experiencia: Experiencia) {
+    const cedula = experiencia.persona_cedula;
+    if (confirm('¿ Estas seguro que quieres eliminarlo ?')) {
+      this.experienciaService.eliminarExperiencia(experiencia)
+      .subscribe(res => {
+        this.respuesta = JSON.parse(JSON.stringify(res));
+        console.log(this.respuesta.msj + ' DELETE');
+        this.show = 2;
+        console.log(experiencia);
+        this.listarExperienciasEmpleado(cedula);
+      });
+    }
+  }
+
+  eliminarEstudio (estudio: Estudio) {
+    const cedula = estudio.persona_cedula;
+    if (confirm('¿ Estas seguro que quieres eliminarlo ?')) {
+      this.experienciaService.eliminarEstudio(estudio)
+      .subscribe(res => {
+        this.respuesta = JSON.parse(JSON.stringify(res));
+        console.log(this.respuesta.msj + ' DELETE');
+        this.show = 2;
+        this.listarEstudiosEmpleado(cedula);
+      });
+    }
+  }
+
   ver(empleado: EmpleadoDTO) {
     this.cedulaBuscar = empleado.cedula;
     this.buscar();
@@ -292,7 +328,7 @@ limpiarCampos() {
       });
   }
 
-  listarExperienciasEmpleado(cedula: string) {
+  listarExperienciasEmpleado(cedula: any) {
     this.experienciaService.listarExperiencias(cedula)
     .subscribe(experiencias => {
          console.log(experiencias);
@@ -300,7 +336,7 @@ limpiarCampos() {
       });
   }
 
-  listarEstudiosEmpleado(cedula: string) {
+  listarEstudiosEmpleado(cedula: any) {
     this.experienciaService.listarEstudios(cedula)
     .subscribe(estudios => {
          console.log(estudios);
@@ -315,6 +351,19 @@ limpiarCampos() {
           this.respuesta.msj = 'Debe completar todos los campos';
 
     } else {
+      this.empleadoDTO.nombre = this.selectedPersona.nombre;
+      this.empleadoDTO.apellido = this.selectedPersona.apellido;
+      this.empleadoDTO.cedula = this.selectedPersona.cedula;
+      this.empleadoDTO.correo = this.selectedPersona.correo;
+      this.empleadoDTO.fecha_nacimiento = this.selectedPersona.fecha_nacimiento;
+      this.empleadoDTO.direccion = this.selectedPersona.direccion;
+      this.empleadoDTO.telefono = this.selectedPersona.telefono;
+      this.empleadoDTO.rol_id = 2;
+      this.empleadoDTO.municipio_id = this.selectedMunicipio.id;
+      this.empleadoDTO.genero = this.selectedPersona.genero;
+      this.empleadoDTO.username = this.selectedLogin.username;
+      this.empleadoDTO.contrasenia = this.selectedLogin.contrasenia;
+      this.empleadoDTO.tipo_id = this.tipoPersonalSeleccionado.id;
       this.empleadoService.editarEmpleado(this.empleadoDTO)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
