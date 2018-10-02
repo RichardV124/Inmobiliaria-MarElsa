@@ -93,14 +93,16 @@ console.log(input);
           correo   : input.correo,              
           rol_id : input.rol_id,
           municipio_id : input.municipio_id,
-          genero : input.genero
+          genero : input.genero,
+         // activo : 1
       };
 
       var login = {
             
             username    : input.username,
             contrasenia : input.contrasenia,
-            persona_cedula : input.cedula
+            persona_cedula : input.cedula,
+            activo : 1
         
         };
 
@@ -236,7 +238,7 @@ exports.delete = function(req,res){
         var persona = {
             
             persona_cedula    : input.cedula,
-            activo : input.activo,
+            activo : 0
         };
 
       var query = connection.query("UPDATE login set ? WHERE persona_cedula = ? ",[persona,persona.persona_cedula], function(err, rows)

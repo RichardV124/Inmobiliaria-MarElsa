@@ -34,11 +34,13 @@ exports.list = function(req, res){
                 res.send('{"id": 404,"msj": "Hubo un error al buscar el cliente"}');
        
               res.send({data:rows[0]});
+              
                   
              
            });
            
            console.log(query.sql);
+           
       }); 
   };
   

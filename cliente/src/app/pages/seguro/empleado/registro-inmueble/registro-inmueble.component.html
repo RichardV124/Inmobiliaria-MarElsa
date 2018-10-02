@@ -48,50 +48,39 @@
                   <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab--1">
                     <div class="south-tab-content">
                       <!-- Tab Text -->
-                      <div class="south-tab-text">                        
+                      <div class="south-tab-text">
                         <div class="form-group">
                           <div class="row">
-                            <div class="col-md-3"><label>Cédula propietario</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Publicación en</label><span style="color: red">*</span></div>
+                            <div class="col-md-2">
+                              <input type="checkbox" [(ngModel)]="publicarEnArriendo" name="">Arriendos
+                            </div>
+                            <div class="col-md-2">
+                              <input type="checkbox" [(ngModel)]="publicarEnVenta" name="">Ventas
+                            </div>
+                          </div> <br>
+                          <div class="row">
+                            <div class="col-md-2"><label>Cédula propietario</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
                               <input type="text" [(ngModel)]="propietario.cedula" placeholder="Ingrese el número de cédula del propietario"
                                 class="form-control" required="required">
                             </div>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="row">
-                            <div class="col-md-3"><label>Matrícula</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Matrícula</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
                               <input type="text" [(ngModel)]="selectedInmueble.matricula" placeholder="Ingrese la matrícula del inmueble"
                                 class="form-control">
                             </div>
                           </div>
-                        </div>
-                        <div class="form-group">
                           <div class="row">
-                            <div class="col-md-3"><label>Dirección</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
-                              <input type="text" [(ngModel)]="selectedInmueble.direccion" placeholder="Ingrese la dirección"
-                                class="form-control" required="required">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="row">
-                            <div class="col-md-3"><label>Tipo de inmueble</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Tipo de inmueble</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
                               <select [(ngModel)]="selectedTipoInmueble.id" class="form-control">
                                 <option [ngValue]="0" selected disabled hidden>Seleccione el tipo de inmueble</option>
                                 <option *ngFor="let tp of listaTiposInmueble" [value]="tp.id">{{tp.descripcion}}</option>
                               </select>
                             </div>
-                          </div>
-
-                        </div>
-                        <div class="form-group">
-                          <div class="row">
-                            <div class="col-md-3"><label>Zona</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Zona</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
                               <select class="form-control" [(ngModel)]="selectedInmueble.zona">
                                 <option value="0" selected disabled hidden>Seleccione la zona del inmubele</option>
                                 <option value="1">Rural</option>
@@ -99,107 +88,87 @@
                               </select>
                             </div>
                           </div>
-                        </div>
-                        <div class="form-group">
                           <div class="row">
-                            <div class="col-md-3"><label>Area</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Dirección</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
+                              <input type="text" [(ngModel)]="selectedInmueble.direccion" placeholder="Ingrese la dirección"
+                                class="form-control" required="required">
+                            </div>
+                            <div class="col-md-2"><label>Area</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
                               <input type="number" min="1" [(ngModel)]="selectedInmueble.area" placeholder="Ingrese el área en m^2"
                                 class="form-control" required="required">
                             </div>
                           </div>
-                        </div>
-                        <div class="form-group">
                           <div class="row">
-                            <div class="col-md-3"><label>Precio</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Precio</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
                               <input type="number" min="100000" [(ngModel)]="selectedInmueble.valor" placeholder="Ingrese el precio"
                                 class="form-control" required="required">
                             </div>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="row">
-                            <div class="col-md-3"><label>Porcentaje Promoción</label></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Porcentaje Promoción</label></div>
+                            <div class="col-md-4">
                               <input type="number" min="0" [(ngModel)]="selectedInmueble.promocion" placeholder="Ingrese un porcentaje de promoción"
                                 class="form-control">
                             </div>
                           </div>
-                        </div>
-                        <div class="form-group">
                           <div class="row">
-                            <div class="col-md-3"><label>Habitaciones</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Habitaciones</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
                               <input type="number" min="1" [(ngModel)]="selectedInmueble.num_habitaciones" required="required"
                                 placeholder="Ingrese el número de habitaciones" class="form-control">
                             </div>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="row">
-                            <div class="col-md-3"><label>Baños</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Baños</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
                               <input type="number" min="1" [(ngModel)]="selectedInmueble.num_banios" required="required"
                                 placeholder="Ingrese el número de baños" class="form-control">
                             </div>
                           </div>
-                        </div>
-                        <div class="form-group">
                           <div class="row">
-                            <div class="col-md-3"><label>Pisos</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Pisos</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
                               <input type="number" min="1" [(ngModel)]="selectedInmueble.pisos" required="required"
                                 placeholder="Ingrese la cantidad de pisos del inmueble" class="form-control">
                             </div>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="row">
-                            <div class="col-md-3"><label>Garajes</label></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Garajes</label></div>
+                            <div class="col-md-4">
                               <input type="number" min="0" [(ngModel)]="selectedInmueble.garaje" placeholder="Ingrese la cantidad de garajes del inmueble"
                                 class="form-control">
                             </div>
                           </div>
-                        </div>
-                        <div class="form-group">
                           <div class="row">
-                            <div class="col-md-3"><label>Closets</label></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Closets</label></div>
+                            <div class="col-md-4">
                               <input type="number" min="0" [(ngModel)]="selectedInmueble.num_closets" placeholder="Ingrese la cantidad de closets del inmueble"
                                 class="form-control">
                             </div>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="row">
-                            <div class="col-md-3"><label>Cocinas</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Cocinas</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
                               <input type="number" min="1" [(ngModel)]="selectedInmueble.num_cocinas" placeholder="Ingrese la cantidad de cocinas del inmueble"
                                 class="form-control">
                             </div>
                           </div>
-                        </div>
-                        <div class="form-group">
                           <div class="row">
-                            <div class="col-md-3"><label>Departamento<span style="color: red">*</span></label></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Departamento<span style="color: red">*</span></label></div>
+                            <div class="col-md-4">
                               <select [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
                                 <option [ngValue]="0" selected disabled hidden>Seleccione un Departamento</option>
                                 <option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
                               </select>
                             </div>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="row">
-                            <div class="col-md-3"><label>Municipio</label><span style="color: red">*</span></div>
-                            <div class="col-md-9">
+                            <div class="col-md-2"><label>Municipio</label><span style="color: red">*</span></div>
+                            <div class="col-md-4">
                               <select [(ngModel)]="selectedMunicipio.id" class="form-control">
                                 <option [ngValue]="0" selected disabled hidden>Seleccione un Municipio</option>
                                 <option *ngFor="let ms of listaMunicipios" [value]="ms.id">{{ms.nombre}}</option>
                               </select>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3"><label>Observaciones</label></div>
+                            <div class="col-md-9">
+                              <textarea [(ngModel)]="selectedInmueble.observaciones" placeholder="Ingrese los comentarios que desee acerca del inmueble"
+                                class="form-control"></textarea>
                             </div>
                           </div>
                           <div class="row">
@@ -276,16 +245,16 @@
                           <br>
                           <div class="row">
                             <div class="col-md-10">
-                              <input type="file" class="form-control" multiple (change)="onFileSelected($event)">
+                              <input type="file" class="form-control" [(ngModel)]="selectedFile" multiple (change)="onFileSelected($event)">
                             </div>
                             <div class="col-md-2">
                             </div>
                           </div>
 
                           <table class="table" style="width:100%">
-                              <tr *ngFor="let i of selectedFile">
-                                <td><img src="i"></td>
-                              </tr>
+                            <tr *ngFor="let i of selectedFile">
+                              <td><img src="i"></td>
+                            </tr>
                           </table>
 
                           <button (click)="registrar()" class="btn south-btn m-1">
@@ -309,7 +278,7 @@
         </div>
 
       </div>
-      
+
       <!-- </form> -->
 
     </div>
@@ -330,8 +299,8 @@
             <br>
             <h6>Lista de inmuebles</h6><br>
           </div>
-          <div class="col-md-12" style="overflow-x:auto;">
-            <table class="table" style="width:100%">
+          <div class="col-md-12" style="overflow-x:auto; overflow-y:auto;">
+            <table class="table" style="width:100%;">
               <thead>
                 <tr>
                   <th scope="col">Id</th>

@@ -22,10 +22,18 @@ var cliente = require('./routes/cliente');
 var inmueble = require('./routes/inmueble');
 //Cargamos el route de roles
 var roles = require('./routes/rol');
-//Cargamos el route de roles
+//Cargamos el route de municipio
 var municipio = require('./routes/municipio');
-//Cargamos el route de roles
+//Cargamos el route de departamento
 var departamento = require('./routes/departamento');
+//Cargamos el route de experiencias
+var experiencia = require('./routes/experiencia');
+//Cargamos el route de estudio
+var estudio = require('./routes/estudio');
+//Cargamos el route de arriendo
+var arriendo = require('./routes/arriendo');
+//Cargamos el route de ventas
+var venta = require('./routes/venta');
 
 // ------ SERVICIOS ------ //
 
@@ -120,6 +128,16 @@ app.get('/empleado/listar', empleado.list);
 app.get('/empleado/search/:cedula', empleado.searchEmpleado);
 app.get('/tipopersonal/listar', empleado.listTipoPersonal);
 
+// ------- Servicios de experiencias y estudios ------- //
+app.post('/experiencia/save', experiencia.saveExperiencia);
+app.post('/estudio/save', estudio.saveEstudio);
+app.get('/experiencia/listar/:cedula', experiencia.listarExperiencias);
+app.get('/estudio/listar/:cedula', estudio.listarEstudios);
+app.get('/experiencia/search/:id', experiencia.searchExperiencia);
+app.get('/estudio/search/:id', estudio.searchEstudio);
+app.post('/experiencia/delete', experiencia.deleteExperiencia);
+app.post('/estudio/delete', estudio.deleteEstudio);
+
 // ------- Servicios de login ------- //
 app.get('/login/login/:username/:contrasenia', login.login);
 app.get('/login/usuario-by-persona/:persona', login.loginByPersona);
@@ -142,6 +160,16 @@ app.post('/inmueble/edit/', inmueble.save_edit);
 app.get('/tipoinmueble/search/:id', inmueble.searchTipoInmubeleId);
 app.post('/file/add', inmueble.saveFile);
 app.get('/file/search/:inmueble_id', inmueble.searchFile);
+
+// ------------ Arriendos ----------------//
+app.post('/arriendo/add', arriendo.save);
+app.get('/arriendo/search/:inmueble_id', arriendo.buscarPorInmuebleId);
+app.post('/arriendo/delete/', arriendo.delete);
+
+// ------------ Ventas --------------- //
+app.post('/venta/add', venta.save);
+app.get('/venta/search/:inmueble_id', venta.buscarPorInmuebleId);
+app.post('/venta/delete/', venta.delete);
 
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);

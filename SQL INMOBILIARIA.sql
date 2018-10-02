@@ -314,6 +314,12 @@ ADD CONSTRAINT `FOTO_INMUEBLE_FK`
   ALTER TABLE ARCHIVO 
 CHANGE COLUMN `nombre` `nombre` LONGTEXT NOT NULL ;
 
+ALTER TABLE INMUEBLE
+ADD COLUMN `activo` CHAR(1) NOT NULL AFTER `precio_negociable`;
+
+ALTER TABLE INMUEBLE 
+ADD COLUMN `observaciones` VARCHAR(800) NULL AFTER `activo`;
+
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 

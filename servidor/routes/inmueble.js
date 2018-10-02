@@ -8,7 +8,7 @@ exports.list = function (req, res) {
 
         var query = connection.query('SELECT i.*, m.nombre as municipio, d.id as dpto_id, ' 
         + ' d.nombre as depto FROM inmueble i JOIN municipio m ON m.id = i.municipio_id ' 
-        + ' JOIN departamento d ON d.id = m.departamento_id', function (err, rows) {
+        + ' JOIN departamento d ON d.id = m.departamento_id WHERE i.activo = 1', function (err, rows) {
 
             if (err)
                 console.log("Error Selecting : %s ", err);
@@ -139,7 +139,7 @@ exports.search = function (req, res) {
         + ' FROM inmueble i JOIN tipo_inmueble ti ' 
         + ' ON i.tipo_inmueble_id = ti.id JOIN municipio m ON m.id = i.municipio_id '
         + ' JOIN departamento d ON d.id = m.departamento_id ' 
-        + ' WHERE i.matricula = ?', [matricula], function (err, rows) {
+        + ' WHERE i.matricula = ? AND i.activo = 1', [matricula], function (err, rows) {
 
             if (err)
                 console.log("Error Selecting : %s ", err);
@@ -197,7 +197,9 @@ exports.save = function (req, res) {
             persona_cedula: input.persona_cedula.persona_cedula.cedula,
             cliente_cedula:input.cliente_cedula.cedula,
             matricula: input.matricula,
-            precio_negociable: input.precio_negociable
+            precio_negociable: input.precio_negociable,
+            activo: 1,
+            observaciones: input.observaciones
         };
 
         var query = connection.query("INSERT INTO inmueble set ? ", data, function (err, rows) {
@@ -254,7 +256,9 @@ exports.save_edit = function (req, res) {
             persona_cedula: input.persona_cedula.persona_cedula.cedula,
             cliente_cedula:input.cliente_cedula.cedula,
             matricula: input.matricula,
-            precio_negociable: input.precio_negociable
+            precio_negociable: input.precio_negociable,
+            activo: 1,
+            observaciones: input.observaciones
 
         };
 
@@ -275,7 +279,7 @@ exports.delete_inmueble = function (req, res) {
     var input = JSON.parse(JSON.stringify(req.body));
     req.getConnection(function (err, connection) {
 
-        connection.query("DELETE FROM inmueble WHERE id = ? ", [input.id], function (err, rows) {
+        connection.query("UPDATE inmueble SET activo = 0 WHERE id = ? ", [input.id], function (err, rows) {
 
             if (err)
             res.send('{"id": 404,"msj": "Hubo un error al eliminar"}');

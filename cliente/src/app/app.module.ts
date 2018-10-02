@@ -16,6 +16,7 @@ import { HeaderComponent } from './pages/publico/header/header.component';
 import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acceso/asignar-acceso.component';
 import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/editar-cliente.component';
 import { BuscarByNombrePipe } from './filtros/buscar-by-nombre.pipe';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
