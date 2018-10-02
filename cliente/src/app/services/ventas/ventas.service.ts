@@ -28,4 +28,9 @@ export class VentasService {
     .map(res => res);
   }
 
+  activar(venta: Venta) {
+    return this.http.post<any>(`${this.domain}/venta/activar/`, venta)
+    .map(res => res);
+  }
+
 }

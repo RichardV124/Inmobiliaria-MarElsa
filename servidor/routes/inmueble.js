@@ -13,9 +13,9 @@ exports.list = function (req, res) {
             if (err)
                 console.log("Error Selecting : %s ", err);
 
-            res.send({
-                data: rows
+            res.send({data:rows    
             });
+            
 
 
         });
@@ -69,6 +69,23 @@ exports.searchFile = function (req, res) {
         });
 
         //console.log(query.sql);
+    });
+};
+
+exports.delete_file = function (req, res) {
+
+    var input = JSON.parse(JSON.stringify(req.body));
+    req.getConnection(function (err, connection) {
+
+        connection.query("DELETE FROM archivo WHERE id = ? ", [input.id], function (err, rows) {
+
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al eliminar"}');
+       
+        res.send('{"id": 505,"msj": "Se eliminó correctamente"}');
+
+        });
+
     });
 };
 

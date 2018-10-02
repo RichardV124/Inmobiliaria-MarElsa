@@ -7,7 +7,7 @@ import { Archivo } from './../../../../modelo/archivo';
 import { MunicipioService } from './../../../../services/municipio/municipio.service';
 import { Departamento } from './../../../../modelo/departamento';
 import { Municipio } from './../../../../modelo/municipio';
-import { element } from 'protractor';
+import { element, $ } from 'protractor';
 import { RespuestaDTO } from './../../../../modelo/respuestaDTO';
 import { Inmueble } from './../../../../modelo/inmueble';
 import { InmuebleService } from './../../../../services/inmueble/inmueble.service';
@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { Login } from '../../../../modelo/login';
 import { LoginService } from '../../../../services/login/login.service';
 import { Persona } from '../../../../modelo/persona';
+import { Rol } from '../../../../modelo/rol';
 
 const uri = 'http://localhost:3000/file/upload';
 
@@ -27,8 +28,19 @@ const uri = 'http://localhost:3000/file/upload';
 })
 export class RegistroInmuebleComponent implements OnInit {
 
+
+/* variables de validacion */
+
+listarInmuebless = false;
+boolBuscarInmueble = false;
+clientExist = false;
+
+
   img;
   show = 0;
+  rol: Rol = new Rol();
+  labelFile;
+  mostrarTabArchivos = false;
 
   listaInmuebles: Inmueble[];
   listaTiposInmueble: TipoInmueble[];
@@ -59,12 +71,20 @@ export class RegistroInmuebleComponent implements OnInit {
     this.combosPorDefecto();
     this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
     this.selectedInmueble.municipio_id = this.selectedMunicipio;
+    this.labelFile = 'Ningún archivo seleccionado';
    }
 
   ngOnInit() {
     this.servicios.esAccesible('registro-inmueble');
     this.usuario = this.servicios.getUsuario();
     console.log(this.usuario);
+  }
+
+  /**
+   * Cierra el msj emergente
+   */
+  cerrarMsj() {
+    this.show = 0;
   }
 
   /**
@@ -89,15 +109,15 @@ export class RegistroInmuebleComponent implements OnInit {
   validarCamposNoIngresados() {
     if (this.selectedInmueble.promocion == null) {
       this.selectedInmueble.promocion = 0;
-      
+
     }
     if (this.selectedInmueble.garaje == null) {
       this.selectedInmueble.garaje = 0;
-    
+
     }
     if (this.selectedInmueble.num_closets == null) {
       this.selectedInmueble.num_closets = 0;
-     
+
     }
     return true;
   }
@@ -164,6 +184,7 @@ export class RegistroInmuebleComponent implements OnInit {
       }
 
       this.listarInmuebles();
+      return true;
     });
   }
 
@@ -216,10 +237,11 @@ export class RegistroInmuebleComponent implements OnInit {
       this.propietario = JSON.parse(JSON.stringify(cliente));
       console.log('nombre cliente: ' + this.propietario.nombre);
       if (this.propietario.nombre != null) {
+        this.clientExist = true;
         this.continuarRegistro();
-        return true;
       } else {
         this.respuesta.msj = 'La cédula del cliente ingresado no existe';
+        this.clientExist = false;
         this.show = 404;
       }
     });
@@ -229,9 +251,12 @@ export class RegistroInmuebleComponent implements OnInit {
     this.combosPorDefecto();
     this.propietario = new Persona();
     this.selectedInmueble = new Inmueble();
+    this.selectedInmueble.zona = 0;
     this.publicarEnArriendo = false;
     this.publicarEnVenta = false;
     this.selectedFile = null;
+    this.mostrarTabArchivos = false;
+    this.labelFile = 'Ningún archivo seleccionado';
   }
 
   /**
@@ -250,6 +275,29 @@ export class RegistroInmuebleComponent implements OnInit {
    */
   onFileSelected(event) {
     this.selectedFile = event.target.files;
+
+    if (this.selectedFile === null) {
+      this.labelFile = 'Ningún archivo seleccionado';
+    } else {
+    this.labelFile = '';
+    for (const file of this.selectedFile) {
+      this.labelFile = this.labelFile + '  ' + file.name;
+    }
+
+    /** this.selectedFile = event.target.files[0];
+
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+        this.selectedFile = e.target.result;
+    };
+    reader.readAsDataURL(event.target.files[0]); **/
+
+   }
+  }
+
+  mostrarFotos() {
+    return this.mostrarTabArchivos;
   }
 
   /**
@@ -259,6 +307,11 @@ export class RegistroInmuebleComponent implements OnInit {
     this.inmuebleServie.listarInmuebles()
     .subscribe(inmueble => {
       this.listaInmuebles = inmueble;
+      if (this.listaInmuebles === undefined) {
+        this.listarInmuebless = false;
+      } else {
+        this.listarInmuebless = true;
+      }
       this.obtenerDatosCombosLista();
     });
   }
@@ -269,7 +322,7 @@ export class RegistroInmuebleComponent implements OnInit {
       if (ext === 'jpg' || ext === 'png' || ext === 'jpeg') {
         this.convertirArchivoBase64(file, true, inmueble);
       } else if (ext === 'mp4') {
-
+        this.convertirArchivoBase64(file, false, inmueble);
       } else {
         this.show = 404;
         this.respuesta.msj = 'El archivo ' + file.name + ' tiene una extensión no permitida';
@@ -354,9 +407,8 @@ export class RegistroInmuebleComponent implements OnInit {
   listarArchivos() {
     this.inmuebleServie.listarArchivos(this.selectedInmueble.id)
     .subscribe(archivo => {
-      console.log("archivoooooooo "+archivo.archivo)
       this.archivo = archivo;
-      return true; 
+      return true;
     });
   }
 
@@ -417,6 +469,7 @@ export class RegistroInmuebleComponent implements OnInit {
       this.show = this.respuesta.id;
       this.listarInmuebles();
     });
+    return true;
   }
 
   /**
@@ -431,11 +484,21 @@ export class RegistroInmuebleComponent implements OnInit {
         // se debe registrar
       } else if (this.publicarEnArriendo && this.arriendoBuscado === undefined) {
         this.registrarInmuebleEnArriendo(this.selectedInmueble);
+        // Si se seleccionó la opción de publicar en arriendo y este ya esta registrado,
+        // se lo activa
+      } else if (this.publicarEnArriendo && this.arriendoBuscado !== undefined) {
+        this.arriendoService.activar(this.arriendoBuscado).subscribe(res => res);
       }
+
+      // Hacemos los mismo para las ventas
       if (!this.publicarEnVenta && this.ventaBuscada !== undefined) {
         this.ventaService.eliminar(this.ventaBuscada).subscribe(res => res);
+
       } else if (this.publicarEnVenta && this.ventaBuscada === undefined) {
         this.registrarInmuebleVentas(this.selectedInmueble);
+
+      } else if (this.publicarEnVenta && this.ventaBuscada !== undefined) {
+        this.ventaService.activar(this.ventaBuscada).subscribe(res => res);
       }
   }
 
@@ -471,6 +534,7 @@ export class RegistroInmuebleComponent implements OnInit {
    * @param inmueble inmueble del cual se desea ver los datos
    */
   ver(inmueble: Inmueble) {
+    this.limpiarCampos();
     this.selectedInmueble.matricula = inmueble.matricula;
     this.buscar();
   }
@@ -482,8 +546,11 @@ export class RegistroInmuebleComponent implements OnInit {
     this.arriendoService.buscarInmuebleArriendo(this.selectedInmueble.id)
     .subscribe(arriendo => {
       if (arriendo !== undefined) {
-        this.publicarEnArriendo = true;
+        const activo: string = JSON.parse(JSON.stringify(arriendo['activo']));
         this.arriendoBuscado = arriendo;
+        if (activo === '1') {
+          this.publicarEnArriendo = true;
+        }
       }
     });
   }
@@ -495,7 +562,10 @@ export class RegistroInmuebleComponent implements OnInit {
     this.ventaService.buscarInmuebleVenta(this.selectedInmueble.id)
     .subscribe(venta => {
       if (venta !== undefined) {
-        this.publicarEnVenta = true;
+        const activo: string = JSON.parse(JSON.stringify(venta['activo']));
+        if (activo === '1') {
+          this.publicarEnVenta = true;
+        }
         this.ventaBuscada = venta;
       }
     });
@@ -515,9 +585,10 @@ export class RegistroInmuebleComponent implements OnInit {
         if (inmueble === undefined) {
           this.respuesta.msj = 'El inmueble no existe';
           this.show = 404;
+          this.boolBuscarInmueble = false;
         } else {
+          this.mostrarTabArchivos = false;
           this.selectedInmueble = inmueble;
-          this.show = 505;
           this.listarArchivos();
           this.obtenerDatosCombosBusqueda();
           this.buscarInmuebleEnArriendos();
@@ -583,4 +654,14 @@ export class RegistroInmuebleComponent implements OnInit {
     return true;
   }
 
+
+  validarListarInmuebles(): boolean {
+    return this.listarInmuebless;
+  }
+  validarBuscarInmueble(): boolean {
+    return this.boolBuscarInmueble;
+  }
+  validarClienteExist(): boolean {
+    return this.clientExist;
+  }
 }

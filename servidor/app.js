@@ -160,16 +160,19 @@ app.post('/inmueble/edit/', inmueble.save_edit);
 app.get('/tipoinmueble/search/:id', inmueble.searchTipoInmubeleId);
 app.post('/file/add', inmueble.saveFile);
 app.get('/file/search/:inmueble_id', inmueble.searchFile);
+app.post('/file/delete/', inmueble.delete_file);
 
 // ------------ Arriendos ----------------//
 app.post('/arriendo/add', arriendo.save);
 app.get('/arriendo/search/:inmueble_id', arriendo.buscarPorInmuebleId);
 app.post('/arriendo/delete/', arriendo.delete);
+app.post('/arriendo/activar/', arriendo.activar);
 
 // ------------ Ventas --------------- //
 app.post('/venta/add', venta.save);
 app.get('/venta/search/:inmueble_id', venta.buscarPorInmuebleId);
 app.post('/venta/delete/', venta.delete);
+app.post('/venta/activar/', venta.activar);
 
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);
