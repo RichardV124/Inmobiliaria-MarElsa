@@ -6,4 +6,5 @@ export class Arriendo {
     inmueble_id: Inmueble;
     cliente_cedula: Persona;
     empleado_cedula: Persona;
+    activo: boolean;
 }

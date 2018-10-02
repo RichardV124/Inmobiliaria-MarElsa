@@ -7,7 +7,7 @@ import { Archivo } from './../../../../modelo/archivo';
 import { MunicipioService } from './../../../../services/municipio/municipio.service';
 import { Departamento } from './../../../../modelo/departamento';
 import { Municipio } from './../../../../modelo/municipio';
-import { element } from 'protractor';
+import { element, $ } from 'protractor';
 import { RespuestaDTO } from './../../../../modelo/respuestaDTO';
 import { Inmueble } from './../../../../modelo/inmueble';
 import { InmuebleService } from './../../../../services/inmueble/inmueble.service';
@@ -38,7 +38,13 @@ clientExist = false;
 
   img;
   show = 0;
+<<<<<<< HEAD
   rol: Rol = new Rol();
+=======
+  labelFile;
+  mostrarTabArchivos = false;
+
+>>>>>>> eab5878e2c97fb9c788b89a2947f29679c5d8b02
   listaInmuebles: Inmueble[];
   listaTiposInmueble: TipoInmueble[];
   listaMunicipios: Municipio[];
@@ -68,12 +74,20 @@ clientExist = false;
     this.combosPorDefecto();
     this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
     this.selectedInmueble.municipio_id = this.selectedMunicipio;
+    this.labelFile = 'Ningún archivo seleccionado';
    }
   
   ngOnInit() {
     this.servicios.esAccesible('registro-inmueble');
     this.usuario = this.servicios.getUsuario();
     console.log(this.usuario);
+  }
+
+  /**
+   * Cierra el msj emergente
+   */
+  cerrarMsj() {
+    this.show = 0;
   }
 
   /**
@@ -241,9 +255,12 @@ clientExist = false;
     this.combosPorDefecto();
     this.propietario = new Persona();
     this.selectedInmueble = new Inmueble();
+    this.selectedInmueble.zona = 0;
     this.publicarEnArriendo = false;
     this.publicarEnVenta = false;
     this.selectedFile = null;
+    this.mostrarTabArchivos = false;
+    this.labelFile = 'Ningún archivo seleccionado';
   }
 
   /**
@@ -262,6 +279,29 @@ clientExist = false;
    */
   onFileSelected(event) {
     this.selectedFile = event.target.files;
+
+    if (this.selectedFile === null) {
+      this.labelFile = 'Ningún archivo seleccionado';
+    } else {
+    this.labelFile = '';
+    for (const file of this.selectedFile) {
+      this.labelFile = this.labelFile + '  ' + file.name;
+    }
+
+    /** this.selectedFile = event.target.files[0];
+
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+        this.selectedFile = e.target.result;
+    };
+    reader.readAsDataURL(event.target.files[0]); **/
+
+   }
+  }
+
+  mostrarFotos() {
+    return this.mostrarTabArchivos;
   }
 
   /**
@@ -286,7 +326,7 @@ clientExist = false;
       if (ext === 'jpg' || ext === 'png' || ext === 'jpeg') {
         this.convertirArchivoBase64(file, true, inmueble);
       } else if (ext === 'mp4') {
-
+        this.convertirArchivoBase64(file, false, inmueble);
       } else {
         this.show = 404;
         this.respuesta.msj = 'El archivo ' + file.name + ' tiene una extensión no permitida';
@@ -449,11 +489,21 @@ clientExist = false;
         // se debe registrar
       } else if (this.publicarEnArriendo && this.arriendoBuscado === undefined) {
         this.registrarInmuebleEnArriendo(this.selectedInmueble);
+        // Si se seleccionó la opción de publicar en arriendo y este ya esta registrado,
+        // se lo activa
+      } else if (this.publicarEnArriendo && this.arriendoBuscado !== undefined) {
+        this.arriendoService.activar(this.arriendoBuscado).subscribe(res => res);
       }
+
+      // Hacemos los mismo para las ventas
       if (!this.publicarEnVenta && this.ventaBuscada !== undefined) {
         this.ventaService.eliminar(this.ventaBuscada).subscribe(res => res);
+
       } else if (this.publicarEnVenta && this.ventaBuscada === undefined) {
         this.registrarInmuebleVentas(this.selectedInmueble);
+
+      } else if (this.publicarEnVenta && this.ventaBuscada !== undefined) {
+        this.ventaService.activar(this.ventaBuscada).subscribe(res => res);
       }
   }
 
@@ -500,8 +550,11 @@ clientExist = false;
     this.arriendoService.buscarInmuebleArriendo(this.selectedInmueble.id)
     .subscribe(arriendo => {
       if (arriendo !== undefined) {
-        this.publicarEnArriendo = true;
+        const activo: string = JSON.parse(JSON.stringify(arriendo['activo']));
         this.arriendoBuscado = arriendo;
+        if (activo === '1') {
+          this.publicarEnArriendo = true;
+        }
       }
     });
   }
@@ -513,7 +566,10 @@ clientExist = false;
     this.ventaService.buscarInmuebleVenta(this.selectedInmueble.id)
     .subscribe(venta => {
       if (venta !== undefined) {
-        this.publicarEnVenta = true;
+        const activo: string = JSON.parse(JSON.stringify(venta['activo']));
+        if (activo === '1') {
+          this.publicarEnVenta = true;
+        }
         this.ventaBuscada = venta;
       }
     });
@@ -535,6 +591,7 @@ clientExist = false;
           this.show = 404;
           this.boolBuscarInmueble = false;
         } else {
+          this.mostrarTabArchivos = true;
           this.selectedInmueble = inmueble;
           this.boolBuscarInmueble = true;
           this.show = 505;

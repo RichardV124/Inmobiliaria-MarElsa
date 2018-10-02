@@ -320,6 +320,12 @@ ADD COLUMN `activo` CHAR(1) NOT NULL AFTER `precio_negociable`;
 ALTER TABLE INMUEBLE 
 ADD COLUMN `observaciones` VARCHAR(800) NULL AFTER `activo`;
 
+ALTER TABLE ARRIENDO 
+ADD COLUMN `activo` CHAR(1) NULL AFTER `empleado_cedula`;
+
+ALTER TABLE VENTA 
+ADD COLUMN `activo` CHAR(1) NULL AFTER `empleado_cedula`;
+
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 

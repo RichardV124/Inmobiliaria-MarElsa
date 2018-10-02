@@ -71,3 +71,26 @@ exports.searchExperiencia = function(req, res){
       console.log(query.sql);
      });
  };
+
+ /*Elimina una experiencia a un empleado*/
+ exports.deleteExperiencia = function(req,res){
+
+    var input = JSON.parse(JSON.stringify(req.body));
+    console.log(input);
+
+    req.getConnection(function (err, connection) {
+
+        var query= connection.query("DELETE FROM experiencia WHERE persona_cedula = ? AND id = ?",[input.persona_cedula,input.id], 
+        function(err, rows)
+        {
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al eliminar la experiencia"}');
+       
+        res.send('{"id": 505,"msj": "Se elimino correctamente la experiencia al empleado"}');
+        
+      });
+
+        console.log(query.sql); //get raw query
+    
+    });
+};

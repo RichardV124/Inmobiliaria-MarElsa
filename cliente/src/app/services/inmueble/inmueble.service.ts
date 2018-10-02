@@ -47,6 +47,11 @@ export class InmuebleService {
     });
   }
 
+  eliminarArchivo(archivo: Archivo) {
+    return this.http.post<any>(`${this.domain}/file/delete/`, archivo)
+    .map(res => res);
+  }
+
 
   /**
    * Elimina un inmueble de la bd

@@ -93,7 +93,8 @@ console.log(input);
           correo   : input.correo,              
           rol_id : input.rol_id,
           municipio_id : input.municipio_id,
-          genero : input.genero
+          genero : input.genero,
+         // activo : 1
       };
 
       var login = {

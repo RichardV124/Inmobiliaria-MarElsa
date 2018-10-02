@@ -72,6 +72,23 @@ exports.searchFile = function (req, res) {
     });
 };
 
+exports.delete_file = function (req, res) {
+
+    var input = JSON.parse(JSON.stringify(req.body));
+    req.getConnection(function (err, connection) {
+
+        connection.query("DELETE FROM archivo WHERE id = ? ", [input.id], function (err, rows) {
+
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al eliminar"}');
+       
+        res.send('{"id": 505,"msj": "Se eliminó correctamente"}');
+
+        });
+
+    });
+};
+
 function decodeBase64Image(dataString) {
     var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
       response = {};

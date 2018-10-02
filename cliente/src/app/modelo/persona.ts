@@ -6,7 +6,7 @@ import { Municipio } from './municipio';
 export class Persona {
     nombre: string;
     apellido: string;
-    fecha_nacimiento: Date;
+    fecha_nacimiento: any;
     cedula: string;
     direccion: string;
     telefono: number;

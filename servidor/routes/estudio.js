@@ -69,3 +69,26 @@ exports.searchEstudio = function(req, res){
       console.log(query.sql);
      });
  };
+
+ /*Elimina una formacion academica a un empleado*/
+ exports.deleteEstudio = function(req,res){
+
+    var input = JSON.parse(JSON.stringify(req.body));
+    console.log(input);
+
+    req.getConnection(function (err, connection) {
+
+        var query= connection.query("DELETE FROM estudio  WHERE persona_cedula = ? AND id = ?",[input.persona_cedula, input.id], 
+        function(err, rows)
+        {
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al eliminar la formacion"}');
+       
+        res.send('{"id": 505,"msj": "Se elimino correctamente la formacion al empleado"}');
+        
+      });
+
+        console.log(query.sql); //get raw query
+    
+    });
+};

@@ -38,6 +38,10 @@ export class EditarClienteComponent implements OnInit {
   ngOnInit() {
   }
 
+  cerrarMsj() {
+    this.show = 0;
+  }
+
   buscar(cedula: string) {
       this.clienteService.buscarPersona(cedula)
       .subscribe(cliente => {
@@ -83,9 +87,8 @@ export class EditarClienteComponent implements OnInit {
 
   validarCampos(): boolean {
     if (this.selectedPersona.nombre == null || this.selectedPersona.apellido == null
-      || this.selectedPersona.fecha_nacimiento == null || this.selectedPersona.cedula == null
-      || this.selectedPersona.telefono == null || this.selectedPersona.direccion == null
-      || this.selectedPersona.correo == null || this.selectedLogin.username || this.selectedLogin.contrasenia) {
+      || this.selectedPersona.cedula == null || this.selectedPersona.telefono == null
+      || this.selectedLogin.username == null || this.selectedLogin.contrasenia == null) {
         return false;
     } else {
       return true;
@@ -94,7 +97,9 @@ export class EditarClienteComponent implements OnInit {
 
   editar() {
 
-    if (this.validarCampos()) {
+    if (this.validarCampos() === false) {
+      this.respuesta.msj = 'Debe ingresar todos los campos obligatorios';
+      this.show = 1;
     } else {
       this.rol.id = 3;
       this.selectedPersona.rol_id = this.rol;
@@ -107,8 +112,11 @@ export class EditarClienteComponent implements OnInit {
         this.respuesta = JSON.parse(JSON.stringify(res));
         console.log(this.respuesta.msj + ' UPDATE');
         console.log(this.selectedPersona.nombre);
-        // this.selectedPersona = new Persona();
-        // this.selectedLogin = new Login();
+        if (this.respuesta.id === 404) {
+          this.show = 1;
+        } else {
+          this.show = 2;
+        }
       });
     }
   }

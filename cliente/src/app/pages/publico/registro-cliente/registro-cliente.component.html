@@ -3,7 +3,7 @@
         <div class="row h-100 align-items-center">
             <div class="col-12">
                 <div class="breadcumb-content">
-                    <h3 class="breadcumb-title">Registro de Cliente</h3>
+                    <h3 class="breadcumb-title">Registro  de Cliente</h3>
                 </div>
             </div>
         </div>
@@ -107,7 +107,11 @@
                       Registrar
                     </button>                       
                 </div>
+                <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                <br><br>
           </div>
+          
 
             <br><br>
 

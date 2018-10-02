@@ -38,7 +38,7 @@ export class ExperienciaService {
    /**
    * Lista las experiencias por la cedula del empleado
    */
-  listarExperiencias(cedula: number) {
+  listarExperiencias(cedula: string) {
     return this.http.get<any>(`${this.domain}/experiencia/listar/${cedula}`)
     .map(res => {
       return res.data;
@@ -48,7 +48,7 @@ export class ExperienciaService {
   /**
    * Lista los estudios por la cedula del empleado
    */
-  listarEstudios(cedula: number) {
+  listarEstudios(cedula: string) {
     return this.http.get<any>(`${this.domain}/estudio/listar/${cedula}`)
     .map(res => {
       return res.data;
@@ -79,4 +79,25 @@ export class ExperienciaService {
   });
 
   }
+
+  /**
+ * Metodo que elimina una experiencia a un empleado en la BD
+ * @param experiencia, la experiencia que se va a eliminar en la BD
+ */
+eliminarExperiencia(experiencia: Experiencia) {
+  console.log(experiencia);
+  return this.http.post<any>(`${this.domain}/experiencia/delete/`, experiencia)
+    .map(res => res);
+}
+
+ /**
+ * Metodo que elimina una formacion a un empleado en la BD
+ * @param estudio, el estudio que se va a eliminar en la BD
+ */
+eliminarEstudio(estudio: Estudio) {
+  console.log(estudio);
+  return this.http.post<any>(`${this.domain}/estudio/delete/`, estudio)
+    .map(res => res);
+}
+
 }

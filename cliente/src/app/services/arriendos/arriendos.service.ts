@@ -32,4 +32,9 @@ export class ArriendosService {
     .map(res => res);
   }
 
+  activar(arriendo: Arriendo) {
+    return this.http.post<any>(`${this.domain}/arriendo/activar/`, arriendo)
+    .map(res => res);
+  }
+
 }

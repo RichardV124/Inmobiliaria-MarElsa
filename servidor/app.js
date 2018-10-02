@@ -135,7 +135,8 @@ app.get('/experiencia/listar/:cedula', experiencia.listarExperiencias);
 app.get('/estudio/listar/:cedula', estudio.listarEstudios);
 app.get('/experiencia/search/:id', experiencia.searchExperiencia);
 app.get('/estudio/search/:id', estudio.searchEstudio);
-
+app.post('/experiencia/delete', experiencia.deleteExperiencia);
+app.post('/estudio/delete', estudio.deleteEstudio);
 
 // ------- Servicios de login ------- //
 app.get('/login/login/:username/:contrasenia', login.login);
@@ -159,16 +160,19 @@ app.post('/inmueble/edit/', inmueble.save_edit);
 app.get('/tipoinmueble/search/:id', inmueble.searchTipoInmubeleId);
 app.post('/file/add', inmueble.saveFile);
 app.get('/file/search/:inmueble_id', inmueble.searchFile);
+app.post('/file/delete/', inmueble.delete_file);
 
 // ------------ Arriendos ----------------//
 app.post('/arriendo/add', arriendo.save);
 app.get('/arriendo/search/:inmueble_id', arriendo.buscarPorInmuebleId);
 app.post('/arriendo/delete/', arriendo.delete);
+app.post('/arriendo/activar/', arriendo.activar);
 
 // ------------ Ventas --------------- //
 app.post('/venta/add', venta.save);
 app.get('/venta/search/:inmueble_id', venta.buscarPorInmuebleId);
 app.post('/venta/delete/', venta.delete);
+app.post('/venta/activar/', venta.activar);
 
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);
