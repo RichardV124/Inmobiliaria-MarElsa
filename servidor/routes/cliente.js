@@ -31,9 +31,9 @@ exports.list = function(req, res){
           {
               
               if(err)
-                  console.log("Error Selecting : %s ",err );
-       
-              res.send({data:rows[0]});
+                console.log("Error Selecting : %s ",err );
+            console.log("origen: "+req.headers.origin+" - peticion: buscar persona - parametro: "+cedula+" - resultado: "+rows[0]);
+            res.send({data:rows[0]});
               
                   
              

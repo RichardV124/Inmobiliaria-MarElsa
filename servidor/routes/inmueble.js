@@ -13,9 +13,9 @@ exports.list = function (req, res) {
             if (err)
                 console.log("Error Selecting : %s ", err);
 
-            res.send({
-                data: rows
+            res.send({data:rows    
             });
+            
 
 
         });
