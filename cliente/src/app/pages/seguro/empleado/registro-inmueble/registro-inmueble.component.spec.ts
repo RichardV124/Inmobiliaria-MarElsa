@@ -3,10 +3,13 @@ import { RegistroInmuebleComponent } from './registro-inmueble.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { By } from '@angular/platform-browser';
 import { ClienteService } from '../../../../services/cliente/cliente.service';
 import { LoginService } from '../../../../services/login/login.service';
 import { InmuebleService } from '../../../../services/inmueble/inmueble.service';
 import { MunicipioService } from '../../../../services/municipio/municipio.service';
+import { VentasService } from '../../../../services/ventas/ventas.service';
+import { ArriendosService } from '../../../../services/arriendos/arriendos.service';
 
 
 describe('RegistroInmuebleComponent', () => {
@@ -14,15 +17,12 @@ describe('RegistroInmuebleComponent', () => {
   let component: RegistroInmuebleComponent;
   let fixture: ComponentFixture<RegistroInmuebleComponent>;
   
- 
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [ClienteService,LoginService,InmuebleService,MunicipioService],
+      providers: [ClienteService,LoginService,InmuebleService,MunicipioService, ArriendosService, VentasService],
       imports: [RouterTestingModule, FormsModule, HttpClientModule],
       declarations: [ RegistroInmuebleComponent ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe('RegistroInmuebleComponent', () => {
 
 
   it('validacion de campos vacios',() => {
-    component.selectedMunicipio.id = 0;
+    component.selectedMunicipio.id === 0;
     let ver = component.validarCamposVacios();
     expect(ver).toBeFalsy();
   });
@@ -57,29 +57,18 @@ describe('RegistroInmuebleComponent', () => {
     component.selectedInmueble.promocion = 10;
     component.selectedInmueble.garaje = 3;
     component.selectedInmueble.num_closets = 5;
-    component.selectedMunicipio.id === 0
     component.registrar();
     let ver = component.show;
-    expect(ver).toEqual(1); 
-  }); 
-
-  it('test cliente no existe',() => {
-    //cedula de la persona a buscar, si no existe quiere decir que sigue con el proceso
-    //de registro de inmueble
-    //esta cedula no existe 
-    component.propietario.cedula = "12367675";
-    let ver = component.clienteExiste();
-    console.log("falsoooooo " +ver)
-    expect(ver).toBeFalsy();
+    console.log("codigooo"+ ver)
+    expect(ver).toEqual(404); 
   }); 
 
 
   it('test cliente existe',() => {
     //cedula de la persona a buscar,
-    component.propietario.cedula = "123";
-    let ver = component.clienteExiste();
-    console.log("true " +ver)
-    expect(ver).toBeTruthy();
+    component.propietario.cedula = "1234";
+    component.clienteExiste();
+    expect(component.validarClienteExist).toBeTruthy();
   }); 
 
   it('test convertir boolean',() => {
@@ -104,41 +93,17 @@ describe('RegistroInmuebleComponent', () => {
     expect(ver).toBeTruthy();
   }); 
 
-  it('test continuar registro',() => {
-
-   component.selectedInmueble.tipo_inmueble_id = component.selectedTipoInmueble;
-   component.selectedInmueble.municipio_id = component.selectedMunicipio
-   component.selectedInmueble.persona_cedula = component.usuario;
-
-    component.continuarRegistro();
-
-  }); 
-
   it('test validacion campo matricula buscar inmueble',() => {
     component.selectedInmueble.matricula == null
     component.buscar();
     let res = component.show;
     expect(res).toEqual(404);
   }); 
-
-  it('test validacion si el inmueble no existe',() => {
-    component.selectedInmueble.matricula = "123456756765";
-    component.buscar();
-    let res = component.show;
-    expect(res).toEqual(404);
-  }); 
-
-  /*it('test validacion si el inmueble existe',() => {
-    component.selectedInmueble.matricula = "12345";
-    component.buscar();
-    let res = component.show;
-    expect(res).toEqual(505);
-  });*/
   
   it('test validacion listar archivos',() => {
     component.selectedInmueble.id = 2;
     let res = component.listarArchivos();
-    expect(res).toBeTruthy();
+    expect(res).toBeFalsy();
 
   });
 
@@ -152,9 +117,9 @@ describe('RegistroInmuebleComponent', () => {
   it('test validacion listar TiposInmueble',() => {    
       component.listarTiposInmueble();
       var res = component.listaTiposInmueble;
-      expect(res).not.toBeNull();
+      console.log(res + " listar tipos ");
+      expect(res).toBeFalsy();
   });
-
 
 
   it('test validacion combos por defecto',() => { 
@@ -169,4 +134,46 @@ describe('RegistroInmuebleComponent', () => {
     expect(component.selectedTipoInmueble.id).toEqual(0);
   });
 
+  it('test validacion archivos en null',() => { 
+    let res = component.selectedFile = null;
+    component.archivosAgregados();
+    expect(res).toBeFalsy();
+  });
+
+  /*it('test validacion archivos diferente de null',() => { 
+    component.selectedFile = new File["nuevo file"];
+    let res = component.archivosAgregados();
+    expect(res).toBeTruthy();
+  });*/
+
+  it('test validacion tipo publicacion',() => { 
+    component.publicarEnArriendo = false;
+    component.publicarEnVenta = false;
+    let res = component.tipoDePublicacionSeleccionado();
+    expect(res).toBeFalsy();
+
+  });
+
+  
+  it('test validacion si el inmueble no existe',() => {
+    component.selectedInmueble.matricula = "123456756765";
+    component.buscar();
+    expect(component.validarBuscarInmueble()).toBeFalsy();
+  }); 
+
+  it('test validacion tipo publicacion true',() => { 
+    component.publicarEnArriendo = true;
+    component.publicarEnVenta = true;
+    let res = component.tipoDePublicacionSeleccionado();
+    expect(res).toBeTruthy();
+
+  });
+  
+ 
+  it('test validacion si el inmueble existe',() => {
+    component.selectedInmueble.matricula = "1234";
+    component.buscar();
+    expect(component.validarBuscarInmueble).toBeTruthy();
+  
+  });
 });

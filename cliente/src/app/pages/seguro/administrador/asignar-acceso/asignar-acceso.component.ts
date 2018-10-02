@@ -13,6 +13,10 @@ import { RespuestaDTO } from '../../../../modelo/respuestaDTO';
 })
 export class AsignarAccesoComponent implements OnInit {
 
+
+  regAcceso = false;
+  eliminAcces = false;
+
   listaRoles: Rol[];
   listaAccesos: Acceso[];
   listaAccesoRol: AccesoRol[];
@@ -44,11 +48,13 @@ this.rolService.asignarAcceso(this.accesoRol)
           this.respuesta = JSON.parse(JSON.stringify(res));
           if (this.respuesta.id == 600) {
             this.show = 1;
+            this.regAcceso = false;
           } else {
               this.rolSeleccionado = new Rol();
               this.accesoSeleccionado = new Acceso();
               this.accesoRol = new AccesoRol();
           this.show = 2;
+          this.regAcceso = true;
           this.listarAccesosRol();
           }
         });
@@ -56,12 +62,13 @@ this.rolService.asignarAcceso(this.accesoRol)
 
 eliminar (accesoRol: AccesoRol) {
 
-  if (confirm('¿ Estas seguro que quieres eliminarlo ?')) {
+ if (confirm('¿ Estas seguro que quieres eliminarlo ?')) {
     this.rolService.eliminarAccesoRol(accesoRol)
     .subscribe(res => {
       this.respuesta = JSON.parse(JSON.stringify(res));
       console.log(this.respuesta.msj + ' DELETE');
       this.show = 2;
+      this.eliminAcces = true;
       this.listarAccesosRol();
     });
   }
@@ -106,4 +113,10 @@ eliminar (accesoRol: AccesoRol) {
     }
 }
 
+validarRegAcceso():boolean{
+  return this.regAcceso;
+}
+validarElminacionAcces():boolean{
+  return this.eliminAcces;
+}
 }

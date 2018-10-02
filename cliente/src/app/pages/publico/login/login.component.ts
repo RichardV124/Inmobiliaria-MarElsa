@@ -17,7 +17,9 @@ export class LoginComponent implements OnInit {
  usuario: Login = new Login();
 
  username: string = 'kuro';
- password: string = '1234';
+ password: string = '123';
+
+ inicio = false;
 
  constructor(private servicios: LoginService, private router: Router) {}
 
@@ -46,6 +48,7 @@ export class LoginComponent implements OnInit {
      } else {
        // --- El usuario se encuentra registrado ---//
        this.usuario = rta.data;
+       this.inicio = true;
        // Obtenemos la persona del usuario
        this.servicios.getUsuarioPersona(this.usuario).subscribe(rta2 => {
          if (rta2.data == null) {
@@ -79,5 +82,7 @@ export class LoginComponent implements OnInit {
      }
    });
  }
-
+ validarInicio():boolean{
+  return this.inicio;
+}
 }

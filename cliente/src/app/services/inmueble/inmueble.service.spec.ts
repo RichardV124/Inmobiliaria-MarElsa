@@ -58,7 +58,7 @@ describe('InmuebleService', () => {
       tipo.descripcion = "sda";
   
       
-      rol.id = 1;
+      rol.id = 3;
       rol.nombre = "empleado";
       rol.descripcion = "empleado";
       
@@ -78,7 +78,7 @@ describe('InmuebleService', () => {
       log.contrasenia= "123";
       log.persona_cedula = per;
 
-      inm.id = 3;
+      inm.id = 20;
       inm.direccion = "puerto";
       inm.area = 200;
       inm.tipo_inmueble_id = tipo;
@@ -110,7 +110,7 @@ describe('InmuebleService', () => {
       inm.energia = true;
       inm.zonabbq = true;
       inm.cliente_cedula = per;
-      inm.matricula = "10";
+      inm.matricula = "100";
       inm.precio_negociable = true;
       
   
@@ -157,7 +157,7 @@ describe('InmuebleService', () => {
       log.contrasenia= "123";
       log.persona_cedula = per;
 
-      inm.id = 4;
+      inm.id = 21;
       inm.direccion = "puerto";
       inm.area = 200;
       inm.tipo_inmueble_id = tipo;
@@ -165,7 +165,7 @@ describe('InmuebleService', () => {
       inm.municipio_id = mun;
       inm.persona_cedula = log;
       inm.cliente_cedula = per;
-      inm.matricula = "11";
+      inm.matricula = "101";
 
       const servicio: InmuebleService = TestBed.get(InmuebleService);
       servicio.registrarInmueble(inm).subscribe(rta =>{
@@ -211,7 +211,7 @@ it('deberia editar un inmueble', () => {
   tipo.descripcion = "sda";
 
   
-  rol.id = 1;
+  rol.id = 2;
   rol.nombre = "empleado";
   rol.descripcion = "empleado";
   

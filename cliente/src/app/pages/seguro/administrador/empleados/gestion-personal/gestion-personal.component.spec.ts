@@ -15,7 +15,7 @@ import {
 } from '@angular/http';
 
 
-fdescribe('GestionPersonalComponent', () => {
+describe('GestionPersonalComponent', () => {
   // inmueble a ver
   let empleado = new EmpleadoDTO();
   /**
