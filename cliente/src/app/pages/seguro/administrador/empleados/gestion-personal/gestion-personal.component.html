@@ -148,9 +148,7 @@
                                         <button (click)="editar()" class="btn south-btn btn-3 m-1"> 
                                             Editar empleado
                                           </button>                                      
-                                    </div>                
-                                    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
-                                    <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>                               
+                                    </div>                                              
                                 </div>
                         </div>
                     </div>
@@ -158,6 +156,8 @@
                         <div class="south-tab-content">
                             <!-- Tab Text -->
                             <div class="south-tab-text">
+                              <div class="card-body">                  
+                                <div class="form-group">
                                      <div class="row">
                                         <div class="col-md-2"><label>Fecha inicio</label></div>
                                             <div class="col-md-4">
@@ -192,7 +192,8 @@
                                     <button (click)="registrarExperiencia()" class="btn south-btn m-1"> 
                                         Registrar experiencia
                                       </button> 
-
+                                </div>
+                              </div>
                                     <br>
                                     <div class="col-lg-12">
                                       <div class="section_subtitle"><p> Experiencias del Empleado ({{listaExperiencias.length}})</p></div><br>
@@ -226,6 +227,8 @@
                         <div class="south-tab-content">
                             <!-- Tab Text -->
                             <div class="south-tab-text">
+                                    <div class="card-body">                  
+                                            <div class="form-group">
                                     <div class="row">
                                             <div class="col-md-2"><label>Descripcion</label></div>
                                                 <div class="col-md-4">
@@ -249,6 +252,8 @@
                                         <button (click)="registrarEstudio()" class="btn south-btn m-1"> 
                                             Registrar formacion
                                         </button> 
+                                    </div>
+                                </div>
                                         <br>
                                         <div class="col-lg-12">
                                                 <div class="section_subtitle"><p>Formaciones del Empleado ({{listaEstudios.length}})</p></div><br>
@@ -280,6 +285,8 @@
                     </div>
                 </div>
             </div>
+            <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
         </div>
     </div>
         <br><br>

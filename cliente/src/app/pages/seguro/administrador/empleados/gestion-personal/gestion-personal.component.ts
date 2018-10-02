@@ -25,6 +25,7 @@ import { DatePipe } from '@angular/common';
 })
 export class GestionPersonalComponent implements OnInit {
 
+  labelFile;
   campoFiltro = '';
   show = 0;
   // Variables de validacion de cada metodo
@@ -64,6 +65,7 @@ export class GestionPersonalComponent implements OnInit {
   listaDepartamentos: Departamento[];
   selectedMunicipio: Municipio = new Municipio();
   selectedDepartamento: Departamento = new Departamento();
+  selectedFile: File = null;
 
 
 
@@ -78,6 +80,7 @@ export class GestionPersonalComponent implements OnInit {
       this.tipoPersonalSeleccionado.id = 0;
        // Validamos si el usuario tiene acceso a la pagina
      this.usuarioServicio.esAccesible('gestion-personal');
+      this.labelFile = 'Ningún archivo seleccionado';
   }
 
   ngOnInit() {
@@ -184,7 +187,7 @@ console.log(this.validarCampos);
         console.log(this.respuesta.msj + ' SAVE');
         console.log(this.experienciaSeleccionada.cargo);
         this.listarExperienciasEmpleado(this.experienciaSeleccionada.persona_cedula.cedula);
-        this.limpiarCampos();
+        this.limpiarCamposExperiencia();
         this.show = 2;
       });
     }
@@ -204,10 +207,14 @@ console.log(this.validarCampos);
         console.log(this.respuesta.msj + ' SAVE');
         console.log(this.estudioSeleccionado.descripcion);
         this.listarEstudiosEmpleado(this.estudioSeleccionado.persona_cedula.cedula);
-        this.limpiarCampos();
+        this.limpiarCamposEstudio();
         this.show = 2;
       });
     }
+  }
+
+  cerrarMsj() {
+    this.show = 0;
   }
 
   buscar() {
@@ -270,6 +277,14 @@ console.log(this.validarCampos);
   this.tipoPersonalSeleccionado.id = 0;
   this.listaEstudios = [];
   this.listaExperiencias = [];
+}
+
+limpiarCamposEstudio() {
+  this.estudioSeleccionado = new Estudio();
+}
+
+limpiarCamposExperiencia() {
+this.experienciaSeleccionada = new Experiencia();
 }
 
   validarCampos(): boolean {

@@ -24,14 +24,15 @@
             <input type="password" [(ngModel)]="password" placeholder="Ingrese contraseña" class="form-control">
         </div>   
       </div>
-   <button (click)="login()" class="btn south-btn btn-2 m-1" style="float: right"> 
-     Iniciar Sesion
-   </button>
+      <div class="row">
    <a href="registro-cliente" class="btn south-btn btn-2 m-1" style="float: left"> 
        Registrar cliente
-   </a>   
-  <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{msj}}</div>
-  <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{msj}}</div>
-  
+   </a>  
+   <button (click)="login()" class="btn south-btn btn-2 m-1" style="float: right"> 
+        Iniciar Sesion
+      </button> 
+   </div>
+   <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+   <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
   </div>
 </div>

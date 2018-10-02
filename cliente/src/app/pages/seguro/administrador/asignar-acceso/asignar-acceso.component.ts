@@ -39,6 +39,10 @@ export class AsignarAccesoComponent implements OnInit {
   ngOnInit() {
   }
 
+  cerrarMsj() {
+    this.show = 0;
+  }
+
 asignar () {
 this.accesoRol.rol = this.rolSeleccionado;
 this.accesoRol.acceso = this.accesoSeleccionado;
