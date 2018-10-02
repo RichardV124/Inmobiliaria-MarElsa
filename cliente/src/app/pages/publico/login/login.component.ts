@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
  // usuario que iniciara sesion
  usuario: Login = new Login();
 
- username: string = 'kuro';
- password: string = '1234';
+ username: string = '';
+ password: string = '';
 
  constructor(private servicios: LoginService, private router: Router) {}
 
@@ -79,5 +79,9 @@ export class LoginComponent implements OnInit {
      }
    });
  }
+
+ cerrarMsj() {
+  this.show = 0;
+}
 
 }
