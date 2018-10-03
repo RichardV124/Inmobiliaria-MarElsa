@@ -236,11 +236,12 @@ console.log(this.validarCampos);
               this.empleadoDTO = empleado;
 
               /** Inicio del machete serio */
+              this.selectedPersona.fecha_nacimiento = this.empleadoService.formatoFecha(this.empleadoDTO.fecha_nacimiento);
               this.selectedPersona.nombre = this.empleadoDTO.nombre;
               this.selectedPersona.apellido = this.empleadoDTO.apellido;
               this.selectedPersona.cedula = this.empleadoDTO.cedula;
               this.selectedPersona.correo = this.empleadoDTO.correo;
-              this.selectedPersona.fecha_nacimiento = this.empleadoDTO.fecha_nacimiento;
+              // this.selectedPersona.fecha_nacimiento = this.empleadoDTO.fecha_nacimiento;
               this.selectedPersona.direccion = this.empleadoDTO.direccion;
               this.selectedPersona.telefono = this.empleadoDTO.telefono;
              // this.empleadoDTO.rol_id = 3;
@@ -429,7 +430,9 @@ this.experienciaSeleccionada = new Experiencia();
     .subscribe(exper => {
          console.log(exper);
          this.experienciaSeleccionada = exper;
-      });
+         this.experienciaSeleccionada.fecha_inicio = this.empleadoService.formatoFecha(this.experienciaSeleccionada.fecha_inicio);
+         this.experienciaSeleccionada.fecha_fin = this.empleadoService.formatoFecha(this.experienciaSeleccionada.fecha_fin);
+        });
   }
 
   listarExperienciasEmpleado(cedula: any) {

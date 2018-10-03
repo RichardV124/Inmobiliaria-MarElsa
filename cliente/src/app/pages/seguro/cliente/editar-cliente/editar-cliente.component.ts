@@ -67,6 +67,7 @@ export class EditarClienteComponent implements OnInit {
           console.log('NO SE ENCUENTRA');
         } else {
           this.selectedPersona = JSON.parse(JSON.stringify(cliente));
+          this.selectedPersona.fecha_nacimiento = this.clienteService.formatoFecha(this.selectedPersona.fecha_nacimiento);
           this.municipioService.buscarMunicipio(cliente['municipio_id'])
           .subscribe(mun => {
               console.log('DEPTOOOOOO !!!!!!!!!!!!' + mun['departamento_id']);

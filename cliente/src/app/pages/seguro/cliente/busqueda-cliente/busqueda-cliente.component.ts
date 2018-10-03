@@ -96,6 +96,7 @@ export class BusquedaClienteComponent implements OnInit {
           this.respuesta.msj = 'Despliegue los datos del cliente';
           this.show = 2;
           this.selectedPersona = JSON.parse(JSON.stringify(cliente));
+          this.selectedPersona.fecha_nacimiento = this.clienteService.formatoFecha(this.selectedPersona.fecha_nacimiento);
           this.municipioService.buscarMunicipio(cliente['municipio_id'])
           .subscribe(mun => {
               this.selectedDepartamento.id = mun['departamento_id'];

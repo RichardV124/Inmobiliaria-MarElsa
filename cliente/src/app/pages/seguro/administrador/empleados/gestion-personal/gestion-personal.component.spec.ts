@@ -24,7 +24,7 @@ import {
 } from '@angular/http';
 import { Inject } from '@angular/core';
 
-fdescribe('GestionPersonalComponent', () => {
+describe('GestionPersonalComponent', () => {
 
 
   let component: GestionPersonalComponent;

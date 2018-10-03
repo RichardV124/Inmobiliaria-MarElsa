@@ -37,14 +37,14 @@ describe('RegistroInmuebleComponent', () => {
   });
 
 
-  it('validacion de campos vacios',() => {
+  it('validacion de campos vacios', () => {
     component.selectedMunicipio.id === 0;
     let ver = component.validarCamposVacios();
     expect(ver).toBeFalsy();
   });
 
 
-  it('validacion de campos no ingresados',() => {
+  it('validacion de campos no ingresados', () => {
     component.selectedInmueble.promocion = null;
     component.selectedInmueble.garaje = null;
     component.selectedInmueble.num_closets = null;
@@ -58,12 +58,11 @@ describe('RegistroInmuebleComponent', () => {
     component.selectedInmueble.num_closets = 5;
     component.registrar();
     let ver = component.show;
-    console.log("codigooo"+ ver)
-    expect(ver).toEqual(404); 
-  }); 
+    expect(ver).toEqual(404);
+  });
 
 
-  it('test cliente existe',() => {
+  it('test cliente existe', () => {
     //cedula de la persona a buscar,
     component.propietario.cedula = "1234";
     component.clienteExiste();

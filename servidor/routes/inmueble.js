@@ -162,7 +162,7 @@ exports.search = function (req, res) {
                 console.log("Error Selecting : %s ", err);
 
             res.send({
-                data: rows
+                data: rows[0]
             });
 
 
