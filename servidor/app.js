@@ -34,6 +34,8 @@ var estudio = require('./routes/estudio');
 var arriendo = require('./routes/arriendo');
 //Cargamos el route de ventas
 var venta = require('./routes/venta');
+//Cargamos el route de visita
+var visita = require('./routes/visita');
 
 // ------ SERVICIOS ------ //
 
@@ -190,6 +192,9 @@ app.get('/departamento/list', departamento.list);
 app.get('/municipio/list/:id', municipio.list);
 app.get('/municipio/search/:id', municipio.search);
 app.get('/departamento/search/:id', departamento.search);
+
+// ------- Servicios de visita ------- //
+app.get('/visita/listarPorEstado/:estado', visita.listarPorEstado);
 
 
 app.use(app.router);

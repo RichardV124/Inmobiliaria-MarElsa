@@ -17,6 +17,7 @@ import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acc
 import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/editar-cliente.component';
 import { BuscarByNombrePipe } from './filtros/buscar-by-nombre.pipe';
 import { DatePipe } from '@angular/common';
+import { AsignarVisitaComponent } from './pages/seguro/administrador/asignar-visita/asignar-visita.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { DatePipe } from '@angular/common';
     EditarClienteComponent,
     HeaderComponent,
     AsignarAccesoComponent,
-    BuscarByNombrePipe
+    BuscarByNombrePipe,
+    AsignarVisitaComponent
   ],
   imports: [
     BrowserModule,

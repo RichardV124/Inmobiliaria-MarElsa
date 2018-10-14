@@ -1,0 +1,90 @@
+<section class="breadcumb-area bg-img" style="background-image: url(https://colorlib.com/preview/theme/south/img/bg-img/hero1.jpg);">
+  <div class="container h-100">
+      <div class="row h-100 align-items-center">
+          <div class="col-12">
+              <div class="breadcumb-content">
+                  <h3 class="breadcumb-title">Asignar visitas</h3>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+<br><br>
+<div class="col-md-12" style="overflow-x: auto;">
+  <div class="section_subtitle"><p>LISTADO DE EMPLEADOS</p> </div>
+  <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Inmueble</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descripcion</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Hora</th>
+              <th scope="col">Comentarios</th>
+              <th scope="col">Ver</th>
+              <th scope="col">Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let v of listaVisitas">
+              <th scope="row">{{v.id}}</th>
+              <td>{{v.inmueble_id}}</td>
+              <td>{{v.cliente_cedula}}</td>
+              <td>{{v.tipo_visita}}</td>
+              <td>{{v.descripcion}}</td>
+              <td>{{v.fecha}}</td>
+              <td>{{v.hora}}</td>
+              <td>{{v.comentarios}}</td>
+              <td><button (click)="ver(v)" class="btn south-btn btn-2 m-1"> 
+                          Asignar empleado
+                  </button>
+              </td>
+              <td><button (click)="eliminar(v)" class="btn south-btn active m-1"> 
+                              Eliminar
+                  </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+
+<div *ngIf="mostrarEmpleados == 1">
+      <p style="color: #947054; font-size: 22px; margin-bottom: 0;font-style: italic;">Empleados disponibles</p><br>
+      <div class="col-md-6" style="margin: 0 auto;">
+        <div class="card-body">
+            <div class="form-group">
+                  <span>Empleado</span>
+                  <select  [(ngModel)]="empleadoDTO.cedula" class="form-control">
+                    <option [ngValue]="0" selected disabled hidden>Seleccione al empleado que se le asignara la visita</option>
+                    <option *ngFor="let e of listaEmpleados" [value]="e.cedula">{{e.nombre}}  {{e.apellido}}</option>
+                 </select>
+                 <select  [(ngModel)]="horaSeleccionada" class="form-control">
+                   <option [ngValue]="0" selected disabled hidden>Seleccione la hora de la visita</option>
+                   <option [value]="7">7</option>
+                   <option [value]="7">8</option>
+                   <option [value]="7">9</option>
+                   <option [value]="7">10</option>
+                   <option [value]="7">11</option>
+                   <option [value]="7">12</option>
+                   <option [value]="7">14</option>
+                   <option [value]="7">15</option>
+                   <option [value]="7">16</option>
+                   <option [value]="7">17</option>
+                   <option [value]="7">18</option>
+                   <option [value]="7">19</option>
+                </select>
+               <br>
+               <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+            </div>
+        </div>
+      </div>
+
+      <button (click)="asignar()" class="btn south-btn btn-2 m-1"> 
+          Asignar empleado
+      </button>
+
+</div>
+

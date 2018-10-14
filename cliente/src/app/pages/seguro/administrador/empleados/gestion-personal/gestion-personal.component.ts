@@ -133,7 +133,7 @@ this.contador++;
   registrar() {
 console.log(this.validarCampos);
 
-    if ( this.selectedPersona.cedula == null) {
+    if ( this.selectedPersona.cedula == null || this.validarCampos()) {
       console.log('ENTROOO MANO');
       this.show = 1;
           this.respuesta.msj = 'Debe completar todos los campos';
@@ -228,6 +228,7 @@ console.log(this.validarCampos);
          .subscribe(empleado => {
            console.log(empleado);
            if (empleado === undefined ) {
+             this.show = 1;
              this.respuesta.msj = 'No se encuentra ningun empleado con la cedula ' +  this.cedulaBuscar;
              console.log('NO SE ENCUENTRA');
              this.limpiarCampos();

@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
  // usuario que iniciara sesion
  usuario: Login = new Login();
 
- username: string = 'kuro';
- password: string = '123';
+ username = 'admin';
+ password = '1234';
 
  inicio = false;
 
@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
  login(event) {
    this.usuario.username = this.username;
    this.usuario.contrasenia = this.password;
-   //this.usuario.persona_cedula = new Persona();
    console.log(this.usuario);
    // enviamos al servicio
    this.servicios.login(this.usuario).subscribe(rta => {
@@ -87,7 +86,7 @@ export class LoginComponent implements OnInit {
   this.show = 0;
 }
 
- validarInicio():boolean{
+ validarInicio(): boolean {
   return this.inicio;
 }
 }

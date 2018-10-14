@@ -2,7 +2,7 @@ export class EmpleadoDTO {
 nombre: string;
 apellido: string;
 fecha_nacimiento: Date;
-cedula: string;
+cedula: any;
 direccion: string;
 telefono: number;
 correo: string;
