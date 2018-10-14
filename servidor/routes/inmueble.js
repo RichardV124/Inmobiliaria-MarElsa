@@ -216,7 +216,10 @@ exports.save = function (req, res) {
             matricula: input.matricula,
             precio_negociable: input.precio_negociable,
             activo: 1,
-            observaciones: input.observaciones
+            observaciones: input.observaciones,
+            publicacion: input.publicacion,
+            latitud: input.latitud,
+            longitud: input.longitud
         };
 
         var query = connection.query("INSERT INTO inmueble set ? ", data, function (err, rows) {
@@ -275,7 +278,10 @@ exports.save_edit = function (req, res) {
             matricula: input.matricula,
             precio_negociable: input.precio_negociable,
             activo: 1,
-            observaciones: input.observaciones
+            observaciones: input.observaciones,
+            publicacion: input.publicacion,
+            latitud: input.latitud,
+            longitud: input.longitud
 
         };
 

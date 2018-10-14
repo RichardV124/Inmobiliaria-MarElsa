@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
+import { AgmCoreModule } from '@agm/core';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/publico/login/login.component';
@@ -37,7 +39,10 @@ import { DatePipe } from '@angular/common';
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AgmCoreModule.forRoot( {
+      apiKey: 'AIzaSyDXN-CV8V46ipTpNrfIS1Zqom4TI852BrU'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

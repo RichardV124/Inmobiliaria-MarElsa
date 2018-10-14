@@ -1,12 +1,12 @@
 <section class="breadcumb-area bg-img" style="background-image: url(https://colorlib.com/preview/theme/south/img/bg-img/hero4.jpg);">
   <div class="container h-100">
-      <div class="row h-100 align-items-center">
-          <div class="col-12">
-              <div class="breadcumb-content">
-                  <h3 class="breadcumb-title">Gestión de inmuebles</h3>
-              </div>
-          </div>
+    <div class="row h-100 align-items-center">
+      <div class="col-12">
+        <div class="breadcumb-content">
+          <h3 class="breadcumb-title">Gestión de inmuebles</h3>
+        </div>
       </div>
+    </div>
   </div>
 </section>
 
@@ -263,7 +263,11 @@
                               <input type="checkbox" [(ngModel)]="selectedInmueble.zonabbq">Zona
                               BBQ
                             </div>
-                          </div>
+                          </div> <br>
+                          <label>Ubicación del inmueble</label><span style="color: red">*</span> <br>
+                          <agm-map [zoom]="8" [latitude]="latitudDefecto" [longitude]="longitudDefecto" (mapClick)="onChoseLocation($event)">
+                            <agm-marker *ngIf="marcadorAgregado"  [latitude]="selectedInmueble.latitud" [longitude]="selectedInmueble.longitud"></agm-marker>
+                          </agm-map>
                         </div>
                       </div>
                       <div style="float: right">
@@ -376,5 +380,21 @@
     <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 505">
       <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
     </div>
+
+    <div class="card mt-4" style="width: 100%;">
+      <div class="card-body">
+        <agm-map [zoom]="8" [latitude]="latitudDefecto" [longitude]="longitudDefecto">
+          <ng-container>
+            <agm-marker (markerClick)="ver(e)" *ngFor="let e of listaInmuebles" [latitude]="e.latitud" [longitude]="e.longitud">
+              <agm-info-window>
+                <strong>Direccion: {{e.direccion}}</strong><br>
+                <!--<strong>Propietario: {{e.cliente_cedula.nombre}}</strong>-->
+              </agm-info-window>
+            </agm-marker>
+          </ng-container>
+        </agm-map>
+      </div>
+    </div>
+
   </div> <br>
 </div>

@@ -31,15 +31,9 @@ exports.list = function(req, res){
           {
               
               if(err)
-<<<<<<< HEAD
                 console.log("Error Selecting : %s ",err );
             console.log("origen: "+req.headers.origin+" - peticion: buscar persona - parametro: "+cedula+" - resultado: "+rows[0]);
             res.send({data:rows[0]});
-=======
-                res.send('{"id": 404,"msj": "Hubo un error al buscar el cliente"}');
-       
-              res.send({data:rows[0]});
->>>>>>> eab5878e2c97fb9c788b89a2947f29679c5d8b02
               
                   
              

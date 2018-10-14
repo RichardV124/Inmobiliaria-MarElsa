@@ -41,6 +41,10 @@ clientExist = false;
   rol: Rol = new Rol();
   labelFile;
   mostrarTabArchivos = false;
+  latitudDefecto = 4.540130;
+  longitudDefecto = -75.665193;
+  verInmueble = false;
+  marcadorAgregado = false;
 
   listaInmuebles: Inmueble[];
   listaTiposInmueble: TipoInmueble[];
@@ -57,9 +61,6 @@ clientExist = false;
   archivo: Archivo = new Archivo();
   publicarEnArriendo: boolean;
   publicarEnVenta: boolean;
-  // Obtiene el arriendo y venta buscados
-  arriendoBuscado: Arriendo;
-  ventaBuscada: Venta;
 
   constructor(private inmuebleServie: InmuebleService, private servicios: LoginService,
     private municipioService: MunicipioService, private personaService: ClienteService,
@@ -77,7 +78,6 @@ clientExist = false;
   ngOnInit() {
     this.servicios.esAccesible('registro-inmueble');
     this.usuario = this.servicios.getUsuario();
-    console.log(this.usuario);
   }
 
   /**
@@ -122,6 +122,12 @@ clientExist = false;
     return true;
   }
 
+  onChoseLocation(event) {
+    this.selectedInmueble.latitud = event.coords.lat;
+    this.selectedInmueble.longitud = event.coords.lng;
+    this.marcadorAgregado = true;
+  }
+
   /**
    * Verifica los datos ingresados para realizar el registro
    */
@@ -131,13 +137,22 @@ clientExist = false;
       if (!this.validarCamposVacios()) {
       this.respuesta.msj = 'Debe ingresar los campos obligatorios';
       this.show = 404;
-      } else {
+      } else if (this.validarUbicacionInmueble()) {
         if (this.tipoDePublicacionSeleccionado()) {
          if (this.archivosAgregados()) {
           this.clienteExiste();
          }
        }
       }
+  }
+
+  validarUbicacionInmueble() {
+    if (!this.marcadorAgregado) {
+        this.respuesta.msj = 'Debe agregar la ubicación del inmueble';
+        this.show = 404;
+        return false;
+    }
+    return true;
   }
 
   /**
@@ -173,6 +188,7 @@ clientExist = false;
     this.selectedInmueble.municipio_id = this.selectedMunicipio;
     this.selectedInmueble.persona_cedula = this.usuario;
     this.selectedInmueble.cliente_cedula = this.propietario;
+    this.verificarTipoPublicacion();
     this.convertirBoolean();
     this.inmuebleServie.registrarInmueble(this.selectedInmueble)
     .subscribe(inmueble => {
@@ -195,37 +211,20 @@ clientExist = false;
     this.inmuebleServie.buscarInmueble(this.selectedInmueble.matricula)
     .subscribe (inmueble => {
       if (inmueble !== undefined) {
-        this.verificarTipoPublicacion(inmueble);
         this.crearArchivo(inmueble);
       }
     });
   }
 
-  verificarTipoPublicacion(inmueble: Inmueble) {
-    if (this.publicarEnArriendo) {
-      this.registrarInmuebleEnArriendo(inmueble);
-    }
-    if (this.publicarEnVenta) {
-      this.registrarInmuebleVentas(inmueble);
-    }
+  verificarTipoPublicacion() {
+    if (this.publicarEnArriendo && this.publicarEnVenta) {
+      this.selectedInmueble.publicacion = 3;
+    } else if (this.publicarEnArriendo) {
+      this.selectedInmueble.publicacion = 1;
+    } else if (this.publicarEnVenta) {
+      this.selectedInmueble.publicacion = 2;
   }
 
-  registrarInmuebleEnArriendo(inmueble: Inmueble) {
-    const arriendo: Arriendo = new Arriendo();
-    arriendo.cliente_cedula = this.propietario;
-    arriendo.empleado_cedula = this.usuario.persona_cedula;
-    arriendo.inmueble_id = inmueble;
-    this.arriendoService.registrarInmubeleArriendo(arriendo)
-    .subscribe(res => res);
-  }
-
-  registrarInmuebleVentas(inmueble: Inmueble) {
-    const venta: Venta = new Venta();
-    venta.cliente_cedula = this.propietario;
-    venta.empleado_cedula = this.usuario.persona_cedula;
-    venta.inmueble_id = inmueble;
-    this.ventaService.registrarInmuebleVenta(venta)
-    .subscribe(res => res);
   }
 
   /**
@@ -234,15 +233,14 @@ clientExist = false;
   clienteExiste() {
     this.personaService.buscarPersona(this.propietario.cedula)
     .subscribe(cliente => {
-      this.propietario = JSON.parse(JSON.stringify(cliente));
-      console.log('nombre cliente: ' + this.propietario.nombre);
-      if (this.propietario.nombre != null) {
+      if (cliente !== undefined) {
         this.clientExist = true;
         this.continuarRegistro();
+        this.propietario = cliente;
       } else {
         this.respuesta.msj = 'La cédula del cliente ingresado no existe';
-        this.clientExist = false;
         this.show = 404;
+        this.clientExist = false;
       }
     });
   }
@@ -254,9 +252,11 @@ clientExist = false;
     this.selectedInmueble.zona = 0;
     this.publicarEnArriendo = false;
     this.publicarEnVenta = false;
-    this.selectedFile = null;
+    this.selectedFile = [];
     this.mostrarTabArchivos = false;
     this.labelFile = 'Ningún archivo seleccionado';
+    this.verInmueble = false;
+    this.marcadorAgregado = false;
   }
 
   /**
@@ -468,38 +468,9 @@ clientExist = false;
       this.respuesta = JSON.parse(JSON.stringify(res));
       this.show = this.respuesta.id;
       this.listarInmuebles();
+      this.limpiarCampos();
     });
     return true;
-  }
-
-  /**
-   * Verifica si el inmueble se debe eliminar o registrar en arriendo y en ventas
-   */
-  verificarPublicacionInmueble() {
-      // Si el inmueble estaba publicado en arriendos y en este
-      // caso no se chequea se debe eliminar de arriendos
-      if (!this.publicarEnArriendo && this.arriendoBuscado !== undefined) {
-        this.arriendoService.eliminar(this.arriendoBuscado).subscribe(res => res);
-        // de lo contrario si se seleccionó el check y el inmubele no esta en arriendos,
-        // se debe registrar
-      } else if (this.publicarEnArriendo && this.arriendoBuscado === undefined) {
-        this.registrarInmuebleEnArriendo(this.selectedInmueble);
-        // Si se seleccionó la opción de publicar en arriendo y este ya esta registrado,
-        // se lo activa
-      } else if (this.publicarEnArriendo && this.arriendoBuscado !== undefined) {
-        this.arriendoService.activar(this.arriendoBuscado).subscribe(res => res);
-      }
-
-      // Hacemos los mismo para las ventas
-      if (!this.publicarEnVenta && this.ventaBuscada !== undefined) {
-        this.ventaService.eliminar(this.ventaBuscada).subscribe(res => res);
-
-      } else if (this.publicarEnVenta && this.ventaBuscada === undefined) {
-        this.registrarInmuebleVentas(this.selectedInmueble);
-
-      } else if (this.publicarEnVenta && this.ventaBuscada !== undefined) {
-        this.ventaService.activar(this.ventaBuscada).subscribe(res => res);
-      }
   }
 
   editar() {
@@ -507,13 +478,14 @@ clientExist = false;
       this.show = 404;
       this.respuesta.msj = 'Debe buscar un inmueble previamente';
     } else {
+      if (this.validarUbicacionInmueble()) {
       if (this.tipoDePublicacionSeleccionado()) {
         if (this.archivosAgregados()) {
          this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
          this.selectedInmueble.municipio_id = this.selectedMunicipio;
          this.selectedInmueble.persona_cedula = this.usuario;
          this.selectedInmueble.cliente_cedula = this.propietario;
-         this.verificarPublicacionInmueble();
+         this.verificarTipoPublicacion();
          this.convertirBoolean();
          this.inmuebleServie.editar(this.selectedInmueble)
         .subscribe(inmueble => {
@@ -527,6 +499,7 @@ clientExist = false;
        }
       }
     }
+    }
   }
 
   /**
@@ -537,38 +510,26 @@ clientExist = false;
     this.limpiarCampos();
     this.selectedInmueble.matricula = inmueble.matricula;
     this.buscar();
+    this.verInmueble = true;
+    this.respuesta.msj = 'Despliegue el acordion de la parte superior para ver los datos del inmueble';
+    this.show = 505;
   }
 
   /**
-   * Verifica si el inmueble esta registrado en la tabla de arriendos
+   * Obtiene los datos de la publicación del inmueble
    */
-  buscarInmuebleEnArriendos() {
-    this.arriendoService.buscarInmuebleArriendo(this.selectedInmueble.id)
-    .subscribe(arriendo => {
-      if (arriendo !== undefined) {
-        const activo: string = JSON.parse(JSON.stringify(arriendo['activo']));
-        this.arriendoBuscado = arriendo;
-        if (activo === '1') {
-          this.publicarEnArriendo = true;
-        }
-      }
-    });
-  }
-
-  /**
-   * Verifica si el inmueble esta registrado en la tabla de ventas
-   */
-  buscarInmuebleEnVentas() {
-    this.ventaService.buscarInmuebleVenta(this.selectedInmueble.id)
-    .subscribe(venta => {
-      if (venta !== undefined) {
-        const activo: string = JSON.parse(JSON.stringify(venta['activo']));
-        if (activo === '1') {
-          this.publicarEnVenta = true;
-        }
-        this.ventaBuscada = venta;
-      }
-    });
+  obtenerPublicacionInmueble() {
+    const publicacion = this.obtenerDatosJSON('publicacion', this.selectedInmueble);
+    if (publicacion === 1) {
+      this.publicarEnArriendo = true;
+      this.publicarEnVenta = false;
+    } else if (publicacion === 2) {
+      this.publicarEnVenta = true;
+      this.publicarEnArriendo = false;
+    } else {
+      this.publicarEnVenta = true;
+      this.publicarEnArriendo = true;
+    }
   }
 
   /**
@@ -586,13 +547,14 @@ clientExist = false;
           this.respuesta.msj = 'El inmueble no existe';
           this.show = 404;
           this.boolBuscarInmueble = false;
+          this.limpiarCampos();
         } else {
+          this.marcadorAgregado = true;
           this.mostrarTabArchivos = false;
           this.selectedInmueble = inmueble;
           this.listarArchivos();
           this.obtenerDatosCombosBusqueda();
-          this.buscarInmuebleEnArriendos();
-          this.buscarInmuebleEnVentas();
+          this.obtenerPublicacionInmueble();
         }
       });
     }
