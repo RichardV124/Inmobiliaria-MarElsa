@@ -3,7 +3,7 @@ import { Municipio } from './municipio';
 import { TipoInmueble } from './tipo_inmueble';
 import { Login } from './login';
 export class Inmueble {
-id: number;    
+id: number;
 direccion: string;
 area: number;
 tipo_inmueble_id: TipoInmueble;
@@ -38,4 +38,7 @@ persona_cedula: Login;
 cliente_cedula: Persona;
 matricula: string;
 observaciones: string;
+publicacion: number;
+latitud: number;
+longitud: number;
 }
