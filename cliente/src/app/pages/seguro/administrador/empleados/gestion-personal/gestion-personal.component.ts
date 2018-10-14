@@ -25,8 +25,22 @@ import { DatePipe } from '@angular/common';
 })
 export class GestionPersonalComponent implements OnInit {
 
+  labelFile;
   campoFiltro = '';
   show = 0;
+  // Variables de validacion de cada metodo
+  registrado = false;
+  buscado = false;
+  eliminado = false;
+  editado = false;
+  listandoEmpleados = false;
+  listandoTipoPersonal = false;
+  listandoMunicipios = false;
+  listandoDepartamentos = false;
+  listandoExperiencias = false;
+  listandoEstudios = false;
+
+  // -----------------------------------
   contador = 0;
   empleadoDTO: EmpleadoDTO = new EmpleadoDTO();
   listaEmpleados: EmpleadoDTO[];
@@ -51,6 +65,8 @@ export class GestionPersonalComponent implements OnInit {
   listaDepartamentos: Departamento[];
   selectedMunicipio: Municipio = new Municipio();
   selectedDepartamento: Departamento = new Departamento();
+  selectedFile: File = null;
+
 
 
   constructor(private clienteService: ClienteService , private empleadoService: EmpleadoService,  private router: Router ,
@@ -64,6 +80,7 @@ export class GestionPersonalComponent implements OnInit {
       this.tipoPersonalSeleccionado.id = 0;
        // Validamos si el usuario tiene acceso a la pagina
      this.usuarioServicio.esAccesible('gestion-personal');
+      this.labelFile = 'Ningún archivo seleccionado';
   }
 
   ngOnInit() {
@@ -73,11 +90,55 @@ export class GestionPersonalComponent implements OnInit {
 this.contador++;
   }
 
-  registrar() {
+  validarRegistro(): boolean {
+    return this.registrado;
+      }
 
-    if (this.validarCampos()) {
+  validarBusqueda(): boolean {
+      return this.buscado;
+     }
+
+  validarEliminar(): boolean {
+      return this.eliminado;
+    }
+
+  validarEditar(): boolean {
+    return this.editado;
+    }
+
+  validarlistarEmpledos(): boolean {
+     return this.listandoEmpleados;
+    }
+
+  validarlistarTipoPersonal(): boolean {
+    return this.listandoTipoPersonal;
+    }
+
+  validarlistarMunicipios(): boolean {
+      return this.listandoMunicipios;
+    }
+
+  validarlistarDepartamentos(): boolean {
+      return this.listandoDepartamentos;
+    }
+
+    validarlistarExperiencias(): boolean {
+      return this.listandoExperiencias;
+    }
+
+    validarlistarEstudios(): boolean {
+      return this.listandoEstudios;
+    }
+
+  registrar() {
+console.log(this.validarCampos);
+
+    if ( this.selectedPersona.cedula == null) {
+      console.log('ENTROOO MANO');
       this.show = 1;
           this.respuesta.msj = 'Debe completar todos los campos';
+          this.registrado = false;
+
     } else {
       this.empleadoDTO.nombre = this.selectedPersona.nombre;
       this.empleadoDTO.apellido = this.selectedPersona.apellido;
@@ -106,6 +167,8 @@ this.contador++;
         this.limpiarCampos();
         this.show = 2;
         this.listarEmpleados();
+        this.registrado = true;
+
       });
     }
   }
@@ -124,7 +187,7 @@ this.contador++;
         console.log(this.respuesta.msj + ' SAVE');
         console.log(this.experienciaSeleccionada.cargo);
         this.listarExperienciasEmpleado(this.experienciaSeleccionada.persona_cedula.cedula);
-        this.limpiarCampos();
+        this.limpiarCamposExperiencia();
         this.show = 2;
       });
     }
@@ -144,10 +207,14 @@ this.contador++;
         console.log(this.respuesta.msj + ' SAVE');
         console.log(this.estudioSeleccionado.descripcion);
         this.listarEstudiosEmpleado(this.estudioSeleccionado.persona_cedula.cedula);
-        this.limpiarCampos();
+        this.limpiarCamposEstudio();
         this.show = 2;
       });
     }
+  }
+
+  cerrarMsj() {
+    this.show = 0;
   }
 
   buscar() {
@@ -155,9 +222,11 @@ this.contador++;
        if (this.cedulaBuscar == null) {
         this.show = 1;
         this.respuesta.msj = 'Debe ingresar la cedula a buscar';
+        this.buscado = false;
       } else {
          this.empleadoService.buscarEmpleado(this.cedulaBuscar)
          .subscribe(empleado => {
+           console.log(empleado);
            if (empleado === undefined ) {
              this.respuesta.msj = 'No se encuentra ningun empleado con la cedula ' +  this.cedulaBuscar;
              console.log('NO SE ENCUENTRA');
@@ -167,11 +236,12 @@ this.contador++;
               this.empleadoDTO = empleado;
 
               /** Inicio del machete serio */
+              this.selectedPersona.fecha_nacimiento = this.empleadoService.formatoFecha(this.empleadoDTO.fecha_nacimiento);
               this.selectedPersona.nombre = this.empleadoDTO.nombre;
               this.selectedPersona.apellido = this.empleadoDTO.apellido;
               this.selectedPersona.cedula = this.empleadoDTO.cedula;
               this.selectedPersona.correo = this.empleadoDTO.correo;
-              this.selectedPersona.fecha_nacimiento = this.empleadoDTO.fecha_nacimiento;
+              // this.selectedPersona.fecha_nacimiento = this.empleadoDTO.fecha_nacimiento;
               this.selectedPersona.direccion = this.empleadoDTO.direccion;
               this.selectedPersona.telefono = this.empleadoDTO.telefono;
              // this.empleadoDTO.rol_id = 3;
@@ -188,6 +258,9 @@ this.contador++;
               this.tipoPersonalSeleccionado.id = this.empleadoDTO.tipo_id;
               /** Fin del machete serio */
 
+              this.buscado = true;
+
+
               /** Listamos las experiencias del empleado buscado */
               this.listarExperienciasEmpleado(this.selectedPersona.cedula);
               this.listarEstudiosEmpleado(this.selectedPersona.cedula);
@@ -196,7 +269,7 @@ this.contador++;
        }
      }
 
-limpiarCampos() {
+  limpiarCampos() {
   this.selectedPersona = new Persona();
   this.selectedLogin = new Login();
   this.selectedEmpleado = new Empleado();
@@ -205,6 +278,14 @@ limpiarCampos() {
   this.tipoPersonalSeleccionado.id = 0;
   this.listaEstudios = [];
   this.listaExperiencias = [];
+}
+
+limpiarCamposEstudio() {
+  this.estudioSeleccionado = new Estudio();
+}
+
+limpiarCamposExperiencia() {
+this.experienciaSeleccionada = new Experiencia();
 }
 
   validarCampos(): boolean {
@@ -242,6 +323,12 @@ limpiarCampos() {
     this.municipioService.listarDepartamentos().
     subscribe(departamento => {
       this.listaDepartamentos = departamento;
+
+      if (this.listaDepartamentos === undefined) {
+          this.listandoDepartamentos = false;
+      } else {
+        this.listandoDepartamentos = true;
+      }
     });
   }
 
@@ -250,6 +337,12 @@ limpiarCampos() {
     this.municipioService.listarMunicipios(this.selectedDepartamento.id).
     subscribe(municipio => {
       this.listaMunicipios = municipio;
+
+      if (this.listaMunicipios === undefined) {
+          this.listandoMunicipios = false;
+      } else {
+        this.listandoMunicipios = true;
+      }
     });
   }
 
@@ -257,6 +350,11 @@ limpiarCampos() {
     this.empleadoService.listarTipoPersonal()
     .subscribe(tipoPersonal => {
       this.listaTipoPersonal = tipoPersonal;
+      if (this.listaTipoPersonal === undefined) {
+        this.listandoTipoPersonal = false;
+      } else {
+        this.listandoTipoPersonal = true;
+      }
     });
   }
 
@@ -264,6 +362,11 @@ limpiarCampos() {
     this.empleadoService.listarEmpleados()
     .subscribe(empleados => {
       this.listaEmpleados = empleados;
+      if (this.listaEmpleados === undefined) {
+            this.listandoEmpleados = false;
+      } else {
+        this.listandoEmpleados = true;
+      }
     });
   }
 
@@ -276,8 +379,10 @@ limpiarCampos() {
         console.log(this.respuesta.msj + ' DELETE');
         this.show = 2;
         this.listarEmpleados();
+        this.eliminado = true;
       });
     }
+    this.eliminado = false;
   }
 
   eliminarExperiencia (experiencia: Experiencia) {
@@ -325,7 +430,9 @@ limpiarCampos() {
     .subscribe(exper => {
          console.log(exper);
          this.experienciaSeleccionada = exper;
-      });
+         this.experienciaSeleccionada.fecha_inicio = this.empleadoService.formatoFecha(this.experienciaSeleccionada.fecha_inicio);
+         this.experienciaSeleccionada.fecha_fin = this.empleadoService.formatoFecha(this.experienciaSeleccionada.fecha_fin);
+        });
   }
 
   listarExperienciasEmpleado(cedula: any) {
@@ -333,6 +440,12 @@ limpiarCampos() {
     .subscribe(experiencias => {
          console.log(experiencias);
          this.listaExperiencias = experiencias;
+
+         if (this.listaExperiencias === undefined) {
+          this.listandoExperiencias = false;
+         } else {
+          this.listandoExperiencias = true;
+         }
       });
   }
 
@@ -341,6 +454,12 @@ limpiarCampos() {
     .subscribe(estudios => {
          console.log(estudios);
          this.listaEstudios = estudios;
+
+         if (this.listaEstudios === undefined) {
+            this.listandoEstudios = false;
+         } else {
+          this.listandoEstudios = true;
+         }
       });
   }
 
@@ -349,6 +468,7 @@ limpiarCampos() {
     if (this.validarCampos()) {
       this.show = 1;
           this.respuesta.msj = 'Debe completar todos los campos';
+          this.editado = false;
 
     } else {
       this.empleadoDTO.nombre = this.selectedPersona.nombre;
@@ -370,9 +490,12 @@ limpiarCampos() {
         console.log(this.respuesta.msj + ' EDIT');
         this.limpiarCampos();
         this.show = 2;
+        this.editado = true;
       });
     }
 }
+
+
 
 }
 

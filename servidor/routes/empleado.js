@@ -94,7 +94,7 @@ console.log(input);
           rol_id : input.rol_id,
           municipio_id : input.municipio_id,
           genero : input.genero,
-         // activo : 1
+          activo : 1
       };
 
       var login = {

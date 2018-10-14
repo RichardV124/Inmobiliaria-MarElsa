@@ -7,14 +7,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-describe('AsignarAccesoComponent', () => {
+fdescribe('AsignarAccesoComponent', () => {
   let component: AsignarAccesoComponent;
   let fixture: ComponentFixture<AsignarAccesoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AsignarAccesoComponent ],
-      providers: [AccesoRolService,LoginService],
+      providers: [AccesoRolService, LoginService],
       imports: [RouterTestingModule, FormsModule, HttpClientModule]
     })
     .compileComponents();
@@ -33,12 +33,12 @@ describe('AsignarAccesoComponent', () => {
   it('deberia asignar un acceso', () => {
 
     component.rolSeleccionado.id = 2;
-    component.rolSeleccionado.nombre = "empleado";
-    component.rolSeleccionado.descripcion = "empleado";
+    component.rolSeleccionado.nombre = 'empleado';
+    component.rolSeleccionado.descripcion = 'empleado';
 
     component.accesoSeleccionado.id = 1;
-    component.accesoSeleccionado.nombre = "Gestion inmueble";
-    component.accesoSeleccionado.url = "registro-inmueble";
+    component.accesoSeleccionado.nombre = 'Gestion inmueble';
+    component.accesoSeleccionado.url = 'registro-inmueble';
 
     component.accesoRol.rol = component.rolSeleccionado;
     component.accesoRol.acceso = component.accesoSeleccionado;
@@ -48,15 +48,15 @@ describe('AsignarAccesoComponent', () => {
 
   });
 
-  fit('deberia eliminar un acceso', () => {
+  it('deberia eliminar un acceso', () => {
 
     component.rolSeleccionado.id = 2;
-    component.rolSeleccionado.nombre = "empleado";
-    component.rolSeleccionado.descripcion = "empleado";
+    component.rolSeleccionado.nombre = 'empleado';
+    component.rolSeleccionado.descripcion = 'empleado';
 
     component.accesoSeleccionado.id = 1;
-    component.accesoSeleccionado.nombre = "Gestion inmueble";
-    component.accesoSeleccionado.url = "registro-inmueble";
+    component.accesoSeleccionado.nombre = 'Gestion inmueble';
+    component.accesoSeleccionado.url = 'registro-inmueble';
 
     component.accesoRol.rol = component.rolSeleccionado;
     component.accesoRol.acceso = component.accesoSeleccionado;

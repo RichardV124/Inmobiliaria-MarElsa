@@ -50,7 +50,7 @@ ng generate c pages/customer
    -- lanza servidor karma, por defecto de angular
   npm test
   -- Mantiene activo
-  ng test
+  ng test 
    -- Solo se ejecuta una vez
   ng test --single-run
    -- reporte coverage (Crea una carpta coverage donde se podra ver el reporte)

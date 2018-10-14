@@ -28,8 +28,17 @@ export class BusquedaClienteComponent implements OnInit {
   selectedDepartamento: Departamento = new Departamento();
   show = 0;
 
+  // Variables de validacion
+
+  buscado = false;
+  eliminado = false;
+  listandoClientes = false;
+  listandoMunicipios = false;
+  listandoDepartamentos = false;
+
   constructor(private clienteService: ClienteService, private loginService: LoginService
     , private municipioService: MunicipioService, private accesoRolService: AccesoRolService) {
+    this.loginService.esAccesible('busqueda-cliente');
     this.listarDepartamentos();
     this.listarClientes();
     this.selectedDepartamento.id = 0;
@@ -45,10 +54,33 @@ export class BusquedaClienteComponent implements OnInit {
     this.show = 0;
   }
 
+  validarBusqueda(): boolean {
+    return this.buscado;
+   }
+
+   validarEliminar(): boolean {
+    return this.eliminado;
+   }
+
+   validarListarMunicipios(): boolean {
+    return this.listandoMunicipios;
+   }
+
+   validarListarDepartamentos(): boolean {
+    return this.listandoDepartamentos;
+   }
+
+   validarListarClientes(): boolean {
+    return this.listandoClientes;
+   }
+
    buscar() {
     if (this.selectedPersona.cedula == null) {
       this.show = 1;
       this.respuesta.msj = 'Debe ingresar la cedula a buscar';
+
+      this.buscado = false;
+
     } else {
       this.clienteService.buscarPersona(this.selectedPersona.cedula)
       .subscribe(cliente => {
@@ -57,15 +89,22 @@ export class BusquedaClienteComponent implements OnInit {
           this.show = 1;
           console.log('NO SE ENCUENTRA');
           this.limpiarcampos();
+
+          this.buscado = false;
+
         } else {
           this.respuesta.msj = 'Despliegue los datos del cliente';
           this.show = 2;
           this.selectedPersona = JSON.parse(JSON.stringify(cliente));
+          this.selectedPersona.fecha_nacimiento = this.clienteService.formatoFecha(this.selectedPersona.fecha_nacimiento);
           this.municipioService.buscarMunicipio(cliente['municipio_id'])
           .subscribe(mun => {
               this.selectedDepartamento.id = mun['departamento_id'];
               this.listarMunicipios();
               this.selectedMunicipio = mun;
+
+              this.buscado = true;
+
             });
           this.clienteService.buscarLoginPersona(cliente.cedula)
           .subscribe(login => {
@@ -93,8 +132,10 @@ export class BusquedaClienteComponent implements OnInit {
         this.selectedLogin = new Login();
         this.show = 2;
         this.listarClientes();
+        this.eliminado = true;
       });
     }
+    this.eliminado = false;
   }
 
   ver(cliente: Persona) {
@@ -120,11 +161,19 @@ export class BusquedaClienteComponent implements OnInit {
     .subscribe(personas => {
       this.listaClientes = personas;
       this.rolesMunicipios();
+
+      if (this.listaClientes === undefined) {
+          this.listandoClientes = false;
+      } else {
+
+        this.listandoClientes = true;
+
+      }
     });
   }
 
   rolesMunicipios() {
-    for (let persona of this.listaClientes) {
+    for (const persona of this.listaClientes) {
       this.accesoRolService.buscarRolPorId(JSON.parse(JSON.stringify(persona['rol_id'])))
       .subscribe(rol => {
                 persona.rol_id = JSON.parse(JSON.stringify(rol));
@@ -141,6 +190,12 @@ export class BusquedaClienteComponent implements OnInit {
     this.municipioService.listarDepartamentos().
     subscribe(departamento => {
       this.listaDepartamentos = departamento;
+
+      if (this.listaDepartamentos === undefined) {
+          this.listandoDepartamentos = false;
+      } else {
+        this.listandoDepartamentos = true;
+      }
     });
   }
 
@@ -148,6 +203,12 @@ export class BusquedaClienteComponent implements OnInit {
     this.municipioService.listarMunicipios(this.selectedDepartamento.id).
     subscribe(municipio => {
       this.listaMunicipios = municipio;
+
+      if (this.listaMunicipios === undefined) {
+        this.listandoMunicipios = false;
+      } else {
+        this.listandoMunicipios = true;
+      }
     });
   }
 

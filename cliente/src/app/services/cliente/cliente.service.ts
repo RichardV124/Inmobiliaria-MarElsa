@@ -77,4 +77,15 @@ export class ClienteService {
       .map(res => res);
   }
 
+  /**
+     *
+     * @param date
+     */
+    formatoFecha(date) {
+      // Cortamos el date a 10 caracteres y luego hacemos split cada que encuentre un -
+      const data = date.slice(0, 10).split('-');
+      // retornamos año-mes-dia
+      return data[0] + '-' + data[1] + '-' + data[2];
+  }
+
 }

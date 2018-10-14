@@ -31,9 +31,9 @@ exports.list = function(req, res){
           {
               
               if(err)
-                console.log("Error Selecting : %s ",err );
-            console.log("origen: "+req.headers.origin+" - peticion: buscar persona - parametro: "+cedula+" - resultado: "+rows[0]);
-            res.send({data:rows[0]});
+                res.send('{"id": 404,"msj": "Hubo un error al buscar el cliente"}');
+       
+              res.send({data:rows[0]});
               
                   
              
@@ -148,8 +148,6 @@ exports.list = function(req, res){
               cedula : input.cedula,
               activo : input.activo
           };
-
-            console.log(login);
   
             var query = connection.query("UPDATE persona set ? WHERE cedula = ?",[persona,persona.cedula], function(err, rows)
             {

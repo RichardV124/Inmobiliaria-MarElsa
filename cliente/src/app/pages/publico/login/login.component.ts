@@ -82,6 +82,11 @@ export class LoginComponent implements OnInit {
      }
    });
  }
+
+ cerrarMsj() {
+  this.show = 0;
+}
+
  validarInicio():boolean{
   return this.inicio;
 }

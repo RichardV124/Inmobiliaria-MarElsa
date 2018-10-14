@@ -10,7 +10,7 @@
   </div>
 </section>
 <br>
-<div class="card mt-4">
+<div class="col-md-6" style="margin: 0 auto;">
   <div class="card-body">
       <div class="form-group">
             <span>Rol</span>
@@ -27,16 +27,15 @@
         <button (click)="asignar()" class="btn south-btn m-1" > 
             Asignar
           </button>
-          <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
-          <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" title="Cerrar">x</div>{{respuesta.msj}}</div>
-          
+          <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+          <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
        </div>
   </div>
 </div>
 
 <br><br>
 
-            <div class="col-lg-8">
+            <div class="col-md-10" style="margin: 0 auto;">
                 <br>
                 <div class="section_subtitle"><p>Lista de roles con sus accesos</p></div>
                 <table class="table">

@@ -43,7 +43,7 @@ describe('InmuebleService', () => {
   });
 
 
-    it('deberia registrar un inmueble con todos los datos', () => {
+    fit('deberia registrar un inmueble con todos los datos', () => {
 
       dep.nombre ="Quindio";
       dep.id = 1;
@@ -63,10 +63,10 @@ describe('InmuebleService', () => {
       rol.descripcion = "empleado";
       
       
-      per.nombre = "David";
+      per.nombre = "gart";
       per.apellido = "Roman";
       per.fecha_nacimiento = new Date("1998,08,21");
-      per.cedula = "123";
+      per.cedula = "111";
       per.direccion= "por ahi";
       per.telefono = 23423423;
       per.correo = "david";
@@ -74,8 +74,8 @@ describe('InmuebleService', () => {
       per.municipio_id = mun;
       per.genero = 0;
   
-      log.username = "david";
-      log.contrasenia= "123";
+      log.username = "gart";
+      log.contrasenia= "1234";
       log.persona_cedula = per;
 
       inm.id = 20;
@@ -121,7 +121,7 @@ describe('InmuebleService', () => {
 
       });
       servicio.buscarInmueble(inm.matricula).subscribe(rta =>{
-        expect(rta.matricula).toEqual("12345");
+        expect(rta.matricula).toEqual("100");
       });
         
     });
@@ -153,8 +153,8 @@ describe('InmuebleService', () => {
       tipo.id = 1;
       tipo.descripcion = "sda";
 
-      log.username = "david";
-      log.contrasenia= "123";
+      log.username = "gart";
+      log.contrasenia= "1234";
       log.persona_cedula = per;
 
       inm.id = 21;
@@ -174,16 +174,16 @@ describe('InmuebleService', () => {
 
       });
       servicio.buscarInmueble(inm.matricula).subscribe(rta =>{
-        expect(rta.matricula).toEqual("1234567");
+        expect(rta.matricula).toEqual("101");
       });
     });
 
     it('busqueda del inmueble por la matricula', () => {
       const servicio: InmuebleService = TestBed.get(InmuebleService);
-      servicio.buscarInmueble("1234").subscribe(rta =>{
-        expect(rta.matricula).toEqual("1234");
-        
-        }); 
+      servicio.buscarInmueble("casa 12").subscribe(rta =>{
+        expect(rta.matricula).toEqual("casa 12");
+
+        });
   });
 
   it('testing listar Inmuebles', () => {
@@ -437,7 +437,7 @@ it('deberia poner inactivo un inmueble', () => {
     respuesta = JSON.parse(JSON.stringify(rta));
     console.log(this.respuesta.msj + ' UPDATE');
   });
-  servicio.buscarInmueble(inm.matricula).subscribe(rta =>{
+  servicio.buscarInmueble(inm.matricula).subscribe(rta => {
     expect(rta.inactivo).toEqual(0);
   });
 
