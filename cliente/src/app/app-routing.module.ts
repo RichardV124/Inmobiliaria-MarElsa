@@ -10,6 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegistroClienteComponent } from './pages/publico/registro-cliente/registro-cliente.component';
 import { BusquedaClienteComponent } from './pages/seguro/cliente/busqueda-cliente/busqueda-cliente.component';
 import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/editar-cliente.component';
+import { GestionVisitaComponent } from './pages/seguro/cliente/gestion-visita/gestion-visita.component';
 
 
 const appRoutes: Routes = [
@@ -21,7 +22,8 @@ const appRoutes: Routes = [
   {path: 'editar-cliente', component: EditarClienteComponent},
   {path: 'asignar-acceso', component: AsignarAccesoComponent},
   {path: 'registro-inmueble', component: RegistroInmuebleComponent},
-  {path: 'asignar-visita', component: AsignarVisitaComponent}
+  {path: 'asignar-visita', component: AsignarVisitaComponent},
+  {path: 'gestion-visita', component: GestionVisitaComponent}
 ];
 
 @NgModule({
