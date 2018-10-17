@@ -39,8 +39,8 @@ exports.listarPorEstado = function(req, res){
             
             id: input.id,
             empleado_cedula    : input.empleado_cedula.persona_cedula.cedula,
-            // Cambiamos el estado por atendido
-            estado: 3
+            // Cambiamos el estado por asignado
+            estado: 1
 
         };
 
@@ -134,3 +134,62 @@ exports.delete = function(req,res){
            
      });
 };
+
+/*
+ * Lista las visitas de un empleado por su estado
+ */
+exports.listarPorEmpleadoAndEstado = function(req, res){
+
+    var estado = req.params.estado;
+    var empleado = req.params.empleado;
+    req.getConnection(function(err,connection){
+         
+          var query = connection.query('SELECT * FROM visita WHERE empleado_cedula = ? AND estado = ?;',[empleado,estado],function(err,rows)
+          {
+            if(err)
+            res.send('{"id": 404,"msj": "Hubo un error al listar las visitas"}');
+       
+              res.send({data:rows});
+                  
+           });
+           
+           //console.log(query.sql);
+      });
+    
+  };
+
+  /*
+ * Marca una visita asignada a un empelado como atendida
+ */
+exports.cambiarEstadoVisitaAsignada = function(req,res){
+    
+    console.log(req.body);
+    var input = JSON.parse(JSON.stringify(req.body));
+
+    console.log(input);
+    
+    req.getConnection(function (err, connection) {
+        
+        var visita = {
+            
+            id: input.id,
+            // Cambiamos el estado por asignado
+            estado: input.estado
+
+        };
+
+        var query = connection.query("UPDATE visita v set ? WHERE v.id = ? ",[visita,visita.id], function(err, rows)
+        {
+  
+          if (err)
+          res.send('{"id": 600,"msj": "Hubo un error al atender la visita"}');
+
+          res.send('{"id": 505,"msj": "Se atendio correctamente la visita"}');
+         // res.redirect('/customers');
+          
+        });
+
+        console.log(query.sql); //get raw query
+
+    });
+  };

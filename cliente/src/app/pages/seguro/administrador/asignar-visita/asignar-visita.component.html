@@ -11,9 +11,6 @@
 </section>
 <br><br>
 
-<div class="card-body">   
-<div class="row">
-<div class="col-md-6">
   <!-- Tabla de visitas -->
 <div class="col-md-12" style="overflow-x: auto;">
   <div class="section_subtitle"><p>LISTADO DE VISITAS</p> </div>
@@ -52,73 +49,64 @@
           </tbody>
         </table>
 </div>
-</div>
-<div class="col-md-6">
-<!-- Tabla empleados -->
-      <div class="col-md-12" style="overflow-x: auto;">
-        <div class="section_subtitle"><p>LISTADO DE EMPLEADOS</p> </div>
-        <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Cedula</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellido</th>
-                    <th scope="col">Cargo</th>
-                    <th scope="col">Ver</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let e of listaEmpleados">
-                    <th scope="row">{{e.cedula}}</th>
-                    <td>{{e.nombre}}</td>
-                    <td>{{e.apellido}}</td>
-                    <td>{{e.descripcion_tipo}}</td>
-                    <td><button (click)="ver(e)" class="btn south-btn btn-2 m-1"> 
-                                Seleccionar empleado
-                        </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-      </div>
-      
-</div>
-</div>
+
+<br> <br>
       <div *ngIf="mostrarEmpleados == 1">
-            <p style="color: #947054; font-size: 22px; margin-bottom: 0;font-style: italic;">Empleados disponibles</p><br>
-            <div class="col-md-6" style="margin: 0 auto;">
-              <div class="card-body">
-                  <div class="form-group">
-                        <span>Empleado</span>
+  
+        <div class="south-search-area">
+          <div class="container">
+              <div class="row">
+                  <div class="col-12" style="margin: 0 auto;">
+                      <div class="advanced-search-form">
+                          <!-- Search Title -->
+                          <div class="search-title">
+                              <p>Asignacion de visita</p>
+                          </div>
+                          <!-- Search Form -->
+                          <div class="card-body">
+                              <div class="form-group">
+
+                                  <div class="row">
+                                      <div class="col-md-2"><label>Empleado</label></div>
+                          <div class="col-md-4">
                         <select  [(ngModel)]="empleadoDTO.cedula" class="form-control">
-                          <option [ngValue]="0" selected disabled hidden>Seleccione al empleado que se le asignara la visita</option>
-                          <option *ngFor="let e of listaEmpleados" [value]="e.cedula">{{e.nombre}}  {{e.apellido}}</option>
-                       </select>
-                       <select  [(ngModel)]="horaSeleccionada" class="form-control">
-                         <option [ngValue]="0" selected disabled hidden>Seleccione la hora de la visita</option>
-                         <option [value]="7">7</option>
-                         <option [value]="7">8</option>
-                         <option [value]="7">9</option>
-                         <option [value]="7">10</option>
-                         <option [value]="7">11</option>
-                         <option [value]="7">12</option>
-                         <option [value]="7">14</option>
-                         <option [value]="7">15</option>
-                         <option [value]="7">16</option>
-                         <option [value]="7">17</option>
-                         <option [value]="7">18</option>
-                         <option [value]="7">19</option>
-                      </select>
-                     <br>
-                     <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
-                      <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                          <option [ngValue]="0" selected disabled hidden>Seleccione un empleado</option>
+                          <option *ngFor="let e of listaEmpleados" [value]="e">{{e.cedula}} - {{e.nombre}} {{e.apellido}}</option>
+                        </select>
+                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-md-2"><label>Fecha</label></div>
+                                      <div class="col-md-4">
+                                        <input type="date" min="{{dateToday}}" [(ngModel)]="visitaSeleccionada.fecha" placeholder="Ingrese fecha de nacimiento yyyy-dd-mm" class="form-control">    
+                                      </div>   
+                                      <div class="col-md-2"><label>Hora</label></div>
+                                      <div class="col-md-4">
+                                        <select  [(ngModel)]="visitaSeleccionada.hora" class="form-control">
+                                          <option [ngValue]="0" selected disabled hidden>Seleccione una hora</option>
+                                          <option [ngValue]="8">8:00</option>
+                                          <option [ngValue]="9">9:00</option>
+                                          <option [ngValue]="10">10:00</option>
+                                          <option [ngValue]="11">11:00</option>
+                                          <option [ngValue]="14">14:00</option>
+                                          <option [ngValue]="15">15:00</option>
+                                          <option [ngValue]="16">16:00</option>
+                                          <option [ngValue]="17">17:00</option>
+                                      </select>
+                                      </div>                   
+                                  </div>                                     
+                              </div>
+                              <button (click)="asignar()" class="btn south-btn m-1"> 
+                                Asignar Empleado
+                              </button>  
+                          </div>
+                          <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                          <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+                      </div>
                   </div>
               </div>
-            </div>
-
-      <button (click)="asignar()" class="btn south-btn btn-2 m-1"> 
-          Asignar empleado
-      </button>
+          </div>
+      </div>
 
 </div>
 

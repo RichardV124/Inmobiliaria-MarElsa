@@ -73,4 +73,24 @@ eliminar(id) {
       return data[0] + '-' + data[1] + '-' + data[2];
   }
 
+
+  /**
+ * Metodo que lista las visitas de un empleado por un estado determinado
+ */
+listarVisitasPorEmpleadoAndEstado(empleado, estado) {
+  return this.http.get<any>(`${this.domain}/visita/listarPorEmpleadoAndEstado/${empleado}/${estado}`)
+  .map(res => {
+    return res.data;
+});
+}
+
+/**
+ * Metodo que marca una visita como atendida
+ * @param visita, la visita que contiene el nuevo estado ( atendida )
+ */
+atenderVisita(visita: Visita) {
+  return this.http.post<any>(`${this.domain}/visita/cambiarEstadoVisitaAsignada`, visita)
+    .map(res => res);
+}
+
 }
