@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Venta } from './../../modelo/venta';
+import { Visita } from 'src/app/modelo/visita';
 
 @Injectable({
   providedIn: 'root'
@@ -33,4 +34,13 @@ export class VentasService {
     .map(res => res);
   }
 
+ registroVenta(venta: Venta){
+  return this.http.post<any>(`${this.domain}/venta/addVenta`, venta)
+  .map(res => res);
+ }
+
+ buscarPorInmbuebleyCedula(visita: Visita){
+  return this.http.post<any>(`${this.domain}/visita/search`, visita)
+  .map(res => res);
+ }
 }

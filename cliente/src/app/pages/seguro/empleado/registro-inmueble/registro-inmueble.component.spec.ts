@@ -64,7 +64,7 @@ describe('RegistroInmuebleComponent', () => {
 
   it('test cliente existe', () => {
     //cedula de la persona a buscar,
-    component.propietario.cedula = "1234";
+    component.propietario.cedula = '1234';
     component.clienteExiste();
     expect(component.validarClienteExist).toBeTruthy();
   }); 
@@ -115,7 +115,6 @@ describe('RegistroInmuebleComponent', () => {
   it('test validacion listar TiposInmueble',() => {
       component.listarTiposInmueble();
       var res = component.listaTiposInmueble;
-      console.log(res + " listar tipos ");
       expect(res).toBeFalsy();
   });
 
@@ -154,7 +153,7 @@ describe('RegistroInmuebleComponent', () => {
 
   
   it('test validacion si el inmueble no existe',() => {
-    component.selectedInmueble.matricula = "123456756765";
+    component.selectedInmueble.matricula = '123456756765';
     component.buscar();
     expect(component.validarBuscarInmueble()).toBeFalsy();
   }); 
@@ -169,10 +168,9 @@ describe('RegistroInmuebleComponent', () => {
   
  
   it('test validacion si el inmueble existe',() => {
-    component.selectedInmueble.matricula = "1234";
+    component.selectedInmueble.matricula = '1234';
     component.buscar();
     expect(component.validarBuscarInmueble).toBeTruthy();
   
   });
 });
-

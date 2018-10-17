@@ -175,6 +175,8 @@ app.post('/venta/add', venta.save);
 app.get('/venta/search/:inmueble_id', venta.buscarPorInmuebleId);
 app.post('/venta/delete/', venta.delete);
 app.post('/venta/activar/', venta.activar);
+app.post('/venta/addVenta', venta.saveVenta);
+app.post('/visita/search', venta.buscarPorInmbuebleyCedula);
 
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);
