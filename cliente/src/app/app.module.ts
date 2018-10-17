@@ -21,6 +21,7 @@ import { BuscarByNombrePipe } from './filtros/buscar-by-nombre.pipe';
 import { DatePipe } from '@angular/common';
 import { AsignarVisitaComponent } from './pages/seguro/administrador/asignar-visita/asignar-visita.component';
 import { RegistroVentaComponent } from './pages/seguro/empleado/registro-venta/registro-venta.component';
+import { GestionVisitaComponent } from './pages/seguro/cliente/gestion-visita/gestion-visita.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { RegistroVentaComponent } from './pages/seguro/empleado/registro-venta/r
     AsignarAccesoComponent,
     BuscarByNombrePipe,
     AsignarVisitaComponent,
-    RegistroVentaComponent
+    RegistroVentaComponent,
+    GestionVisitaComponent
   ],
   imports: [
     BrowserModule,

@@ -225,7 +225,7 @@ exports.save = function (req, res) {
         var query = connection.query("INSERT INTO inmueble set ? ", data, function (err, rows) {
 
             if (err)
-            res.send('{"id": 404,"msj": "Hubo un error al registrar el inmueble"}');
+            res.send('{"id": 404,"msj": "La matricula del inmueble ingresado ya existe"}');
        
         res.send('{"id": 505,"msj": "Registro exitoso"}');
 
@@ -288,7 +288,7 @@ exports.save_edit = function (req, res) {
         connection.query("UPDATE inmueble set ? WHERE id = ? ", [data, input.id], function (err, rows) {
 
             if (err)
-            res.send('{"id": 404,"msj": "Hubo un error al editar"}');
+            res.send('{"id": 404,"msj": "La matricula del inmueble ingresado ya existe"}');
        
         res.send('{"id": 505,"msj": "Se editó correctamente"}');
 

@@ -11,6 +11,7 @@ import { RegistroClienteComponent } from './pages/publico/registro-cliente/regis
 import { BusquedaClienteComponent } from './pages/seguro/cliente/busqueda-cliente/busqueda-cliente.component';
 import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/editar-cliente.component';
 import { RegistroVentaComponent } from './pages/seguro/empleado/registro-venta/registro-venta.component';
+import { GestionVisitaComponent } from './pages/seguro/cliente/gestion-visita/gestion-visita.component';
 
 
 const appRoutes: Routes = [
@@ -23,7 +24,8 @@ const appRoutes: Routes = [
   {path: 'asignar-acceso', component: AsignarAccesoComponent},
   {path: 'registro-inmueble', component: RegistroInmuebleComponent},
   {path: 'asignar-visita', component: AsignarVisitaComponent},
-  {path: 'registro-venta', component: RegistroVentaComponent}
+  {path: 'registro-venta', component: RegistroVentaComponent},
+  {path: 'gestion-visita', component: GestionVisitaComponent}
 ];
 
 @NgModule({

@@ -1,3 +1,4 @@
+import { LoginService } from './../../../../services/login/login.service';
 import { Persona } from './../../../../modelo/persona';
 import { EmpleadoService } from './../../../../services/empleado/empleado.service';
 import { EmpleadoDTO } from './../../../../modelo/dto/empleadoDTO';
@@ -18,16 +19,21 @@ export class AsignarVisitaComponent implements OnInit {
   visitaSeleccionada: Visita = new Visita();
   empleadoDTO: EmpleadoDTO = new EmpleadoDTO();
   listaEmpleados: EmpleadoDTO[];
-  respuesta: RespuestaDTO;
+  respuesta: RespuestaDTO = new RespuestaDTO();
+  empleado: Empleado = new Empleado();
+  persona: Persona = new Persona();
   horaSeleccionada = 0;
   show;
   mostrarEmpleados = 0;
 
-  constructor(private visitaService: VisitaService, private empleadoService: EmpleadoService) {
+  constructor(private visitaService: VisitaService, private empleadoService: EmpleadoService, private usuarioServicio: LoginService) {
     this.visitaSeleccionada.id = 0;
     this.empleadoDTO.cedula = 0;
     this.listarVisitas();
     this.listarEmpleados();
+
+     // Validamos si el usuario tiene acceso a la pagina
+     this.usuarioServicio.esAccesible('asignar-visita');
 
    }
 
@@ -63,27 +69,24 @@ export class AsignarVisitaComponent implements OnInit {
   }
 
   asignar () {
-    let empleado : Empleado = new Empleado();
-    let persona : Persona = new Persona();
-    persona.cedula = this.empleadoDTO.cedula;
-  empleado.persona_cedula = persona;
-this.visitaSeleccionada.empleado_cedula = empleado;
-console.log(this.visitaSeleccionada);
 
-    // this.rolService.asignarAcceso(this.accesoRol)
-    //         .subscribe(res => {
-    //           this.respuesta = JSON.parse(JSON.stringify(res));
-    //           if (this.respuesta.id == 600) {
-    //             this.show = 1;
-    //             this.regAcceso = false;
-    //           } else {
-    //               this.rolSeleccionado = new Rol();
-    //               this.accesoSeleccionado = new Acceso();
-    //               this.accesoRol = new AccesoRol();
-    //           this.show = 2;
-    //           this.regAcceso = true;
-    //           this.listarAccesosRol();
-    //           }
-    //         });
+    this.persona.cedula = this.empleadoDTO.cedula;
+    this.empleado.persona_cedula = this.persona;
+    this.visitaSeleccionada.empleado_cedula = this.empleado;
+    console.log(this.visitaSeleccionada);
+
+    this.visitaService.asignarVisita(this.visitaSeleccionada)
+            .subscribe(res => {
+              this.respuesta = JSON.parse(JSON.stringify(res));
+              if (this.respuesta.id == 600) {
+                this.show = 1;
+              } else {
+                this.visitaSeleccionada = new Visita();
+                this.empleado = new Empleado();
+                this.persona = new Persona();
+              this.show = 2;
+              this.mostrarEmpleados = 0 ;
+              }
+            });
     }
 }
