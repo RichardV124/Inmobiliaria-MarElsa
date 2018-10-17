@@ -196,6 +196,9 @@ app.get('/departamento/search/:id', departamento.search);
 // ------- Servicios de visita ------- //
 app.get('/visita/listarPorEstado/:estado', visita.listarPorEstado);
 app.post('/visita/asignarVisita', visita.asignarVisita);
+app.post('/visita/save-visita-cliente', visita.saveVisitaCliente);
+app.get('/visita/listarPorClienteAndEstado/:cliente/:estado', visita.listarPorClienteAndEstado);
+app.get('/visita/delete/:id', visita.delete);
 
 
 app.use(app.router);

@@ -58,4 +58,79 @@ exports.listarPorEstado = function(req, res){
         console.log(query.sql); //get raw query
 
     });
+  };
+
+  /*Guarda una visita*/
+  exports.saveVisitaCliente = function(req,res){
+      
+    var input = JSON.parse(JSON.stringify(req.body));
+    
+console.log(input);
+
+    req.getConnection(function (err, connection) {
+
+      var visita = {
+          cliente_cedula : input.cliente_cedula.cedula,
+          tipo_visita : input.tipo_visita,
+          descripcion : input.descripcion,
+          estado : input.estado,
+          fecha : input.fecha,
+          hora : input.hora
+      };
+
+        var query = connection.query("INSERT INTO visita set ? ",visita, function(err, rows)
+        {
+  
+          if (err)
+              res.send('{"id": 404,"msj": "Error al registrar la visita"}');    
+              
+        res.send('{"id": 505,"msj": "Registro exitoso"}');       
+              });
+        console.log(query.sql);
+    });                                 
+};
+
+/*
+ * Lista las visitas de un cliente por su estado
+ */
+exports.listarPorClienteAndEstado = function(req, res){
+
+    var estado = req.params.estado;
+    var cliente = req.params.cliente;
+    req.getConnection(function(err,connection){
+         
+          var query = connection.query('SELECT * FROM visita WHERE cliente_cedula = ? AND estado = ?;',[cliente,estado],function(err,rows)
+          {
+              
+              if(err)
+                  console.log("Error Selecting : %s ",err );
+       
+              res.send({data:rows});
+                  
+             
+           });
+           
+           //console.log(query.sql);
+      });
+    
+  };
+
+exports.delete = function(req,res){
+          
+    var id = req.params.id;
+    
+     req.getConnection(function (err, connection) {
+        
+        var query= connection.query("DELETE FROM visita  WHERE id = ? ",[id], function(err, rows)
+        {
+             if(err)
+                 res.send('{"id": 404,"msj": "Hubo un error al eliminar la visita"}');
+            
+        res.send('{"id": 505,"msj": "Se eliminó correctamente"}');
+             
+        });
+
+        console.log(query.sql); //get raw query   
+           
+     });
 };
