@@ -12,6 +12,61 @@
   <br><br><br>
 
 
+
+<div *ngIf="mostrarDetalles == 1" class="south-search-area">
+    <div class="container">
+        <div class="col-12" style="margin: 0 auto;">
+                <div class="advanced-search-form">
+                        <!-- Search Title -->
+                        <div class="search-title">
+                            <p>VISITA A ATENDER</p>
+                        </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2"><label>Identificador</label></div>
+                                        <div class="col-md-4">
+                                            <input type="text" [(ngModel)]="visitaSeleccionada.id" placeholder="Identificador"
+                                                class="form-control" disabled>
+                                        </div>
+                                        <div class="col-md-2"><label>Tipo de visita</label></div>
+                                        <div class="col-md-4">
+                                            <input type="text" [(ngModel)]="visitaSeleccionada.tipo_visita" placeholder="Tipo de visita"
+                                                class="form-control" disabled>
+                                        </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-2"><label>Descripcion</label></div>
+                                            <div class="col-md-4">
+                                                <input type="text" [(ngModel)]="visitaSeleccionada.descripcion" placeholder="Descripcion"
+                                                    class="form-control" disabled>
+                                            </div>
+                                            <div class="col-md-2"><label>Fecha</label></div>
+                                            <div class="col-md-4">
+                                                <input type="text" [(ngModel)]="visitaSeleccionada.fecha" placeholder="Fecha"
+                                                    class="form-control" disabled>
+                                            </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-2"><label>Hora</label></div>
+                                            <div class="col-md-4">
+                                                <input type="text" [(ngModel)]="visitaSeleccionada.hora" placeholder="Hora"
+                                                    class="form-control" disabled>
+                                            </div>
+                                            <div class="col-md-2"><label>Comentarios</label></div>
+                                            <div class="col-md-4">
+                                                <textarea type="text" [(ngModel)]="visitaSeleccionada.comentarios" placeholder="Comentarios"
+                                                    class="form-control">
+                                                </textarea>
+                                            </div>
+                                </div>
+                            </div>
+                            <button (click)="atender()" class="btn south-btn m-1"> Atender</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br><br> <br><br>
 <div class="south-search-area">
   <div class="container">
       <div class="row">
@@ -35,7 +90,6 @@
                                   <th scope="col"><p class="coltabla">Tipo de visita</p></th>
                                   <th scope="col"><p class="coltabla">Fecha</p></th>                
                                   <th scope="col"><p class="coltabla">Hora</p></th>
-                                  <th scope="col"><p class="coltabla">Estado</p></th>
                                   <th scope="col"><p class="coltabla">Atender</p></th>
                                   <th scope="col"><p class="coltabla">Eliminar</p></th>                     
                                 </tr>
@@ -46,10 +100,7 @@
                                   <td>{{v.tipo_visita}}</td>
                                   <td>{{v.fecha}}</td>
                                   <td>{{v.hora}}:00</td>
-                                  <td>
-                                      <label *ngIf="v.estado==0">Solicitada</label>
-                                  </td>
-                                  <td><button (click)="atender(v)" class="btn south-btn m-1"> Atender</button></td>                      
+                                  <td><button (click)="verVisita(v)" class="btn south-btn m-1"> Atender</button></td>                      
                                   <td><button (click)="eliminar(v.id)" class="btn south-btn active m-1"> Cancelar</button></td>                      
                                 </tr>
                               </tbody>
@@ -72,7 +123,8 @@
                                 <th scope="col"><p class="coltabla">Identificador</p></th>
                                 <th scope="col"><p class="coltabla">Tipo de visita</p></th>
                                 <th scope="col"><p class="coltabla">Fecha</p></th>                
-                                <th scope="col"><p class="coltabla">Hora</p></th>                  
+                                <th scope="col"><p class="coltabla">Hora</p></th>             
+                                <th scope="col"><p class="coltabla">Comentarios</p></th>         
                               </tr>
                             </thead>
                             <tbody>
@@ -81,6 +133,7 @@
                                  <td>{{v.tipo_visita}}</td>
                                  <td>{{v.fecha}}</td>
                                  <td>{{v.hora}}:00</td>
+                                 <td>{{v.comentarios}}</td>
                                 </tr>
                             </tbody>
                           </table>
@@ -90,3 +143,4 @@
       </div>
   </div>
 </div>
+<br><br>

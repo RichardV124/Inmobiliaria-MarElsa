@@ -39,6 +39,8 @@ exports.listarPorEstado = function(req, res){
             
             id: input.id,
             empleado_cedula    : input.empleado_cedula.persona_cedula.cedula,
+            fecha: input.fecha,
+            hora: input.hora,
             // Cambiamos el estado por asignado
             estado: 1
 
@@ -130,7 +132,7 @@ exports.delete = function(req,res){
              
         });
 
-        console.log(query.sql); //get raw query   
+       // console.log(query.sql); //get raw query   
            
      });
 };
@@ -174,7 +176,8 @@ exports.cambiarEstadoVisitaAsignada = function(req,res){
             
             id: input.id,
             // Cambiamos el estado por asignado
-            estado: input.estado
+            estado: input.estado,
+            comentarios: input.comentarios
 
         };
 
@@ -189,7 +192,31 @@ exports.cambiarEstadoVisitaAsignada = function(req,res){
           
         });
 
-        console.log(query.sql); //get raw query
+        //console.log(query.sql); //get raw query
 
     });
+  };
+
+
+/*
+ * Lista las visitas de un empleado en una fecha determinada
+ */
+exports.listarPorEmpleadoAndFecha = function(req, res){
+
+    var fecha = req.params.fecha;
+    var empleado = req.params.empleado;
+    req.getConnection(function(err,connection){
+         
+          var query = connection.query('SELECT * FROM visita WHERE empleado_cedula = ? AND fecha = ?;',[empleado,fecha],function(err,rows)
+          {
+            if(err)
+            res.send('{"id": 404,"msj": "Hubo un error al listar las visitas"}');
+       
+              res.send({data:rows});
+                  
+           });
+           
+           console.log(query.sql);
+      });
+    
   };

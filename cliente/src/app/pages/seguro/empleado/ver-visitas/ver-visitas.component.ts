@@ -4,7 +4,6 @@ import { Login } from 'src/app/modelo/login';
 import { VisitaService } from './../../../../services/visita/visita.service';
 import { LoginService } from './../../../../services/login/login.service';
 import { Component, OnInit } from '@angular/core';
-import { Visita } from '../../../../modelo/visita';
 
 @Component({
   selector: 'app-ver-visitas',
@@ -17,14 +16,17 @@ export class VerVisitasComponent implements OnInit {
   // Lista de visitas pendientes que ya estan confirmadas de el empleado logeado
   listaVisitasPendientes: Visita[];
    // Lista de visitas atendidas que ya estan confirmadas de el empleado logeado
-   listaVisitasAtendidas: Visita[];
+  listaVisitasAtendidas: Visita[];
+  visitaSeleccionada: Visita = new Visita();
   respuesta: RespuestaDTO = new RespuestaDTO();
   show;
+  mostrarDetalles;
 
   constructor(private visitaService: VisitaService, private loginService: LoginService) {
     this.loginService.esAccesible('ver-visitas');
     this.user = this.loginService.getUsuario();
     this.show = 0;
+    this.mostrarDetalles = 0;
     this.llenarTablas();
    }
 
@@ -64,11 +66,15 @@ export class VerVisitasComponent implements OnInit {
     });
 }
 
-atender (v: Visita) {
+verVisita (v: Visita) {
+this.visitaSeleccionada = v;
+this.mostrarDetalles = 1;
+}
 
-  console.log(v);
-  v.estado = 2;
-  this.visitaService.atenderVisita(v)
+atender () {
+  console.log(this.visitaSeleccionada);
+  this.visitaSeleccionada.estado = 2;
+  this.visitaService.atenderVisita(this.visitaSeleccionada)
           .subscribe(res => {
             this.respuesta = JSON.parse(JSON.stringify(res));
             if (this.respuesta.id == 600) {
@@ -76,8 +82,9 @@ atender (v: Visita) {
             } else {
             this.show = 2;
             this.llenarTablas();
+            this.mostrarDetalles = 0;
             }
           });
-  }
+}
 
 }

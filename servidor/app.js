@@ -201,7 +201,7 @@ app.post('/visita/save-visita-cliente', visita.saveVisitaCliente);
 app.get('/visita/listarPorClienteAndEstado/:cliente/:estado', visita.listarPorClienteAndEstado);
 app.get('/visita/listarPorEmpleadoAndEstado/:empleado/:estado', visita.listarPorEmpleadoAndEstado);
 app.get('/visita/delete/:id', visita.delete);
-
+app.get('/visita/listarPorEmpleadoAndFecha/:empleado/:fecha', visita.listarPorEmpleadoAndFecha);
 
 app.use(app.router);
 
