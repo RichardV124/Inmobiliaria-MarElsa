@@ -71,26 +71,31 @@ export class GestionVisitaComponent implements OnInit {
       this.respuesta.msj = 'Debe ingresar todos los campos obligatorios y/o revisar la fecha';
       this.show = 1;
     } else {
-      // Asignamos el estado inicial de la visita, siendo 0 Solicitada
-      this.selectedVisita.estado = 0;
-      // Asignamos el tipo de visita, en este caso es por defecto una solicitud de registro de inmueble
-      this.selectedVisita.tipo_visita = 'Registro de inmueble';
-      // le asignamos el cliente a la visita
-      this.selectedVisita.cliente_cedula = this.user.persona_cedula;
-      // llamamos el servicio de registro de visita del cliente
-      this.visitaService.registrarVisitaCliente(this.selectedVisita)
-              .subscribe(res => {
-                this.respuesta = JSON.parse(JSON.stringify(res));
-                console.log(this.respuesta.msj + ' SAVE ');
-                this.selectedVisita = new Visita();
-                // verificamos si la respuesta del servicio es positiva o negativa
-                if (this.respuesta.id === 404) {
-                  this.show = 1;
-                } else {
-                  this.show = 2;
-                  this.llenarTablas();
-                }
-      });
+      if (this.validarFechaAndHora() === false) {
+        this.respuesta.msj = 'Ya tiene una visita solicitada para esta día en esta fecha';
+        this.show = 1;
+      } else {
+        // Asignamos el estado inicial de la visita, siendo 0 Solicitada
+        this.selectedVisita.estado = 0;
+        // Asignamos el tipo de visita, en este caso es por defecto una solicitud de registro de inmueble
+        this.selectedVisita.tipo_visita = 'Registro de inmueble';
+        // le asignamos el cliente a la visita
+        this.selectedVisita.cliente_cedula = this.user.persona_cedula;
+        // llamamos el servicio de registro de visita del cliente
+        this.visitaService.registrarVisitaCliente(this.selectedVisita)
+                .subscribe(res => {
+                  this.respuesta = JSON.parse(JSON.stringify(res));
+                  console.log(this.respuesta.msj + ' SAVE ');
+                  this.selectedVisita = new Visita();
+                  // verificamos si la respuesta del servicio es positiva o negativa
+                  if (this.respuesta.id === 404) {
+                    this.show = 1;
+                  } else {
+                    this.show = 2;
+                    this.llenarTablas();
+                  }
+        });
+      }
     }
   }
 
@@ -99,14 +104,35 @@ export class GestionVisitaComponent implements OnInit {
    * @param v, Visita a elminar
    */
   eliminar (id: number) {
-    this.visitasConfirmadas = null;
-    this.visitasSinConfirmar = null;
       this.visitaService.eliminar(id)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
-        
+        this.llenarTablas();
       });
-      this.llenarTablas();
+    this.llenarTablas();
+  }
+
+  validarFechaAndHora (): boolean {
+    let bandera = true;
+    for (const visita of this.visitasSinConfirmar) {
+      if (this.selectedVisita.fecha === visita.fecha && visita.hora === this.selectedVisita.hora) {
+        bandera = false;
+      }
+    }
+    for (const visit of this.visitasConfirmadas) {
+      if (this.selectedVisita.fecha === visit.fecha && visit.hora === this.selectedVisita.hora) {
+          bandera = false;
+      }
+    }
+
+    // console.log('Huston, poseemos problemas!');
+    if (bandera === true) {
+      console.log('BANDERA TRUE!');
+      return true;
+    } else {
+      console.log('BANDERA FALSE!');
+      return false;
+    }
   }
 
   /**
