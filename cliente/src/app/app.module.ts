@@ -20,6 +20,7 @@ import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/ed
 import { BuscarByNombrePipe } from './filtros/buscar-by-nombre.pipe';
 import { DatePipe } from '@angular/common';
 import { AsignarVisitaComponent } from './pages/seguro/administrador/asignar-visita/asignar-visita.component';
+import { GestionArriendoComponent } from './pages/seguro/empleado/arriendo/gestion-arriendo/gestion-arriendo.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AsignarVisitaComponent } from './pages/seguro/administrador/asignar-vis
     HeaderComponent,
     AsignarAccesoComponent,
     BuscarByNombrePipe,
-    AsignarVisitaComponent
+    AsignarVisitaComponent,
+    GestionArriendoComponent
   ],
   imports: [
     BrowserModule,

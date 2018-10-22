@@ -1,0 +1,496 @@
+<section class="breadcumb-area bg-img" style="background-image: url(https://colorlib.com/preview/theme/south/img/bg-img/hero1.jpg);">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="breadcumb-content">
+                    <h3 class="breadcumb-title">REGISTRO ARRIENDO</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+  <br>
+  <div class="container">
+  <div class="row">
+      <div class="card-body" style="width: 200%;">
+        <div class="container">
+            <div class="section_subtitle"> BUSQUEDA CLIENTE/INMUEBLE</div>
+            
+            <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 404">
+                <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+              </div>
+              <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 505">
+                <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+              </div>
+              <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1">
+                  <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+                </div>
+                <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2">
+                  <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+                </div>
+                  <br>
+                  <br>
+                <div class="form-group">
+                    <div class="row"> 
+                        <div class="col-md-2"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Cédula</p></div>                  
+                        <div class="col-md-8">
+                            <input type="number" min="0" [(ngModel)]="selectedPersona.cedula" placeholder="Ingrese cedula" class="form-control">           
+                        </div>
+                        <div class="col-md-2" style="margin-top: -12px;">
+                            <button (click)="buscarCliente()" class="btn south-btn btn-2 m-1"> 
+                                    Buscar
+                                 </button>
+                        </div>
+                    </div> 
+                    <div class="row">  
+                            <div class="col-md-2"><p style="color: #947054; font-size: 16px; margin-bottom: 0;font-style: italic;">Matricula</p></div>                  
+                            <div class="col-md-8">
+                                <input type="number" min="0" [(ngModel)]="selectedInmueble.matricula" placeholder="Ingrese Matricula" class="form-control">                                 </div>
+                            <div class="col-md-2" style="margin-top: -12px;">
+                                <button (click)="buscarInmueble()" class="btn south-btn btn-2 m-1"> 
+                                        Buscar
+                                     </button>
+                            </div>
+                        </div>
+                </div> 
+              </div>
+            </div>
+           
+             <!-- ##### Tabs ##### -->
+             <div class="panel single-accordion" style="width: 200%;">
+                    <h6>
+                        <a role="button" class="collapsed" aria-expanded="true" aria-controls="collapseTwo" data-parent="#accordion" data-toggle="collapse" href="#collapseTwo">Datos Buscados
+                                <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                </a>
+                    </h6>
+                    <br>
+                    <div id="collapseTwo" class="accordion-content collapse">
+                            <div class="col-12 col-lg-6">
+                                    <div class="south-tabs-content">
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="tab--1" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="false">Datos Cliente</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="tab--2" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Datos Inmueble</a>
+                                            </li>
+                                        </ul>
+                
+                                        <div class="tab-content mb-100" id="myTabContent">
+                                            <div class="tab-pane fade" id="tab1" role="tabpanel" aria-labelledby="tab--1">
+                                                <div class="south-tab-content">
+                                                    <!-- Tab Text -->
+                                                    <div class="card mt-4"  id="link" style="width: 200%;">
+                                                            <div class="card-body">                  
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-2"><label>Cédula</label></div>
+                                                                        <div class="col-md-4">
+                                                                            <input type="number" disabled [(ngModel)]="selectedPersona.cedula" placeholder="Ingrese cedula" class="form-control">    
+                                                                        </div>  
+                                                                        <div class="col-md-2"><label>Nombre</label></div>
+                                                                        <div class="col-md-4">
+                                                                            <input type="text" disabled [(ngModel)]="selectedPersona.nombre" placeholder="Ingrese nombre" class="form-control">
+                                                                        </div>                 
+                                                                    </div>                                     
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-2"><label>Apellido</label></div>
+                                                                        <div class="col-md-4">
+                                                                            <input type="text" disabled [(ngModel)]="selectedPersona.apellido" placeholder="Ingrese apellido" class="form-control">
+                                                                        </div> 
+                                                                        <div class="col-md-2"><label>Fecha nacimiento</label></div>
+                                                                        <div class="col-md-4">
+                                                                            <input type="date" disabled [(ngModel)]="selectedPersona.fecha_nacimiento" placeholder="Ingrese fecha de nacimiento yyyy-dd-mm" class="form-control">
+                                                                        </div>                   
+                                                                    </div>                                     
+                                                                </div>               
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-2"><label>Dirección</label></div>
+                                                                        <div class="col-md-4">
+                                                                            <input type="text" disabled [(ngModel)]="selectedPersona.direccion" placeholder="Ingrese direccion" class="form-control">
+                                                                        </div>  
+                                                                        <div class="col-md-2"><label>Telefono</label></div>
+                                                                        <div class="col-md-4">
+                                                                            <input type="number" disabled [(ngModel)]="selectedPersona.telefono" placeholder="Ingrese telefono" class="form-control">
+                                                                        </div>                  
+                                                                    </div>                                     
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-2"><label>Correo</label></div>
+                                                                        <div class="col-md-4">
+                                                                            <input type="text" disabled [(ngModel)]="selectedPersona.correo" placeholder="Ingrese correo" class="form-control">
+                                                                        </div> 
+                                                                        <div class="col-md-2"><label>Genero</label></div>
+                                                                        <div class="col-md-4">
+                                                                            <select disabled  [(ngModel)]="selectedPersona.genero" class="form-control">
+                                                                                <option [ngValue]="0" selected disabled hidden>Seleccione un genero</option>
+                                                                                 <option [ngValue]="1">Masculino</option>
+                                                                                 <option [ngValue]="2">Femenino</option>
+                                                                            </select>
+                                                                        </div>                  
+                                                                    </div>                                     
+                                                                </div>
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                  <div class="col-md-2"><label>Departamento</label></div>
+                                                                  <div class="col-md-4">
+                                                                    <select  [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
+                                                                        <option [ngValue]="0" selected hidden>Seleccione un Departamento</option>
+                                                                        <option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
+                                                                    </select>
+                                                                  </div>
+                                                                  <div class="col-md-2"><label>Municipio</label></div>
+                                                                  <div class="col-md-4">
+                                                                    <select  [(ngModel)]="selectedMunicipio.id" class="form-control">
+                                                                      <option [ngValue]="0" selected disabled hidden>Seleccione un Municipio</option>
+                                                                      <option *ngFor="let ms of listaMunicipios" [value]="ms.id">{{ms.nombre}}</option>
+                                                                    </select>
+                                                                  </div>
+                                                                </div>                   
+                                                             </div> 
+                                                            </div>
+                                                            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade show active" id="tab2" role="tabpanel" aria-labelledby="tab--2">
+                                                <div class="south-tab-content">
+                                                    <!-- Tab Text -->
+                                                    <div class="tab-content mb-100" id="myTabContent">
+                                                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab--1">
+                                                              <div class="south-tab-content">
+                                                                <!-- Tab Text -->
+                                                                <div class="card mt-4" style="width: 200%;" id="link">
+                                                                <div class="south-tab-text" >
+                                                                  <div class="form-group">
+                                                                    <div class="row">
+                                                                      <div class="col-md-2"><label>Publicación en</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-2">
+                                                                        <input type="checkbox" disabled [(ngModel)]="publicarEnArriendo" name="">Arriendos
+                                                                      </div>
+                                                                      <div class="col-md-2">
+                                                                        <input type="checkbox" disabled [(ngModel)]="publicarEnVenta" name="">Ventas
+                                                                      </div>
+                                                                    </div> <br>
+                                                                    <div class="row">
+                                                                      <div class="col-md-2"><label>Cédula propietario</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="text" disabled [(ngModel)]="propietario.cedula" placeholder="Ingrese el número de cédula del propietario"
+                                                                          class="form-control" required="required">
+                                                                      </div>
+                                                                      <div class="col-md-2"><label>Matrícula</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="text" disabled [(ngModel)]="selectedInmueble.matricula" placeholder="Ingrese la matrícula del inmueble"
+                                                                          class="form-control">
+                                                                      </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                      <div class="col-md-2"><label>Tipo de inmueble</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <select  [(ngModel)]="selectedTipoInmueble.id" class="form-control">
+                                                                          <option [ngValue]="0" selected disabled hidden>Seleccione el tipo de inmueble</option>
+                                                                          <option *ngFor="let tp of listaTiposInmueble" [value]="tp.id">{{tp.descripcion}}</option>
+                                                                        </select>
+                                                                      </div>
+                                                                      <div class="col-md-2"><label>Zona</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <select class="form-control" disabled [(ngModel)]="selectedInmueble.zona">
+                                                                          <option [ngValue]="0" selected disabled hidden>Seleccione la zona del inmubele</option>
+                                                                          <option [ngValue]="1">Rural</option>
+                                                                          <option [ngValue]="2">Urbano</option>
+                                                                        </select>
+                                                                      </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                      <div class="col-md-2"><label>Dirección</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="text" disabled [(ngModel)]="selectedInmueble.direccion" placeholder="Ingrese la dirección"
+                                                                          class="form-control" required="required">
+                                                                      </div>
+                                                                      <div class="col-md-2"><label>Area</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="number" min="1" disabled [(ngModel)]="selectedInmueble.area" placeholder="Ingrese el área en m^2"
+                                                                          class="form-control" required="required">
+                                                                      </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                      <div class="col-md-2"><label>Precio</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="number" min="100000" disabled [(ngModel)]="selectedInmueble.valor" placeholder="Ingrese el precio"
+                                                                          class="form-control" required="required">
+                                                                      </div>
+                                                                      <div class="col-md-2"><label>Porcentaje Promoción</label></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="number" min="0" disabled [(ngModel)]="selectedInmueble.promocion" placeholder="Ingrese un porcentaje de promoción"
+                                                                          class="form-control">
+                                                                      </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                      <div class="col-md-2"><label>Habitaciones</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="number" min="1" disabled [(ngModel)]="selectedInmueble.num_habitaciones" required="required"
+                                                                          placeholder="Ingrese el número de habitaciones" class="form-control">
+                                                                      </div>
+                                                                      <div class="col-md-2"><label>Baños</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="number" min="1" disabled [(ngModel)]="selectedInmueble.num_banios" required="required"
+                                                                          placeholder="Ingrese el número de baños" class="form-control">
+                                                                      </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                      <div class="col-md-2"><label>Pisos</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="number" min="1" disabled [(ngModel)]="selectedInmueble.pisos" required="required"
+                                                                          placeholder="Ingrese la cantidad de pisos del inmueble" class="form-control">
+                                                                      </div>
+                                                                      <div class="col-md-2"><label>Garajes</label></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="number" min="0" disabled [(ngModel)]="selectedInmueble.garaje" placeholder="Ingrese la cantidad de garajes del inmueble"
+                                                                          class="form-control">
+                                                                      </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                      <div class="col-md-2"><label>Closets</label></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="number" min="0" disabled [(ngModel)]="selectedInmueble.num_closets" placeholder="Ingrese la cantidad de closets del inmueble"
+                                                                          class="form-control">
+                                                                      </div>
+                                                                      <div class="col-md-2"><label>Cocinas</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="number" min="1" disabled [(ngModel)]="selectedInmueble.num_cocinas" placeholder="Ingrese la cantidad de cocinas del inmueble"
+                                                                          class="form-control">
+                                                                      </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                      <div class="col-md-2"><label>Departamento<span style="color: red">*</span></label></div>
+                                                                      <div class="col-md-4">
+                                                                        <select [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
+                                                                          <option [ngValue]="0" selected disabled hidden>Seleccione un Departamento</option>
+                                                                          <option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
+                                                                        </select>
+                                                                      </div>
+                                                                      <div class="col-md-2"><label>Municipio</label><span style="color: red">*</span></div>
+                                                                      <div class="col-md-4">
+                                                                        <select [(ngModel)]="selectedMunicipio.id" class="form-control">
+                                                                          <option [ngValue]="0" selected disabled hidden>Seleccione un Municipio</option>
+                                                                          <option *ngFor="let ms of listaMunicipios" [value]="ms.id">{{ms.nombre}}</option>
+                                                                        </select>
+                                                                      </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                      <div class="col-md-2"><label>Observaciones</label></div>
+                                                                      <div class="col-md-10">
+                                                                        <textarea [(ngModel)]="selectedInmueble.observaciones" placeholder="Ingrese los comentarios que desee acerca del inmueble"
+                                                                          class="form-control"></textarea>
+                                                                      </div>
+                                                                    </div>
+                                                                     <br><br>
+                                                                    <div class="row">
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.cocina_integral">Cocina
+                                                                        integral
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.conjunto_cerrado">Conjunto
+                                                                        cerrado
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.salon_comunal">Salon
+                                                                        Comunal
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.zonas_verdes">Zonas
+                                                                        Verdes
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.seguridad">Seguridad
+                                                                        Privada
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.zona_para_ninios">Zona
+                                                                        para niños
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.alarma">Alarma
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.energia">Energia
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.alcantarillado">Alcantarillado
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.gas">Gas
+                                                                        residencial
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.precio_negociable">Precio
+                                                                        Negociable
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.gimnasio">Gimnasio
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.terraza">Terraza
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.balcon">Balcón
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.piscina">Piscina
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.sauna">Sauna
+                                                                      </div>
+                                                                      <div class="col-md-4">
+                                                                        <input type="checkbox" disabled [(ngModel)]="selectedInmueble.zonabbq">Zona
+                                                                        BBQ
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+
+
+                <br>
+                <div class="col-md-2" style="margin-top: -12px;">
+                  <button (click)="registrarArriendo2()"  class="btn south-btn btn-2 m-1"> 
+                          Registrar Arriendo
+                       </button>
+              </div>
+
+              
+
+                <div class="card mt-4" style="width: 100%" >
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <br>
+                          <h6>Lista de Arriendos</h6><br>
+                        </div>
+                        <div class="col-md-12" style="overflow-x:auto; overflow-y:auto;">
+                          <table class="table" style="width:100%;">
+                            <thead>
+                              <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Inmueble</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Empleado</th>
+                                <th scope="col">Visita</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let i of listaArriendos">
+                                <td>{{i.id}}</td>
+                                <td>{{i.inmueble_id}}</td>
+                                <td>{{i.cliente_cedula}}</td>
+                                <td>{{i.empleado_cedula}}</td>
+                              <!--  <td>{{i.visita_id}}</td> -->
+                                <td *ngIf="i.visita_id == null" >Sin visita</td>
+                                <td *ngIf="i.visita_id != null" >{{i.visita_id}}</td> 
+                                
+                                
+                                
+
+
+                                <td><button (click)="ver(i)" class="btn south-btn btn-2 m-1">
+                                    Ver Arriendo
+                                  </button></td>
+                                <td><button (click)="eliminar(i)" class="btn south-btn active m-1">
+                                    Eliminar
+                                  </button></td>
+                                
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel single-accordion" id="dtarriendo" style="width: 200%;">
+                      <h6>
+                          <a role="button" class="collapsed" aria-expanded="true" aria-controls="collapseone" data-parent="#accordion" data-toggle="collapse" href="#collapseone">Informacion Arriendo
+                                  <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                  <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                  </a>
+                      </h6>
+                      <div id="collapseone" class="accordion-content collapse">
+
+                          <div class="card mt-4"  id="link" style="width: 100%;">
+                              <div class="card-body">                  
+                                  <div class="form-group">
+                                      <div class="row"> 
+                                          <div class="col-md-2"><label>Id</label></div>
+                                          <div class="col-md-4">
+                                              <input type="number"  [(ngModel)]="selectedArriendo.id" placeholder="Arriendo" class="form-control">    
+                                          </div>  
+                                          <div class="col-md-2"><label>Cliente</label></div>
+                                          <div class="col-md-4">
+                                              <input type="text"  [(ngModel)]="selectedArriendo.cliente_cedula" placeholder="Cliente" class="form-control">
+                                          </div>                 
+                                      </div>                                     
+                                  </div>
+                                  <div class="form-group">
+                                      <div class="row">
+                                          <div class="col-md-2"><label>Empleado</label></div>
+                                          <div class="col-md-4">
+                                              <input type="text"   [(ngModel)]="selectedArriendo.empleado_cedula" placeholder="Empleado" class="form-control">
+                                          </div> 
+                                          <div class="col-md-2"><label>Inmueble</label></div>
+                                          <div class="col-md-4">
+                                              <input type="text"  [(ngModel)]="selectedArriendo.inmueble_id" placeholder="Inmueble" class="form-control">
+                                          </div>                   
+                                      </div>                                     
+                                  </div>               
+                                  <div class="form-group">
+                                      <div class="row">
+                                          <div class="col-md-2"><label>Visita</label></div>
+                                          <div class="col-md-4">
+                                            <input type="text" disabled [(ngModel)]="selectedArriendo.visita_id" placeholder="Sin visita"  class="form-control">
+                                          </div> 
+                                          <div class="col-md-2" style="margin-top: -12px;" style="margin-left: 185px;">
+                                              <button (click)="editar()"  class="btn south-btn btn-2 m-1"> 
+                                                      Editar Arriendo
+                                                   </button>
+                                          </div>                                   
+                                  </div>
+                                  </div>                   
+                               </div> 
+
+                              </div>
+                              
+                      </div>
+
+                      </div>
+                  </div>
+                  <br>
+                
+             
+        </div>
+        
+  
+        
+           
+
+              
+
+              
+
+                 

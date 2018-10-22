@@ -1,3 +1,4 @@
+import { GestionArriendoComponent } from './pages/seguro/empleado/arriendo/gestion-arriendo/gestion-arriendo.component';
 import { AsignarVisitaComponent } from './pages/seguro/administrador/asignar-visita/asignar-visita.component';
 import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acceso/asignar-acceso.component';
 import { RegistroInmuebleComponent } from './pages/seguro/empleado/registro-inmueble/registro-inmueble.component';
@@ -21,7 +22,8 @@ const appRoutes: Routes = [
   {path: 'editar-cliente', component: EditarClienteComponent},
   {path: 'asignar-acceso', component: AsignarAccesoComponent},
   {path: 'registro-inmueble', component: RegistroInmuebleComponent},
-  {path: 'asignar-visita', component: AsignarVisitaComponent}
+  {path: 'asignar-visita', component: AsignarVisitaComponent},
+  {path: 'registro-arriendo', component: GestionArriendoComponent}
 ];
 
 @NgModule({
