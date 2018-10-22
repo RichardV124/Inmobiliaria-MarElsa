@@ -93,4 +93,14 @@ atenderVisita(visita: Visita) {
     .map(res => res);
 }
 
+ /**
+ * Metodo que lista las visitas de un empleado en una fecha determinada
+ */
+listarVisitasPorEmpleadoAndFecha(empleado, fecha) {
+  return this.http.get<any>(`${this.domain}/visita/listarPorEmpleadoAndFecha/${empleado}/${fecha}`)
+  .map(res => {
+    return res.data;
+});
+}
+
 }

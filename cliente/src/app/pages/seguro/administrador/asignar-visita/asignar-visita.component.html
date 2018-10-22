@@ -10,7 +10,9 @@
   </div>
 </section>
 <br><br>
-
+<div *ngIf="listaVisitas.length == 0">
+  <p style="color: #947054; font-size: 24px; margin-bottom: 0;font-style: italic;">No hay visitas por asignar</p><br>
+</div>
   <!-- Tabla de visitas -->
 <div class="col-md-12" style="overflow-x: auto;">
   <div class="section_subtitle"><p>LISTADO DE VISITAS</p> </div>
@@ -71,7 +73,7 @@
                           <div class="col-md-4">
                         <select  [(ngModel)]="empleadoDTO.cedula" class="form-control">
                           <option [ngValue]="0" selected disabled hidden>Seleccione un empleado</option>
-                          <option *ngFor="let e of listaEmpleados" [value]="e.cedula">{{e.cedula}} - {{e.nombre}} {{e.apellido}}</option>
+                          <option *ngFor="let e of listaEmpleados" [value]="e.cedula">{{e.nombre}} {{e.apellido}}</option>
                         </select>
                       </div>
                                   </div>
@@ -100,13 +102,14 @@
                                 Asignar Empleado
                               </button>  
                           </div>
-                          <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
-                          <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
-                      </div>
+                        </div>
                   </div>
               </div>
           </div>
       </div>
 
 </div>
+<div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+<div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2"><div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}</div>
+<br><br>
 
