@@ -176,8 +176,9 @@ app.get('/venta/search/:inmueble_id', venta.buscarPorInmuebleId);
 app.post('/venta/delete/', venta.delete);
 app.post('/venta/activar/', venta.activar);
 app.post('/venta/addVenta', venta.saveVenta);
-app.post('/visita/search', venta.buscarPorInmbuebleyCedula);
-
+app.get('/visita/buscarPorInmbuebleyCedula/:cliente_cedula/:inmueble_id', venta.buscarPorInmbuebleyCedula);
+app.get('/venta/listVentas', venta.listVentas);
+app.get('/venta/buscarVentaPorId/:id', venta.listVentasPorId);
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);
 app.get('/rol-accesos/listar', roles.listarRolAccesos);

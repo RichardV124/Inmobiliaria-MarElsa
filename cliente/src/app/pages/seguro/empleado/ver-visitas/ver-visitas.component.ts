@@ -4,7 +4,6 @@ import { Login } from 'src/app/modelo/login';
 import { VisitaService } from './../../../../services/visita/visita.service';
 import { LoginService } from './../../../../services/login/login.service';
 import { Component, OnInit } from '@angular/core';
-import { Visita } from '../../../../modelo/visita';
 
 @Component({
   selector: 'app-ver-visitas',

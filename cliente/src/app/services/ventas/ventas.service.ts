@@ -39,8 +39,28 @@ export class VentasService {
   .map(res => res);
  }
 
- buscarPorInmbuebleyCedula(visita: Visita){
-  return this.http.post<any>(`${this.domain}/visita/search`, visita)
-  .map(res => res);
+ buscarPorInmbuebleyCedula(cedula_cliente,inmueble_id){
+  return this.http.get<any>(`${this.domain}/visita/buscarPorInmbuebleyCedula/${cedula_cliente}/${inmueble_id}`)
+  .map(res => {
+    return res.data;
+  });
+  
  }
+
+ /**
+  * lista las ventas de la base de datos
+  */
+ listarVentas() {
+  return this.http.get<any>(`${this.domain}/venta/listVentas`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+buscarVentaPorId(id: number){
+  return this.http.get<any>(`${this.domain}/venta/buscarVentaPorId/${id}`)
+  .map(res => {
+    return res.data;
+  });
+}
 }

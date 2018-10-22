@@ -71,7 +71,7 @@
                           <div class="col-md-4">
                         <select  [(ngModel)]="empleadoDTO.cedula" class="form-control">
                           <option [ngValue]="0" selected disabled hidden>Seleccione un empleado</option>
-                          <option *ngFor="let e of listaEmpleados" [value]="e">{{e.cedula}} - {{e.nombre}} {{e.apellido}}</option>
+                          <option *ngFor="let e of listaEmpleados" [value]="e.cedula">{{e.cedula}} - {{e.nombre}} {{e.apellido}}</option>
                         </select>
                       </div>
                                   </div>
