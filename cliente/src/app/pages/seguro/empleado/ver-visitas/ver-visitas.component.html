@@ -1,0 +1,146 @@
+<section class="breadcumb-area bg-img" style="background-image: url(https://colorlib.com/preview/theme/south/img/bg-img/hero1.jpg);">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="breadcumb-content">
+                    <h3 class="breadcumb-title">Visitas por atender</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+  <br><br><br>
+
+
+
+<div *ngIf="mostrarDetalles == 1" class="south-search-area">
+    <div class="container">
+        <div class="col-12" style="margin: 0 auto;">
+                <div class="advanced-search-form">
+                        <!-- Search Title -->
+                        <div class="search-title">
+                            <p>VISITA A ATENDER</p>
+                        </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2"><label>Identificador</label></div>
+                                        <div class="col-md-4">
+                                            <input type="text" [(ngModel)]="visitaSeleccionada.id" placeholder="Identificador"
+                                                class="form-control" disabled>
+                                        </div>
+                                        <div class="col-md-2"><label>Tipo de visita</label></div>
+                                        <div class="col-md-4">
+                                            <input type="text" [(ngModel)]="visitaSeleccionada.tipo_visita" placeholder="Tipo de visita"
+                                                class="form-control" disabled>
+                                        </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-2"><label>Descripcion</label></div>
+                                            <div class="col-md-4">
+                                                <input type="text" [(ngModel)]="visitaSeleccionada.descripcion" placeholder="Descripcion"
+                                                    class="form-control" disabled>
+                                            </div>
+                                            <div class="col-md-2"><label>Fecha</label></div>
+                                            <div class="col-md-4">
+                                                <input type="text" [(ngModel)]="visitaSeleccionada.fecha" placeholder="Fecha"
+                                                    class="form-control" disabled>
+                                            </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-2"><label>Hora</label></div>
+                                            <div class="col-md-4">
+                                                <input type="text" [(ngModel)]="visitaSeleccionada.hora" placeholder="Hora"
+                                                    class="form-control" disabled>
+                                            </div>
+                                            <div class="col-md-2"><label>Comentarios</label></div>
+                                            <div class="col-md-4">
+                                                <textarea type="text" [(ngModel)]="visitaSeleccionada.comentarios" placeholder="Comentarios"
+                                                    class="form-control">
+                                                </textarea>
+                                            </div>
+                                </div>
+                            </div>
+                            <button (click)="atender()" class="btn south-btn m-1"> Atender</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br><br> <br><br>
+<div class="south-search-area">
+  <div class="container">
+      <div class="row">
+          <div class="col-12" style="margin: 0 auto;">
+              <div class="advanced-search-form">
+                  <!-- Search Title -->
+                  <div class="search-title">
+                      <p>Visitas del empleado</p>
+                  </div>
+                  <!-- Search Form -->
+                  <div class="panel single-accordion" style="width: 100%;">
+                      <h6><a role="button" class="" aria-expanded="true" aria-controls="collapseOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Visitas pendientes
+                              <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                              <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                              </a></h6>
+                      <div id="collapseOne" class="accordion-content collapse show">
+                          <table class="table">
+                              <thead>
+                                <tr>                        
+                                  <th scope="col"><p class="coltabla">Identificador</p></th>
+                                  <th scope="col"><p class="coltabla">Tipo de visita</p></th>
+                                  <th scope="col"><p class="coltabla">Fecha</p></th>                
+                                  <th scope="col"><p class="coltabla">Hora</p></th>
+                                  <th scope="col"><p class="coltabla">Atender</p></th>
+                                  <th scope="col"><p class="coltabla">Eliminar</p></th>                     
+                                </tr>
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor="let v of listaVisitasPendientes">      
+                                  <th scope="row">{{v.id}}</th>
+                                  <td>{{v.tipo_visita}}</td>
+                                  <td>{{v.fecha}}</td>
+                                  <td>{{v.hora}}:00</td>
+                                  <td><button (click)="verVisita(v)" class="btn south-btn m-1"> Atender</button></td>                      
+                                  <td><button (click)="eliminar(v.id)" class="btn south-btn active m-1"> Cancelar</button></td>                      
+                                </tr>
+                              </tbody>
+                            </table>
+                      </div>
+                  </div>
+
+                  <!-- Acordeon de visitas atendidas-->
+                  <div class="panel single-accordion" style="width: 100%;">
+                    <h6>
+                        <a role="button" class="collapsed" aria-expanded="true" aria-controls="collapseTwo" data-parent="#accordion" data-toggle="collapse" href="#collapseTwo">Visitas atendidas
+                                <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                </a>
+                    </h6>
+                    <div id="collapseTwo" class="accordion-content collapse">
+                        <table class="table">
+                            <thead>
+                              <tr>                        
+                                <th scope="col"><p class="coltabla">Identificador</p></th>
+                                <th scope="col"><p class="coltabla">Tipo de visita</p></th>
+                                <th scope="col"><p class="coltabla">Fecha</p></th>                
+                                <th scope="col"><p class="coltabla">Hora</p></th>             
+                                <th scope="col"><p class="coltabla">Comentarios</p></th>         
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let v of listaVisitasAtendidas">      
+                                 <th scope="row">{{v.id}}</th>
+                                 <td>{{v.tipo_visita}}</td>
+                                 <td>{{v.fecha}}</td>
+                                 <td>{{v.hora}}:00</td>
+                                 <td>{{v.comentarios}}</td>
+                                </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+          </div>
+      </div>
+  </div>
+</div>
+<br><br>

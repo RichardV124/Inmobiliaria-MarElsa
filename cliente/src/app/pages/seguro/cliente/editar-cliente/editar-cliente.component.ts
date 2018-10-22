@@ -70,7 +70,7 @@ export class EditarClienteComponent implements OnInit {
           this.selectedPersona.fecha_nacimiento = this.clienteService.formatoFecha(this.selectedPersona.fecha_nacimiento);
           this.municipioService.buscarMunicipio(cliente['municipio_id'])
           .subscribe(mun => {
-              console.log('DEPTOOOOOO !!!!!!!!!!!!' + mun['departamento_id']);
+              console.log('DEPTOOOOOO !!!!!!!!!!!' + mun['departamento_id']);
               this.selectedDepartamento.id = mun['departamento_id'];
               this.listarMunicipios();
               this.selectedMunicipio = mun;

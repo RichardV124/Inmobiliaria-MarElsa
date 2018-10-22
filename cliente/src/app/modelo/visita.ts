@@ -11,7 +11,7 @@ export class Visita {
     tipo_visita: string;
     descripcion: string;
     estado: number;
-    fecha: Date;
+    fecha: any;
     hora: number;
     comentarios: string;
 

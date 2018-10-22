@@ -319,7 +319,7 @@ clientExist = false;
   crearArchivo(inmueble: Inmueble) {
     for (const file of this.selectedFile) {
       const ext = file.name.substr(file.name.lastIndexOf('.') + 1);
-      if (ext === 'jpg' || ext === 'png' || ext === 'jpeg') {
+      if (ext.toLowerCase() === 'jpg' || ext.toLowerCase()  === 'png' || ext.toLowerCase()  === 'jpeg') {
         this.convertirArchivoBase64(file, true, inmueble);
       } else if (ext === 'mp4') {
         this.convertirArchivoBase64(file, false, inmueble);
