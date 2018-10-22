@@ -1,3 +1,4 @@
+import { GestionArriendoComponent } from './pages/seguro/empleado/arriendo/gestion-arriendo/gestion-arriendo.component';
 import { VerVisitasComponent } from './pages/seguro/empleado/ver-visitas/ver-visitas.component';
 import { AsignarVisitaComponent } from './pages/seguro/administrador/asignar-visita/asignar-visita.component';
 import { AsignarAccesoComponent } from './pages/seguro/administrador/asignar-acceso/asignar-acceso.component';
@@ -25,6 +26,7 @@ const appRoutes: Routes = [
   {path: 'asignar-acceso', component: AsignarAccesoComponent},
   {path: 'registro-inmueble', component: RegistroInmuebleComponent},
   {path: 'asignar-visita', component: AsignarVisitaComponent},
+  {path: 'registro-arriendo', component: GestionArriendoComponent},
   {path: 'registro-venta', component: RegistroVentaComponent},
   {path: 'gestion-visita', component: GestionVisitaComponent},
   {path: 'ver-visitas', component: VerVisitasComponent}

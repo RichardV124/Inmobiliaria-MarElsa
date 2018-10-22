@@ -20,6 +20,7 @@ import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/ed
 import { BuscarByNombrePipe } from './filtros/buscar-by-nombre.pipe';
 import { DatePipe } from '@angular/common';
 import { AsignarVisitaComponent } from './pages/seguro/administrador/asignar-visita/asignar-visita.component';
+import { GestionArriendoComponent } from './pages/seguro/empleado/arriendo/gestion-arriendo/gestion-arriendo.component';
 import { RegistroVentaComponent } from './pages/seguro/empleado/registro-venta/registro-venta.component';
 import { GestionVisitaComponent } from './pages/seguro/cliente/gestion-visita/gestion-visita.component';
 import { VerVisitasComponent } from './pages/seguro/empleado/ver-visitas/ver-visitas.component';
@@ -38,6 +39,7 @@ import { VerVisitasComponent } from './pages/seguro/empleado/ver-visitas/ver-vis
     AsignarAccesoComponent,
     BuscarByNombrePipe,
     AsignarVisitaComponent,
+    GestionArriendoComponent,
     RegistroVentaComponent,
     GestionVisitaComponent,
     VerVisitasComponent

@@ -166,11 +166,18 @@ app.post('/file/delete/', inmueble.delete_file);
 
 // ------------ Arriendos ----------------//
 app.post('/arriendo/add', arriendo.save);
-app.get('/arriendo/search/:inmueble_id', arriendo.buscarPorInmuebleId);
 app.post('/arriendo/delete/', arriendo.delete);
 app.post('/arriendo/activar/', arriendo.activar);
+app.post('/arriendo/update/', arriendo.save_update);
+app.get('/arriendo/search/:arriendo_id', arriendo.search);
+app.get('/arriendo/', arriendo.list);
+app.get('/arriendo/searchI/:inmueble_id', arriendo.searchI);
+app.get('/arriendo/searchVisita/:cliente_cedula/:inmueble_id',arriendo.searchVisita);
 
-// ------------ Ventas --------------- //
+
+
+
+// ------------ Ventas --------------- // 
 app.post('/venta/add', venta.save);
 app.get('/venta/search/:inmueble_id', venta.buscarPorInmuebleId);
 app.post('/venta/delete/', venta.delete);

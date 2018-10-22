@@ -1,6 +1,7 @@
 import { Arriendo } from './../../modelo/arriendo';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Visita } from 'src/app/modelo/visita';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class ArriendosService {
     .map(res => res);
   }
 
-  buscarInmuebleArriendo(inmueble_id: number) {
-    return this.http.get<any>(`${this.domain}/arriendo/search/${inmueble_id}`)
+  buscarArriendo(arriendo_id: number) {
+    return this.http.get<any>(`${this.domain}/arriendo/search/${arriendo_id}`)
     .map(res => {
       return res.data;
     });
@@ -36,5 +37,37 @@ export class ArriendosService {
     return this.http.post<any>(`${this.domain}/arriendo/activar/`, arriendo)
     .map(res => res);
   }
+
+  EditarArriendo(arriendo: Arriendo) {
+    return this.http.post<any>(`${this.domain}/arriendo/update/`, arriendo)
+    .map(res => res);
+  }
+
+listarArriendos() {
+  return this.http.get<any>(`${this.domain}/arriendo/`) . map(res => {
+      return res.data;
+   });
+}
+
+buscarInmuebleArrendado(inmueble_id: number) {
+  return this.http.get<any>(`${this.domain}/arriendo/searchI/${inmueble_id}`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+
+buscarVisita(visita: Visita) {
+  return this.http.post<any>(`${this.domain}/arriendo/searchV/`, visita)
+  .map(res => res);
+}
+
+searchVisita (cedula_cliente, inmueble_id) {
+  return this.http.get<any>(`${this.domain}/arriendo/searchVisita/${cedula_cliente}/${inmueble_id}`)
+  .map(res => {
+    return res.data;
+  });
+}
+
 
 }
