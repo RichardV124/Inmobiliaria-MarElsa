@@ -43,14 +43,21 @@ export class ArriendosService {
     .map(res => res);
   }
 
-listarArriendos() {
+ listarArriendos() {
   return this.http.get<any>(`${this.domain}/arriendo/`) . map(res => {
       return res.data;
    });
-}
+ }
 
 buscarInmuebleArrendado(inmueble_id: number) {
   return this.http.get<any>(`${this.domain}/arriendo/searchI/${inmueble_id}`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+buscarInmuebleVendido(inmueble_id: number) {
+  return this.http.get<any>(`${this.domain}/arriendo/searchVendido/${inmueble_id}`)
   .map(res => {
     return res.data;
   });

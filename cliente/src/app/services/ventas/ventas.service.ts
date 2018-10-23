@@ -34,17 +34,17 @@ export class VentasService {
     .map(res => res);
   }
 
- registroVenta(venta: Venta){
+ registroVenta(venta: Venta) {
   return this.http.post<any>(`${this.domain}/venta/addVenta`, venta)
   .map(res => res);
  }
 
- buscarPorInmbuebleyCedula(cedula_cliente,inmueble_id){
+ buscarPorInmbuebleyCedula(cedula_cliente, inmueble_id) {
   return this.http.get<any>(`${this.domain}/visita/buscarPorInmbuebleyCedula/${cedula_cliente}/${inmueble_id}`)
   .map(res => {
     return res.data;
   });
-  
+
  }
 
  /**
@@ -57,7 +57,7 @@ export class VentasService {
   });
 }
 
-buscarVentaPorId(id: number){
+buscarVentaPorId(id: number) {
   return this.http.get<any>(`${this.domain}/venta/buscarVentaPorId/${id}`)
   .map(res => {
     return res.data;

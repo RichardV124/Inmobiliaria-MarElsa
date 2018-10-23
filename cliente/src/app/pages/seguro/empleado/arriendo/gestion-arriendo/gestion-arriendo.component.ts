@@ -1,3 +1,4 @@
+import { VentasService } from './../../../../../services/ventas/ventas.service';
 import { Visita } from './../../../../../modelo/visita';
 import { Cliente } from './../../../../../modelo/cliente';
 import { Arriendo } from './../../../../../modelo/arriendo';
@@ -36,6 +37,7 @@ export class GestionArriendoComponent implements OnInit {
     private empleadoService: EmpleadoService,
     private municipioService: MunicipioService,
     private router: Router,
+    private ventaService: VentasService,
     private arriendoService: ArriendosService, ) {
     this.listarDepartamentos();
     this.listarTiposInmueble();
@@ -149,6 +151,56 @@ export class GestionArriendoComponent implements OnInit {
 
   }
 
+  registrarArriendo3() {
+    this.selectedArriendo.cliente_cedula = this.selectedPersona.cedula;
+    this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
+    this.selectedArriendo.inmueble_id = this.selectedInmueble;
+
+    if ( this.selectedPersona.cedula == null || this.selectedInmueble.matricula == null) {
+      this.show = 1;
+      this.respuesta.msj = 'Debe buscar el cliente y el inmuble';
+      this.limpiarCamposArrendo();
+    } else {
+      this.arriendoService.buscarInmuebleArrendado(this.selectedInmueble.id).subscribe(arr => {
+        this.ventaService.buscarInmuebleVenta(this.selectedInmueble.id).subscribe(arrven => {
+        if (arr === undefined) {
+          if (arrven === undefined) {
+            this.arriendoService.searchVisita(this.selectedPersona.cedula, this.selectedInmueble.id ).subscribe(visita => {
+              this.selectedVisita = visita;
+              this.selectedArriendo.visita_id = this.selectedVisita;
+              this.arriendoService.registrarInmubeleArriendo(this.selectedArriendo).subscribe(res => {
+              this.respuesta = JSON.parse(JSON.stringify(res));
+              this.show = 2;
+              this.respuesta.msj = 'Se registro el arriendo correctamente';
+              this.listarArriendos();
+              this.limpiarCamposArrendo();
+          });
+        });
+
+          } else {
+            this.show = 404;
+          this.respuesta.msj = 'Ingrese otro ilmueble, este ya se encuentra vendido';
+          alert('Ingrese otro ilmueble, este ya se encuentra vendido');
+          this.limpiarCamposArrendo();
+
+          }
+
+        } else {
+          this.show = 404;
+          this.respuesta.msj = 'Ingrese otro ilmueble, este ya se encuentra arrendado';
+          alert('Ingrese otro ilmueble, este ya se encuentra arrendado');
+          this.limpiarCamposArrendo();
+        }
+
+      });
+    });
+    }
+
+
+  }
+
+
+
 
   buscarCliente() {
     if (this.selectedPersona.cedula == null) {
@@ -219,6 +271,7 @@ export class GestionArriendoComponent implements OnInit {
     });
   }
 
+
    listarMunicipios() {
     this.municipioService.listarMunicipios(this.selectedDepartamento.id).
     subscribe(municipio => {
@@ -247,6 +300,14 @@ export class GestionArriendoComponent implements OnInit {
    */
   obtenerDatosJSON(atributo: string, inmueble: Inmueble) {
     return JSON.parse(JSON.stringify(inmueble[atributo]));
+  }
+
+   /**
+   * Obtiene los datos de la cadena json retornada en la busqueda del arriendo
+   * @param atributo nombre del campo en la consulta obtenida
+   */
+  obtenerDatosArriendoJSON(atributo: string, arriendo: Arriendo) {
+    return JSON.parse(JSON.stringify(arriendo[atributo]));
   }
 
   obtenerDatosCombosBusqueda() {
@@ -386,7 +447,6 @@ export class GestionArriendoComponent implements OnInit {
 
      });
   }
-
 
 }
 

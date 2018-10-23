@@ -45,7 +45,7 @@ describe('GestionPersonalComponent', () => {
   });
 
 
-  it('Registrar empleado', () => {
+  fit('Registrar empleado', () => {
 
     // Creamos el rol
     component.rol.id = 2;
@@ -66,7 +66,7 @@ describe('GestionPersonalComponent', () => {
        component.selectedPersona.apellido = 'Arias';
        const fe = new Date('02/06/1997');
        component.selectedPersona.fecha_nacimiento = fe;
-       component.selectedPersona.cedula = null;
+       component.selectedPersona.cedula = 555;
        component.selectedPersona.direccion = 'calle 20';
        component.selectedPersona.telefono = 3114802039;
        component.selectedPersona.correo = 'clts1000@';
@@ -232,7 +232,7 @@ describe('GestionPersonalComponent', () => {
     expect(component.validarlistarMunicipios).toBeTruthy();
   });
 
-  fit('Listar experiencias', () => {
+  it('Listar experiencias', () => {
 
     // Listando los municipios
     const buscado = component.listarExperienciasEmpleado('111');

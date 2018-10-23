@@ -43,7 +43,7 @@ describe('InmuebleService', () => {
   });
 
 
-    fit('deberia registrar un inmueble con todos los datos', () => {
+    it('deberia registrar un inmueble con todos los datos', () => {
 
       dep.nombre ="Quindio";
       dep.id = 1;
