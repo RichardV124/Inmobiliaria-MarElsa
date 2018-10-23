@@ -27,9 +27,9 @@ const appRoutes: Routes = [
   {path: 'registro-inmueble', component: RegistroInmuebleComponent},
   {path: 'asignar-visita', component: AsignarVisitaComponent},
   {path: 'registro-arriendo', component: GestionArriendoComponent},
-  {path: 'registro-venta', component: RegistroVentaComponent},
   {path: 'gestion-visita', component: GestionVisitaComponent},
-  {path: 'ver-visitas', component: VerVisitasComponent}
+  {path: 'ver-visitas', component: VerVisitasComponent},
+  {path: 'registro-venta', component: RegistroVentaComponent}
 ];
 
 @NgModule({
