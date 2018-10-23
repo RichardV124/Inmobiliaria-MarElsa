@@ -62,6 +62,8 @@ exports.search = function (req, res) {
 };
 
 
+
+
 exports.activar = function (req, res) {
 
     var input = JSON.parse(JSON.stringify(req.body));
@@ -172,6 +174,22 @@ exports.searchI = function (req, res) {
     });
 };
 
+exports.searchVendido = function (req, res) { 
+
+    var inmueble_id = req.params.inmueble_id;
+    req.getConnection(function (err, connection) {
+        var query = connection.query('SELECT * FROM venta WHERE inmueble_id = ? ORDER BY id desc',[inmueble_id], function (err, rows) {
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            res.send({
+                data: rows[0]
+            });
+
+        });
+    });
+};
+
 
 exports.searchVisita = function (req, res) {
 
@@ -188,6 +206,8 @@ exports.searchVisita = function (req, res) {
         });
     });
 };
+
+
 
     
 

@@ -172,6 +172,7 @@ app.post('/arriendo/update/', arriendo.save_update);
 app.get('/arriendo/search/:arriendo_id', arriendo.search);
 app.get('/arriendo/', arriendo.list);
 app.get('/arriendo/searchI/:inmueble_id', arriendo.searchI);
+app.get('/arriendo/searchVendido/:inmueble_id', arriendo.searchVendido);
 app.get('/arriendo/searchVisita/:cliente_cedula/:inmueble_id',arriendo.searchVisita);
 
 
