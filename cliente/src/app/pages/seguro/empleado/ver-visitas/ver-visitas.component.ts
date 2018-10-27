@@ -1,16 +1,17 @@
+import { ScrollHelper } from './../../../../modelo/ScrollHelper';
 import { Visita } from './../../../../modelo/visita';
 import { RespuestaDTO } from './../../../../modelo/respuestaDTO';
 import { Login } from 'src/app/modelo/login';
 import { VisitaService } from './../../../../services/visita/visita.service';
 import { LoginService } from './../../../../services/login/login.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 
 @Component({
   selector: 'app-ver-visitas',
   templateUrl: './ver-visitas.component.html',
   styleUrls: ['./ver-visitas.component.css']
 })
-export class VerVisitasComponent implements OnInit {
+export class VerVisitasComponent implements OnInit, AfterViewChecked {
 
   user: Login = new Login();
   // Lista de visitas pendientes que ya estan confirmadas de el empleado logeado
@@ -21,6 +22,8 @@ export class VerVisitasComponent implements OnInit {
   respuesta: RespuestaDTO = new RespuestaDTO();
   show;
   mostrarDetalles;
+
+  private scrollHelper: ScrollHelper = new ScrollHelper();
 
   constructor(private visitaService: VisitaService, private loginService: LoginService) {
     this.loginService.esAccesible('ver-visitas');
@@ -69,6 +72,7 @@ export class VerVisitasComponent implements OnInit {
 verVisita (v: Visita) {
 this.visitaSeleccionada = v;
 this.mostrarDetalles = 1;
+this.scrollHelper.scrollToFirst('search-title');
 }
 
 atender () {
@@ -85,6 +89,10 @@ atender () {
             this.mostrarDetalles = 0;
             }
           });
+}
+
+ngAfterViewChecked() {
+  this.scrollHelper.doScroll();
 }
 
 }
