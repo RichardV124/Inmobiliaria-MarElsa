@@ -135,7 +135,7 @@ exports.buscarPorInmbuebleyCedula = function (req, res) {
  */
 exports.listVentas = function(req, res){
     req.getConnection(function(err,connection){
-          var query = connection.query('select v.*, i.matricula, vi.fecha  from venta v join inmueble i on v.inmueble_id = i.id left join visita vi on v.visita_id = vi.id;',function(err,rows)
+          var query = connection.query('select v.*, i.matricula, vi.fecha, vi.hora  from venta v join inmueble i on v.inmueble_id = i.id left join visita vi on v.visita_id = vi.id;',function(err,rows)
           {
               if(err)
               res.send('{"id": 404,"msj": "Hubo un error al listar las ventas"}');    

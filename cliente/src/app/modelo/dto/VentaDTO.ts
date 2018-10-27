@@ -5,6 +5,7 @@ matricula: number;
 cliente_cedula: number;
 empleado_cedula:number;
 visita_id : number;
-fecha : Date;
+fecha : any;
 activo= 1;
+hora: any;
 }

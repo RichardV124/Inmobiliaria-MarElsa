@@ -462,11 +462,11 @@
                   <div class="row"> 
                       <div class="col-md-2"><label>Id</label></div>
                       <div class="col-md-4">
-                          <input type="number"  [(ngModel)]="ventasTabla.id" placeholder="venta" class="form-control">    
+                          <input type="number" disabled [(ngModel)]="ventasTabla.id" placeholder="venta" class="form-control">    
                       </div>  
                       <div class="col-md-2"><label>Inmueble</label></div>
                       <div class="col-md-4">
-                          <input type="text"  [(ngModel)]="ventasTabla.matricula" placeholder="inmueble id" class="form-control">
+                          <input type="text"  [(ngModel)]="ventasTabla.matricula" placeholder="inmueble" class="form-control">
                       </div>                 
                   </div>                                     
               </div>
@@ -478,7 +478,7 @@
                       </div> 
                       <div class="col-md-2"><label>Visita</label></div>
                       <div class="col-md-4">
-                          <input type="text"[(ngModel)]="ventasTabla.fecha" placeholder="visita" class="form-control">
+                          <input type="text" disabled [(ngModel)]="ventasTabla.fecha" placeholder="visita" class="form-control">
                       </div>                   
                   </div>                                     
               </div>               
@@ -487,6 +487,10 @@
                       <div class="col-md-2"><label>Estado</label></div>
                       <div class="col-md-4">
                           <input type="text" [(ngModel)]="ventasTabla.activo" placeholder="estado" class="form-control">
+                      </div> 
+                      <div class="col-md-2"><label>Hora Visita:</label></div>
+                      <div class="col-md-4">
+                          <input type="text" disabled [(ngModel)]="ventasTabla.hora" placeholder="hora" class="form-control">
                       </div> 
                       <div class="col-md-2" style="margin-top: -12px;" style="margin-left: 185px;">
                           <button  class="btn south-btn btn-2 m-1"> 

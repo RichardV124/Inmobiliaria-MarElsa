@@ -318,7 +318,8 @@ if(this.validarCampos()=== false){
   ver(venta: VentaDTO){
     this.ventasTabla = venta;
     //this.ventaService.buscarVentaPorId(this.ventasTabla.id).subscribe(resVenta =>{
-      //this.selectedVentas = resVenta; 
+      //this.selectedVentas = resVenta;
+            this.ventasTabla.fecha = this.clienteService.formatoFecha(venta.fecha); 
             this.showMost = 1;
             this.respVenta.msj = 'despliegue para ver los datos';
 
