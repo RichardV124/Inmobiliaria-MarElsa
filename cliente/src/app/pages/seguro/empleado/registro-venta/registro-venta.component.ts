@@ -17,6 +17,7 @@ import { Venta } from 'src/app/modelo/venta';
 import { Visita } from 'src/app/modelo/visita';
 import { Empleado } from 'src/app/modelo/empleado';
 import { VentaDTO } from 'src/app/modelo/dto/VentaDTO';
+import { ArriendosService } from 'src/app/services/arriendos/arriendos.service';
 
 @Component({
   selector: 'app-registro-venta',
@@ -45,7 +46,7 @@ export class RegistroVentaComponent implements OnInit {
   selectedTipoInmueble: TipoInmueble = new TipoInmueble();
   propietario: Persona = new Persona();
   selectedVenta: Venta = new Venta();
-  ventasTabla: Venta = new Venta();
+  ventasTabla: VentaDTO = new VentaDTO();
   ventas: VentaDTO = new VentaDTO();
   visita: Visita = new Visita();
   usuario: Login = new Login();
@@ -57,8 +58,8 @@ export class RegistroVentaComponent implements OnInit {
 
 
   constructor(private inmuebleServie: InmuebleService,private clienteService: ClienteService, private loginService: LoginService
-    , private municipioService: MunicipioService, private accesoRolService: AccesoRolService,private ventaService: VentasService) {
-    this.loginService.esAccesible('busqueda-cliente');
+    , private municipioService: MunicipioService, private accesoRolService: AccesoRolService,private ventaService: VentasService, private arriendoService: ArriendosService) {
+    this.loginService.esAccesible('registro-venta');
     this.listarDepartamentos();
     this.listarClientes();
     this.selectedDepartamento.id = 0;
@@ -114,7 +115,7 @@ export class RegistroVentaComponent implements OnInit {
       .subscribe(inmueble => {
         if (inmueble === undefined) {
           this.respuesta.msj = 'El inmueble no existe';
-          this.show = 404;
+          this.show = 1;
           this.limpiarCamposInmueble();
         } else {
           this.respuesta2.msj = 'Despliegue los datos del inmueble';
@@ -200,29 +201,38 @@ if(this.validarCampos()=== false){
   this.ventaService.buscarPorInmbuebleyCedula(this.selectedPersona.cedula, this.selectedInmueble.id).subscribe(visitas =>{
 
     this.ventaService.buscarInmuebleVenta(this.selectedInmueble.id).subscribe(inmueble =>{
-        if(inmueble === undefined){
-          if(visitas === undefined){
-            this.selectedVenta.visita_id = new Visita();
-            this.ventaService.registroVenta(this.selectedVenta).subscribe(resAdd => {
-            this.respuesta = JSON.parse(JSON.stringify(resAdd));
-            this.show = this.respuesta.id;
-            this.llenarTabla();
-            });
-    
+      this.arriendoService.buscarInmuebleArrendado(this.selectedInmueble.id).subscribe(inmArrendado =>{
+        if(inmArrendado === undefined){
+          if(inmueble === undefined){
+            if(visitas === undefined){
+              this.selectedVenta.visita_id = new Visita();
+              this.ventaService.registroVenta(this.selectedVenta).subscribe(resAdd => {
+              this.respuesta = JSON.parse(JSON.stringify(resAdd));
+              this.show = this.respuesta.id;
+              this.llenarTabla();
+              });
+      
+            }else{
+              this.selectedVenta.visita_id = visitas;
+              this.ventaService.registroVenta(this.selectedVenta).subscribe(res => {
+              this.respuestaV = JSON.parse(JSON.stringify(res)); 
+              this.cerrarMsjInmueble();
+              this.show = this.respuestaV.id;
+              this.llenarTabla();
+              });
+            }
           }else{
-            this.selectedVenta.visita_id = visitas;
-            this.ventaService.registroVenta(this.selectedVenta).subscribe(res => {
-            this.respuestaV = JSON.parse(JSON.stringify(res)); 
-            this.cerrarMsjInmueble();
-            this.show = this.respuestaV.id;
-            this.llenarTabla();
-            });
+            alert("este inmueble ya se encuentra vendido");
+            this.respuesta.msj = 'este inmueble ya se encuentra vendido';
+            this.show == 1;
           }
         }else{
-          alert("el inmueble ya se encuentra vendido");
-          this.respuesta.msj = 'el inmueble ya se encuentra vendido';
-          this.show == 1;
+          alert("este inmueble ya se encuentra en arriendo");
+            this.respuesta.msj = 'este inmueble ya se encuentra en arriendo';
+            this.show == 1;
         }
+        
+      })
     })
      
 });
@@ -305,13 +315,14 @@ if(this.validarCampos()=== false){
 
   }
 
-  ver(venta: Venta){
+  ver(venta: VentaDTO){
     this.ventasTabla = venta;
-    this.ventaService.buscarVentaPorId(this.ventasTabla.id).subscribe(resVenta =>{
-      this.selectedVentas = resVenta; 
+    //this.ventaService.buscarVentaPorId(this.ventasTabla.id).subscribe(resVenta =>{
+      //this.selectedVentas = resVenta;
+            this.ventasTabla.fecha = this.clienteService.formatoFecha(venta.fecha); 
             this.showMost = 1;
             this.respVenta.msj = 'despliegue para ver los datos';
 
-    })
+    //})
   }
 }

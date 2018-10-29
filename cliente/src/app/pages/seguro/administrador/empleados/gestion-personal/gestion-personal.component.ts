@@ -1,3 +1,4 @@
+import { ScrollHelper } from './../../../../../modelo/ScrollHelper';
 import { LoginService } from './../../../../../services/login/login.service';
 import { Estudio } from './../../../../../modelo/estudio';
 import { Experiencia } from './../../../../../modelo/experiencia';
@@ -13,7 +14,7 @@ import { Persona } from './../../../../../modelo/persona';
 import { Router } from '@angular/router';
 import { RespuestaDTO } from './../../../../../modelo/respuestaDTO';
 import { Login } from './../../../../../modelo/login';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { Empleado } from '../../../../../modelo/empleado';
 import { ExperienciaService } from '../../../../../services/experiencia/experiencia.service';
 import { DatePipe } from '@angular/common';
@@ -23,7 +24,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './gestion-personal.component.html',
   styleUrls: ['./gestion-personal.component.css']
 })
-export class GestionPersonalComponent implements OnInit {
+export class GestionPersonalComponent implements OnInit, AfterViewChecked {
 
   labelFile;
   campoFiltro = '';
@@ -66,6 +67,9 @@ export class GestionPersonalComponent implements OnInit {
   selectedMunicipio: Municipio = new Municipio();
   selectedDepartamento: Departamento = new Departamento();
   selectedFile: File = null;
+
+  /** Clase que redirige hace scroll hacia un componente del DOM especifico */
+  private scrollHelper: ScrollHelper = new ScrollHelper();
 
 
 
@@ -416,6 +420,7 @@ this.experienciaSeleccionada = new Experiencia();
   ver(empleado: EmpleadoDTO) {
     this.cedulaBuscar = empleado.cedula;
     this.buscar();
+    this.scrollHelper.scrollToFirst('panel single-accordion');
   }
 
   verEstudio(estudio: Estudio) {
@@ -496,7 +501,9 @@ this.experienciaSeleccionada = new Experiencia();
     }
 }
 
-
+ngAfterViewChecked() {
+  this.scrollHelper.doScroll();
+}
 
 }
 

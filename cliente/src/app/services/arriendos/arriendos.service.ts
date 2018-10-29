@@ -43,11 +43,11 @@ export class ArriendosService {
     .map(res => res);
   }
 
-listarArriendos() {
+ listarArriendos() {
   return this.http.get<any>(`${this.domain}/arriendo/`) . map(res => {
       return res.data;
    });
-}
+ }
 
 buscarInmuebleArrendado(inmueble_id: number) {
   return this.http.get<any>(`${this.domain}/arriendo/searchI/${inmueble_id}`)
@@ -68,6 +68,42 @@ searchVisita (cedula_cliente, inmueble_id) {
     return res.data;
   });
 }
+
+buscarArriendoVisitaPrueba(id: number) {
+  return this.http.get<any>(`${this.domain}/arriendo/searchprueba/${id}`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+buscarVisitaPrueba(id: number) {
+  return this.http.get<any>(`${this.domain}/arriendo/searchvisitaprueba/${id}`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+buscarCliente(cedula: number) {
+  return this.http.get<any>(`${this.domain}/arriendo/searchCliente/${cedula}`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+buscarInmuebleId(id: number) {
+  return this.http.get<any>(`${this.domain}/arriendo/searchinmuebleid/${id}`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+buscarInmuebleVendido(inmueble_id: number) {
+  return this.http.get<any>(`${this.domain}/arriendo/searchinmueblevendido/${inmueble_id}`)
+  .map(res => {
+    return res.data;
+  });
+}
+
 
 
 }

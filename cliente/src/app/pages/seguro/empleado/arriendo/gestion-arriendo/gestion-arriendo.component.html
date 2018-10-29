@@ -370,7 +370,7 @@
 
                 <br>
                 <div class="col-md-2" style="margin-top: -12px;">
-                  <button (click)="registrarArriendo2()"  class="btn south-btn btn-2 m-1"> 
+                  <button (click)="registrarArriendo3()"  class="btn south-btn btn-2 m-1"> 
                           Registrar Arriendo
                        </button>
               </div>
@@ -401,7 +401,7 @@
                                 <td>{{i.inmueble_id}}</td>
                                 <td>{{i.cliente_cedula}}</td>
                                 <td>{{i.empleado_cedula}}</td>
-                              <!--  <td>{{i.visita_id}}</td> -->
+                               <!-- <td>{{i.visita_id}}</td> -->
                                 <td *ngIf="i.visita_id == null" >Sin visita</td>
                                 <td *ngIf="i.visita_id != null" >{{i.visita_id}}</td> 
                                 
@@ -424,6 +424,21 @@
                     </div>
                   </div>
 
+                  <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 404">
+                    <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+                  </div>
+                  <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 505">
+                    <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+                  </div>
+                  <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1">
+                      <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+                    </div>
+                    <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2">
+                      <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+                    </div>
+                      <br>
+                      <br>
+
                   <div class="panel single-accordion" id="dtarriendo" style="width: 200%;">
                       <h6>
                           <a role="button" class="collapsed" aria-expanded="true" aria-controls="collapseone" data-parent="#accordion" data-toggle="collapse" href="#collapseone">Informacion Arriendo
@@ -433,17 +448,17 @@
                       </h6>
                       <div id="collapseone" class="accordion-content collapse">
 
-                          <div class="card mt-4"  id="link" style="width: 100%;">
+                          <div class="card mt-4"  id="linkp" style="width: 100%;">
                               <div class="card-body">                  
                                   <div class="form-group">
                                       <div class="row"> 
                                           <div class="col-md-2"><label>Id</label></div>
                                           <div class="col-md-4">
-                                              <input type="number"  [(ngModel)]="selectedArriendo.id" placeholder="Arriendo" class="form-control">    
+                                              <input type="number" disabled [(ngModel)]="arriendoDTO.id" placeholder="Arriendo" class="form-control">    
                                           </div>  
                                           <div class="col-md-2"><label>Cliente</label></div>
                                           <div class="col-md-4">
-                                              <input type="text"  [(ngModel)]="selectedArriendo.cliente_cedula" placeholder="Cliente" class="form-control">
+                                              <input type="number"  [(ngModel)]="arriendoDTO.cliente_cedula" placeholder="Cliente" class="form-control"> 
                                           </div>                 
                                       </div>                                     
                                   </div>
@@ -451,11 +466,11 @@
                                       <div class="row">
                                           <div class="col-md-2"><label>Empleado</label></div>
                                           <div class="col-md-4">
-                                              <input type="text"   [(ngModel)]="selectedArriendo.empleado_cedula" placeholder="Empleado" class="form-control">
+                                              <input type="number" disabled  [(ngModel)]="arriendoDTO.empleado_cedula" placeholder="Empleado" class="form-control">
                                           </div> 
                                           <div class="col-md-2"><label>Inmueble</label></div>
                                           <div class="col-md-4">
-                                              <input type="text"  [(ngModel)]="selectedArriendo.inmueble_id" placeholder="Inmueble" class="form-control">
+                                              <input type="number"  [(ngModel)]="arriendoDTO.matricula" placeholder="Inmueble" class="form-control">
                                           </div>                   
                                       </div>                                     
                                   </div>               
@@ -463,10 +478,14 @@
                                       <div class="row">
                                           <div class="col-md-2"><label>Visita</label></div>
                                           <div class="col-md-4">
-                                            <input type="text" disabled [(ngModel)]="selectedArriendo.visita_id" placeholder="Sin visita"  class="form-control">
+                                            <input type="text" disabled [(ngModel)]="arriendoDTO.fecha" placeholder="Sin visita"  class="form-control">
+                                          </div> 
+                                          <div class="col-md-2"><label>Hora</label></div>
+                                          <div class="col-md-4">
+                                            <input type="text" disabled [(ngModel)]="arriendoDTO.hora" placeholder="Sin hora"  class="form-control">
                                           </div> 
                                           <div class="col-md-2" style="margin-top: -12px;" style="margin-left: 185px;">
-                                              <button (click)="editar()"  class="btn south-btn btn-2 m-1"> 
+                                              <button (click)="editarArriendoPrueba()"  class="btn south-btn btn-2 m-1"> 
                                                       Editar Arriendo
                                                    </button>
                                           </div>                                   

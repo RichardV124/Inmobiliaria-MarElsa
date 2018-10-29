@@ -6,7 +6,7 @@ import { Acceso } from '../../modelo/Acceso';
 import { Rol } from '../../modelo/rol';
 import { AccesoRol } from '../../modelo/acceso_rol';
 import { RespuestaDTO } from '../../modelo/respuestaDTO';
-/**
+
 let respuesta: RespuestaDTO;
 let accs: Acceso;
 let rol: Rol;
@@ -51,9 +51,6 @@ describe('AccesoRolService', () => {
     console.log(this.respuesta.msj + ' SAVE');
     expect(rta.id).toEqual(505);
     })
-<<<<<<< HEAD
-
-=======
         
   });
   
@@ -76,7 +73,6 @@ describe('AccesoRolService', () => {
     respuesta = JSON.parse(JSON.stringify(rta));
     expect(rta.id).toEqual(505);
     })
->>>>>>> d860b6ee1e47a5d93013a1185a466e17e7ccac4c
   });
 });
-  */
+  

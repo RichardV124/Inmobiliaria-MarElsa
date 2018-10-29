@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-fdescribe('AsignarAccesoComponent', () => {
+describe('AsignarAccesoComponent', () => {
   let component: AsignarAccesoComponent;
   let fixture: ComponentFixture<AsignarAccesoComponent>;
 

@@ -44,13 +44,13 @@ export class LoginService {
    */
   esAccesible(page: string) {
       this.usuario = this.getUsuario();
-      // Validamos si el usuario inicio sesion
+       //Validamos si el usuario inicio sesion
       if (this.usuario == null) {
-          // Como no ha iniciado sesion, lo redirigimos al login
+           //Como no ha iniciado sesion, lo redirigimos al login
             this.router.navigate(['/login']);
-           // this.router.navigate(['/']);
+           //this.router.navigate(['/']);
       } else {
-          // Validamos si el usuario tiene acceso a la pagina
+           //Validamos si el usuario tiene acceso a la pagina
           if (this.pageInArray(page, this.usuario.persona_cedula.rol_id.accesos)) {
               // Como no tiene acceso, lo redirigimos al inicio
               this.router.navigate(['/']);

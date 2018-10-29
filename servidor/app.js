@@ -173,6 +173,11 @@ app.get('/arriendo/search/:arriendo_id', arriendo.search);
 app.get('/arriendo/', arriendo.list);
 app.get('/arriendo/searchI/:inmueble_id', arriendo.searchI);
 app.get('/arriendo/searchVisita/:cliente_cedula/:inmueble_id',arriendo.searchVisita);
+app.get('/arriendo/searchprueba/:id', arriendo.searchPrueba);
+app.get('/arriendo/searchvisitaprueba/:id', arriendo.buscarVisita);
+app.get('/arriendo/searchCliente/:cedula', arriendo.searchCliente);
+app.get('/arriendo/searchinmuebleid/:id', arriendo.searchInmuebleId);
+app.get('/arriendo/searchinmueblevendido/:inmueble_id', arriendo.searchInmuebleVendido);
 
 
 
