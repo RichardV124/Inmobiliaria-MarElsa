@@ -96,4 +96,15 @@ listarTiposInmueble() {
     });
   }
 
+  /**
+   * metodo que busca un inmueble sin joins
+   * @param matricula, matricula por el cual se buscara el inmueble, se envia por la ruta
+   */
+  buscar(matricula: string) {
+    return this.http.get<any>(`${this.domain}/inmueble/searchInmueble/${matricula}`)
+    .map(res => {
+      return res.data;
+    });
+  }
+
 }

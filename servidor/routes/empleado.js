@@ -255,3 +255,27 @@ exports.delete = function(req,res){
         console.log(query.sql); //get raw query
     });
 };
+
+/**
+ * Busca una persona por su cedula sin joins
+ */
+exports.searchPers = function(req, res){
+    
+    var cedula = req.params.cedula;
+    req.getConnection(function(err,connection){
+       
+        var query = connection.query('SELECT * FROM persona WHERE cedula = ? AND rol_id=2 AND activo=1',[cedula],function(err,rows)
+        {
+            
+            if(err)
+            res.send('{"id": 404,"msj": "Hubo un error al buscar la persona"}');
+     
+            console.log({data:rows[0]});
+            res.send({data:rows[0]});
+                
+           
+         });
+         
+         console.log(query.sql);
+    }); 
+};

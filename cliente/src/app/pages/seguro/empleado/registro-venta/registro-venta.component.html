@@ -83,6 +83,9 @@
                             <li class="nav-item">
                                 <a class="nav-link active" id="tab--2" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Datos Inmueble</a>
                             </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="tab--3" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="true">contrato</a>
+                          </li>
                         </ul>
 
                         <div class="tab-content mb-100" id="myTabContent">
@@ -372,6 +375,150 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab--3">
+                          <div class="south-tab-content">
+                              <!-- Tab Text -->
+                              <div class="card mt-4"  id="link" style="width: 200%;">
+                              <div class="south-tab-text">
+                                  <div class="form-group">
+                                      <div class="row">
+                                        <div class="col-md-2"><label>Precio</label></div>
+                                        <div class="col-md-4">
+                                          <input type="text"  [(ngModel)]="selectedContrato.precio" placeholder="Ingrese precio" class="form-control" required="required">
+                                        </div>
+                                      </div>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Descripcion</label></div>
+                                        <div class="col-md-10">
+                                        <textarea  [(ngModel)]="selectedContrato.descripcion" placeholder="Ingrese los comentarios que desee acerca del contrato"
+                                      class="form-control"></textarea>
+                                  </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                            <div class="upload-btn-wrapper">
+                                                <button id="btnArchivo">ELEGIR ARCHIVO</button>
+                                                <input type="file" id="file" multiple name="myfile" (change)="onFileSelected($event)" />
+                                              <input for="file" [(ngModel)]="labelFile" readonly style="border: 0; margin-left: 10px; width: 60%;" ng-reflect-model="Ningún archivo seleccionado" />
+                                            </div>
+                                          </div> 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" style="margin-top: -12px;" style="margin-left: 38%;">
+                                        <button  (click)="registroContrato()" class="btn south-btn btn-2 m-1"> 
+                                                registrar Contrato
+                                             </button>
+                                    </div>   
+                                    <br>
+                                    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showContrato == 404">
+                                      <div id="close" (click)="cerrarMsjContrato()" title="Cerrar">x</div>{{respuesta.msj}}
+                                    </div>
+                                    <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showContrato == 505">
+                                      <div id="close" (click)="cerrarMsjContrato()" title="Cerrar">x</div>{{respuesta.msj}}
+                                    </div>
+                              </div>
+                              <br>
+                              <div class="panel single-accordion">
+                                <h6>
+                                    <a role="button" aria-expanded="true" aria-controls="collapseThree" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseThree">contratos realizados
+                                            <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                            <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                        </a>
+                                </h6>
+                                <div id="collapseThree" class="accordion-content collapse">
+                                  <table class="table">
+                                    <thead>
+                                      <tr>                        
+                                        <th scope="col"><p class="coltabla">codigo</p></th>
+                                        <th scope="col"><p class="coltabla">venta</p></th>  
+                                        <th scope="col"><p class="coltabla">precio</p></th>                
+                                        <th scope="col"><p class="coltabla">fecha</p></th>
+                                        <th scope="col"><p class="coltabla">Eliminar</p></th>                     
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let v of contratos">      
+                                        <th scope="row">{{v.id}}</th>
+                                        <td>{{v.venta_id}}</td>
+                                        <td>{{v.precio}}</td>
+                                        <td>{{v.fecha}}</td>
+                                        <td><button (click)="verCcontrato(v)" class="btn south-btn m-1"> ver</button></td>                      
+                                        <td><button (click)="eliminarContrato(v)" class="btn south-btn active m-1"> eliminar</button></td>                      
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                              </div>
+                            </div>
+                            <br>
+                            <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showMostcontrato == 1">
+                              <div id="close" (click)="cerrarMsjContratodatos()" title="Cerrar">x</div>{{respVenta.msj}}
+                            </div>
+                            <div class="panel single-accordion">
+                            <h6>
+                                <a role="button" aria-expanded="true"   aria-controls="collapseThree" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseCuatro">informacion del contrato
+                                        <span  class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                        <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                    </a>
+                            </h6>
+                            <div id="collapseCuatro" class="accordion-content collapse">
+                              <div class="form-group" style="margin-top: 32px;">
+                                <div class="row"> 
+                                    <div class="col-md-2"><label>Codigo Contrato:</label></div>
+                                    <div class="col-md-4">
+                                        <input type="number" disabled [(ngModel)]="selectedCont.id"  class="form-control">    
+                                    </div>  
+                                    <div class="col-md-2"><label>Descripcion:</label></div>
+                                    <textarea  [(ngModel)]="selectedCont.descripcion" style="width: 30%;" 
+                                      class="form-control"></textarea>
+                                    <div class="col-md-2"><label>CodigoVenta:</label></div>
+                                    <div class="col-md-4">
+                                        <input type="text" disabled [(ngModel)]="selectedCont.venta_id"  class="form-control">
+                                    </div>   
+                                    <div class="col-md-2"><label>Precio:</label></div>
+                                    <div class="col-md-4">
+                                        <input type="text"  [(ngModel)]="selectedCont.precio" style="width: 95%; margin-left:-13px;"  class="form-control">
+                                    </div>               
+                                </div>                                     
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2"><label>Fecha</label></div>
+                                    <div class="col-md-4">
+                                        <input type="text"  [(ngModel)]="selectedCont.fecha" placeholder="Empleado" class="form-control">
+                                    </div> 
+                                    
+                                                     
+                                </div>                                     
+                            </div>               
+                            <div class="form-group">
+                                <div class="row">  
+                                    <div class="col-md-2" style="margin-top: -12px;" style="margin-left: 43%;">
+                                        <button  (click)="editarContrato()" class="btn south-btn btn-2 m-1"> 
+                                                Editar Contrato
+                                             </button>
+                                    </div>      
+                                                              
+                            </div>
+                            </div>  
+                            <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarCliente == 1">
+                              <div id="close" (click)="cerrarMsjEditCliente()" title="Cerrar">x</div>{{respCliente.msj}}
+                            </div> 
+                            <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarEmpleado == 1">
+                              <div id="close" (click)="cerrarMsjEditEempleado()" title="Cerrar">x</div>{{respEmpleado.msj}}
+                            </div>
+                            <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarInmueble == 1">
+                              <div id="close" (click)="cerrarMsjEditIinmueble()" title="Cerrar">x</div>{{respInmueble.msj}}
+                            </div>   
+                            <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showEditarVenta == 505">
+                              <div id="close" (click)="cerrarMsjEdicionVenta()" title="Cerrar">x</div>{{respuesta.msj}}
+                            </div>                             </div>
+                        </div>
+                            
+                          </div>                
+                          </div>               
+                      </div>
+
+                      
                     </div>
                 </div>
     </div>
@@ -431,7 +578,7 @@
                                       <td><label *ngIf="v.visita_id==null">no tiene</label>
                                         {{v.visita_id}}</td>
                                       <td><button (click)="ver(v)" class="btn south-btn m-1"> ver</button></td>                      
-                                      <td><button  class="btn south-btn active m-1"> eliminar</button></td>                      
+                                      <td><button (click)="eliminar(v.id)" class="btn south-btn active m-1"> eliminar</button></td>                      
                                     </tr>
                                   </tbody>
                                 </table>
@@ -467,38 +614,57 @@
                       <div class="col-md-2"><label>Inmueble</label></div>
                       <div class="col-md-4">
                           <input type="text"  [(ngModel)]="ventasTabla.matricula" placeholder="inmueble" class="form-control">
-                      </div>                 
+                      </div> 
+                      <div class="col-md-2"><label>Cliente</label></div>
+                      <div class="col-md-4">
+                          <input type="text" [(ngModel)]="ventasTabla.cliente_cedula" placeholder="cliente" class="form-control">
+                      </div>   
+                      <div class="col-md-2"><label>Visita</label></div>
+                      <div class="col-md-4">
+                          <input type="text" disabled [(ngModel)]="ventasTabla.fecha" placeholder="visita" class="form-control">
+                      </div>               
                   </div>                                     
               </div>
               <div class="form-group">
                   <div class="row">
                       <div class="col-md-2"><label>Empleado</label></div>
                       <div class="col-md-4">
-                          <input type="text"  [(ngModel)]="ventasTabla.empleado_cedula" placeholder="Empleado" class="form-control">
+                          <input type="text" disabled [(ngModel)]="ventasTabla.empleado_cedula" placeholder="Empleado" class="form-control">
                       </div> 
-                      <div class="col-md-2"><label>Visita</label></div>
+                      <div class="col-md-2"><label>Hora Visita:</label></div>
                       <div class="col-md-4">
-                          <input type="text" disabled [(ngModel)]="ventasTabla.fecha" placeholder="visita" class="form-control">
-                      </div>                   
+                          <input type="text" disabled [(ngModel)]="ventasTabla.hora" placeholder="hora" class="form-control">
+                      </div> 
+                                       
                   </div>                                     
               </div>               
               <div class="form-group">
                   <div class="row">
                       <div class="col-md-2"><label>Estado</label></div>
                       <div class="col-md-4">
-                          <input type="text" [(ngModel)]="ventasTabla.activo" placeholder="estado" class="form-control">
-                      </div> 
-                      <div class="col-md-2"><label>Hora Visita:</label></div>
-                      <div class="col-md-4">
-                          <input type="text" disabled [(ngModel)]="ventasTabla.hora" placeholder="hora" class="form-control">
-                      </div> 
-                      <div class="col-md-2" style="margin-top: -12px;" style="margin-left: 185px;">
-                          <button  class="btn south-btn btn-2 m-1"> 
-                                  Editar Arriendo
+                          <input type="text" disabled [(ngModel)]="ventasTabla.activo" placeholder="estado" class="form-control">
+                      </div>
+                     
+                      <div class="col-md-2" style="margin-top: -12px;" style="margin-left: 43%;">
+                          <button  (click)="editarVenta()" class="btn south-btn btn-2 m-1"> 
+                                  Editar Venta
                                </button>
-                      </div>                                   
+                      </div>      
+                                                
               </div>
-              </div>                   
+              </div>  
+              <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarCliente == 1">
+                <div id="close" (click)="cerrarMsjEditCliente()" title="Cerrar">x</div>{{respCliente.msj}}
+              </div> 
+              <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarEmpleado == 1">
+                <div id="close" (click)="cerrarMsjEditEempleado()" title="Cerrar">x</div>{{respEmpleado.msj}}
+              </div>
+              <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarInmueble == 1">
+                <div id="close" (click)="cerrarMsjEditIinmueble()" title="Cerrar">x</div>{{respInmueble.msj}}
+              </div>   
+              <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showEditarVenta == 505">
+                <div id="close" (click)="cerrarMsjEdicionVenta()" title="Cerrar">x</div>{{respuesta.msj}}
+              </div>                 
            </div> 
 
           </div>

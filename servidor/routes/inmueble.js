@@ -172,6 +172,27 @@ exports.search = function (req, res) {
     });
 };
 
+exports.searchInmueble = function (req, res) {
+
+    var matricula = req.params.matricula;
+    req.getConnection(function (err, connection) {
+
+        var query = connection.query('select * from inmueble where matricula = ? and activo = 1;', [matricula], function (err, rows) {
+
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            res.send({
+                data: rows[0]
+            });
+
+
+        });
+
+        //console.log(query.sql);
+    });
+};
+
 /*Save the property*/
 exports.save = function (req, res) {
 

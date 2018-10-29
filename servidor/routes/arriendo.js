@@ -207,6 +207,21 @@ exports.searchVisita = function (req, res) {
     });
 };
 
+exports.searchInmuebleId = function (req, res) { 
+
+    var id = req.params.id;
+    req.getConnection(function (err, connection) {
+        var query = connection.query('SELECT * FROM inmueble WHERE id = ?',[id], function (err, rows) {
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            res.send({
+                data: rows[0]
+            });
+
+        });
+    });
+};
 
 
     

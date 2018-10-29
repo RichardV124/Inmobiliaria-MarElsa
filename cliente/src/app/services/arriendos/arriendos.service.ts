@@ -76,5 +76,10 @@ searchVisita (cedula_cliente, inmueble_id) {
   });
 }
 
-
+buscarInmuebleId(inmueble_id: number) {
+  return this.http.get<any>(`${this.domain}/arriendo/searchinmuebleid/${inmueble_id}`)
+  .map(res => {
+    return res.data;
+  });
+}
 }

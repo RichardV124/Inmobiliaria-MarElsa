@@ -87,5 +87,16 @@ editarEmpleado(empleado: EmpleadoDTO) {
       return data[0] + '-' + data[1] + '-' + data[2];
   }
 
+  /**
+   * Metodo para buscar un empleado
+   * @param cedula, cedula por el cual se buscara el empleado, se envia por la ruta
+   */
+  buscarPersonaEmpleado(cedula: string) {
+    return this.http.get<any>(`${this.domain}/persona/searchPers/${cedula}`)
+    .map(res => {
+      return res.data;
+  });
+
+  }
 }
 
