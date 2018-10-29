@@ -25,7 +25,12 @@ export class EditarClienteComponent implements OnInit {
   listaDepartamentos: Departamento[];
   selectedMunicipio: Municipio = new Municipio();
   selectedDepartamento: Departamento = new Departamento();
-  show = 0;
+  // bandera para control de mensaje. Valores 1(negativo) 2 (positivo)
+  show: number;
+  // variable para la ubicacion en el mapa
+  latitudDefecto = 4.540130;
+  longitudDefecto = -75.665193;
+  marcadorAgregado = true;
 
   // variables de verificacion
   editado = false;
@@ -153,5 +158,14 @@ export class EditarClienteComponent implements OnInit {
         }
       });
     }
+  }
+
+  /**
+   *  metodo que controla el evento de marcadores en el mapa
+   **/
+  onChoseLocation(event) {
+    this.selectedPersona.latitud = event.coords.lat;
+    this.selectedPersona.longitud = event.coords.lng;
+    this.marcadorAgregado = true;
   }
 }

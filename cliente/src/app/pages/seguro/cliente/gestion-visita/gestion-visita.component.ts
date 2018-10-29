@@ -127,7 +127,7 @@ export class GestionVisitaComponent implements OnInit {
 
     // console.log('Huston, poseemos problemas!');
     if (bandera === true) {
-      console.log('BANDERA TRUE!');
+      console.log('BANDERA TRUE!!');
       return true;
     } else {
       console.log('BANDERA FALSE!');

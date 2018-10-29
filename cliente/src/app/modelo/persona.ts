@@ -15,4 +15,6 @@ export class Persona {
     municipio_id: Municipio;
     genero: number;
     activo: number;
+    latitud: number;
+    longitud: number;
 }

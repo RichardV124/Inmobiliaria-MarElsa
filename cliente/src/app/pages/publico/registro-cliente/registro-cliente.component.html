@@ -12,7 +12,7 @@
 <br>
 
 
-<div class="container">
+<div class="container" id="myAnchor">
         <div class="contact-heading">
             <h6>Cliente info</h6>
         </div>
@@ -103,6 +103,18 @@
                             </div>                 
                         </div>                                     
                     </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Ubicación del cliente</label><span style="color: red">*</span> <br>
+                            </div>
+                            <div class="col-md-9">
+                                <agm-map [zoom]="8" [latitude]="latitudDefecto" [longitude]="longitudDefecto" (mapClick)="onChoseLocation($event)">
+                                  <agm-marker *ngIf="marcadorAgregado"  [latitude]="selectedPersona.latitud" [longitude]="selectedPersona.longitud"></agm-marker>
+                                </agm-map>
+                            </div>        
+                        </div>                                     
+                    </div>
                     <button (click)="registrar()" class="btn south-btn m-1"> 
                       Registrar
                     </button>                       
@@ -118,3 +130,13 @@
             
 </div> 
 </div>
+
+<script>
+    function getfocus() {
+        document.getElementById("myAnchor").focus();
+    }
+    
+    function losefocus() {
+        document.getElementById("myAnchor").blur();
+    }
+    </script>
