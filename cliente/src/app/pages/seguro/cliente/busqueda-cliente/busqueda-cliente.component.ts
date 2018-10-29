@@ -26,7 +26,12 @@ export class BusquedaClienteComponent implements OnInit {
   listaClientes: Persona[];
   selectedMunicipio: Municipio = new Municipio();
   selectedDepartamento: Departamento = new Departamento();
-  show = 0;
+  // bandera para control de mensaje. Valores 1(negativo) 2 (positivo)
+  show: number;
+  // variable para la ubicacion en el mapa
+  latitudDefecto = 4.540130;
+  longitudDefecto = -75.665193;
+  marcadorAgregado = true;
 
   // Variables de validacion
 
@@ -38,6 +43,7 @@ export class BusquedaClienteComponent implements OnInit {
 
   constructor(private clienteService: ClienteService, private loginService: LoginService
     , private municipioService: MunicipioService, private accesoRolService: AccesoRolService) {
+    // validamos que la pagina sea accesible
     this.loginService.esAccesible('busqueda-cliente');
     this.listarDepartamentos();
     this.listarClientes();
@@ -95,7 +101,7 @@ export class BusquedaClienteComponent implements OnInit {
         } else {
           this.respuesta.msj = 'Despliegue los datos del cliente';
           this.show = 2;
-          this.selectedPersona = JSON.parse(JSON.stringify(cliente));
+          this.selectedPersona = cliente;
           this.selectedPersona.fecha_nacimiento = this.clienteService.formatoFecha(this.selectedPersona.fecha_nacimiento);
           this.municipioService.buscarMunicipio(cliente['municipio_id'])
           .subscribe(mun => {
@@ -141,18 +147,18 @@ export class BusquedaClienteComponent implements OnInit {
   ver(cliente: Persona) {
     this.listarDepartamentos();
     this.selectedPersona = cliente;
-    this.clienteService.buscarLoginPersona(cliente.cedula)
-    .subscribe(login => {
-      this.selectedLogin = login;
-    });
+    // this.clienteService.buscarLoginPersona(cliente.cedula)
+    // .subscribe(login => {
+    //   this.selectedLogin = login;
+    // });
     // this.selectedLogin.username = cliente.
     // this.municipioService.buscarDepartamento(JSON.parse(JSON.stringify(cliente.municipio['departamento_id'])))
     //   .subscribe(dep => {
     //             this.selectedDepartamento = JSON.parse(JSON.stringify(dep));
     //   });
-    this.selectedDepartamento.id = cliente.municipio_id['departamento_id'];
-    this.listarMunicipios();
-    this.selectedMunicipio.id = cliente.municipio_id.id;
+    // this.selectedDepartamento.id = cliente.municipio_id['departamento_id'];
+    // this.listarMunicipios();
+    // this.selectedMunicipio.id = cliente.municipio_id.id;
     this.buscar();
   }
 

@@ -64,7 +64,9 @@ exports.list = function(req, res){
               rol_id : input.persona_cedula.rol_id.id,
               municipio_id : input.persona_cedula.municipio_id.id,
               genero : input.persona_cedula.genero,
-              activo : input.persona_cedula.activo
+              activo : input.persona_cedula.activo,
+              latitud: input.persona_cedula.latitud,
+              longitud: input.persona_cedula.longitud
           };
   
           var login = {
@@ -194,7 +196,9 @@ exports.list = function(req, res){
             rol_id : input.persona_cedula.rol_id.id,
             municipio_id : input.persona_cedula.municipio_id.id,
             genero : input.persona_cedula.genero,
-            activo : input.persona_cedula.activo
+            activo : input.persona_cedula.activo,
+            latitud: input.persona_cedula.latitud,
+            longitud: input.persona_cedula.longitud
         };
 
         var login = {

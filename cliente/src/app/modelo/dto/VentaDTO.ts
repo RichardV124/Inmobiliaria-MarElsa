@@ -1,4 +1,4 @@
-export class VentaDTO{
+export class VentaDTO {
 
 id: number;
 matricula: any;

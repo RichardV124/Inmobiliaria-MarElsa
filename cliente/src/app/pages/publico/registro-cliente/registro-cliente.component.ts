@@ -25,8 +25,13 @@ export class RegistroClienteComponent implements OnInit {
   listaDepartamentos: Departamento[];
   selectedMunicipio: Municipio = new Municipio();
   selectedDepartamento: Departamento = new Departamento();
-  show: number;
   validacionLogin: Login = new Login();
+  // bandera para control de mensaje. Valores 1(negativo) 2 (positivo)
+  show: number;
+  // variable para la ubicacion en el mapa
+  latitudDefecto = 4.540130;
+  longitudDefecto = -75.665193;
+  marcadorAgregado = false;
 
   // Variables para verificar los metodos
     registrado = false;
@@ -38,6 +43,7 @@ export class RegistroClienteComponent implements OnInit {
   constructor(private clienteService: ClienteService, private router: Router,
     private municipioService: MunicipioService) {
     this.listarDepartamentos();
+    // inicializamos los valores por defecto
     this.selectedDepartamento.id = 0;
     this.selectedMunicipio.id = 0;
     this.selectedPersona.genero = 0;
@@ -63,6 +69,9 @@ export class RegistroClienteComponent implements OnInit {
     return this.listandoMunicipios;
   }
 
+  /**
+   * metodo para validar los campos del formulario de registro
+   */
   validarCampos(): boolean {
     if (this.selectedPersona.nombre == null || this.selectedPersona.apellido == null
       || this.selectedPersona.cedula == null || this.selectedPersona.telefono == null
@@ -74,6 +83,21 @@ export class RegistroClienteComponent implements OnInit {
     }
   }
 
+  /**
+   * Metodo para validar que se ingrese la ubicacion del inmueble en el mapa
+   */
+  validarUbicacionInmueble() {
+    if (!this.marcadorAgregado) {
+        this.respuesta.msj = 'Debe agregar la ubicación del inmueble';
+        this.show = 1;
+        return false;
+    }
+    return true;
+  }
+
+  /**
+   * Metodo para registrar un cliente en la BD
+   */
   registrar() {
 
     if (this.validarCampos() === false) {
@@ -81,7 +105,7 @@ export class RegistroClienteComponent implements OnInit {
       this.show = 1;
       this.registrado = false;
     } else {
-              // debemos buscar el login por cedula
+              // Asignamos el rol 3 (Cliente)
               this.rol.id = 3;
               this.selectedPersona.rol_id = this.rol;
               //  Dejamos el Login y la Persona activos en el sistema
@@ -89,24 +113,32 @@ export class RegistroClienteComponent implements OnInit {
               this.selectedPersona.activo = 1;
               this.selectedPersona.municipio_id = this.selectedMunicipio;
               this.selectedLogin.persona_cedula = this.selectedPersona;
+              // registramos el cliente
               this.clienteService.registrarPersona(this.selectedLogin)
               .subscribe(res => {
                 this.respuesta = JSON.parse(JSON.stringify(res));
-                console.log(this.respuesta.msj + ' SAVE');
-                console.log(this.selectedPersona.nombre);
-                this.selectedPersona = new Persona();
-                this.selectedLogin = new Login();
                 // variable de verificacion
                 this.registrado = true;
+                // validamos la respuesta del servidor
                 if (this.respuesta.id === 404) {
                   this.show = 1;
                 } else {
                   this.show = 2;
+                  this.limpiarCampos();
                 }
               });
     }
   }
 
+  limpiarCampos() {
+    this.selectedPersona = new Persona();
+    this.selectedLogin = new Login();
+    this.marcadorAgregado = false;
+  }
+
+  /**
+   * Metodo que litsa todos los dptos de la BD
+   */
   listarDepartamentos() {
     this.municipioService.listarDepartamentos().
     subscribe(departamento => {
@@ -119,6 +151,9 @@ export class RegistroClienteComponent implements OnInit {
     });
   }
 
+  /**
+   * MEtodo que lista los municipios de la base de datos por el dpto seleccionado
+   */
   listarMunicipios() {
     this.selectedMunicipio.id = 0;
     this.municipioService.listarMunicipios(this.selectedDepartamento.id).
@@ -131,5 +166,14 @@ export class RegistroClienteComponent implements OnInit {
         this.listandoMunicipios = true;
       }
     });
+  }
+
+  /**
+   *  metodo que controla el evento de marcadores en el mapa
+   **/
+  onChoseLocation(event) {
+    this.selectedPersona.latitud = event.coords.lat;
+    this.selectedPersona.longitud = event.coords.lng;
+    this.marcadorAgregado = true;
   }
 }
