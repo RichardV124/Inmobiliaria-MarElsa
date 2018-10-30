@@ -373,7 +373,7 @@
                                                         <div class="row">
                                                           <div class="col-md-2" style="margin-left:30px; margin-top: 30px;"><label>Precio</label></div>
                                                           <div class="col-md-4">
-                                                            <input type="text"  [(ngModel)]="selectedContrato.precio" style="font-size: 16px; margin-top:30px;" placeholder="Ingrese precio" class="form-control" required="required">
+                                                            <input type="number"  [(ngModel)]="selectedContrato.precio" style="font-size: 16px; margin-top:30px;" placeholder="Ingrese precio" class="form-control" required="required">
                                                           </div>
                                                         </div>
                                                       <div class="row">
@@ -392,16 +392,16 @@
                                                           </div>
                                                       </div>
                                                       <div class="col-md-2" style="margin-top: -1px;">
-                                                          <button  (click)="registroContrato()" class="btn south-btn btn-2 m-1"> 
+                                                          <button  (click)=" registroContrato()" class="btn south-btn btn-2 m-1"> 
                                                                   registrar Contrato
                                                                </button>
                                                       </div>   
                                                       <br>
-                                                      <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showContrato == 404">
-                                                        <div id="close" (click)="cerrarMsjContrato()" title="Cerrar">x</div>{{respuesta.msj}}
+                                                      <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 404">
+                                                        <div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}
                                                       </div>
-                                                      <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showContrato == 505">
-                                                        <div id="close" (click)="cerrarMsjContrato()" title="Cerrar">x</div>{{respuesta.msj}}
+                                                      <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 505">
+                                                        <div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}
                                                       </div>
                                                 </div>
                                                 <br>
@@ -419,26 +419,31 @@
                                                           <th scope="col"><p class="coltabla">Codigo</p></th>
                                                           <th scope="col"><p class="coltabla">Arriendo</p></th>  
                                                           <th scope="col"><p class="coltabla">Precio</p></th>                
-                                                          <th scope="col"><p class="coltabla">Fecha</p></th>
-                                                          <th scope="col"><p class="coltabla">Eliminar</p></th>                     
+                                                          <th scope="col"><p class="coltabla">Fecha</p></th>                   
                                                         </tr>
                                                       </thead>
                                                       <tbody>
-                                                          <tr *ngFor="let v of contratos">      
-                                                          <th scope="row">{{v.id}}</th>
-                                                          <td>{{v.venta_id}}</td>
-                                                          <td>{{v.precio}}</td>
-                                                          <td>{{v.fecha}}</td>
-                                                          <td><button (click)="verCcontrato(v)" class="btn south-btn m-1"> ver</button></td>                      
-                                                          <td><button (click)="eliminarContrato(v)" class="btn south-btn active m-1"> eliminar</button></td>                      
+                                                        <tr *ngFor="let l of listaContratos">
+                                                          <td>{{l.id}}</td>
+                                                          <td>{{l.arriendo_id}}</td>
+                                                          <td>{{l.precio}}</td>
+                                                          <td>{{l.fecha}}</td>
+                                                          
+                                                          <td><button (click)="verContrato(l)" class="btn south-btn btn-2 m-1">
+                                                              Ver 
+                                                            </button></td>
+                                                          <td><button (click)="eliminarContrato(l)" class="btn south-btn active m-1">
+                                                              Eliminar
+                                                            </button></td>
+                                                          
                                                         </tr>
                                                       </tbody>
                                                     </table>
                                                 </div>
                                               </div>
                                               <br>
-                                              <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showMostcontrato == 1">
-                                                <div id="close" (click)="cerrarMsjContratodatos()" title="Cerrar">x</div>{{respVenta.msj}}
+                                              <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 1">
+                                                <div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}
                                               </div>
                                               <div class="panel single-accordion">
                                               <h6>
@@ -452,18 +457,18 @@
                                                   <div class="row"> 
                                                       <div class="col-md-2"><label>Codigo Contrato:</label></div>
                                                       <div class="col-md-4">
-                                                          <input type="number" disabled [(ngModel)]="selectedCont.id"  class="form-control">    
+                                                          <input type="number" disabled [(ngModel)]="selectedContrato.id"  class="form-control">    
                                                       </div>  
                                                       <div class="col-md-2"><label>Descripcion:</label></div>
-                                                      <textarea  [(ngModel)]="selectedCont.descripcion" style="width: 30%;" 
+                                                      <textarea  [(ngModel)]="selectedContrato.descripcion" style="width: 30%;" 
                                                         class="form-control"></textarea>
                                                       <div class="col-md-2"><label>CodigoVenta:</label></div>
                                                       <div class="col-md-4">
-                                                          <input type="text" disabled [(ngModel)]="selectedCont.venta_id"  class="form-control">
+                                                          <input type="text" disabled [(ngModel)]="selectedContrato.venta_id"  class="form-control">
                                                       </div>   
                                                       <div class="col-md-2"><label>Precio:</label></div>
                                                       <div class="col-md-4">
-                                                          <input type="text"  [(ngModel)]="selectedCont.precio" style="width: 95%; margin-left:-13px;"  class="form-control">
+                                                          <input type="text"  [(ngModel)]="selectedContrato.precio" style="width: 95%; margin-left:-13px;"  class="form-control">
                                                       </div>               
                                                   </div>                                     
                                               </div>
@@ -471,7 +476,7 @@
                                                   <div class="row">
                                                       <div class="col-md-2"><label>Fecha</label></div>
                                                       <div class="col-md-4">
-                                                          <input type="text"  [(ngModel)]="selectedCont.fecha" placeholder="Empleado" class="form-control">
+                                                          <input type="text"  [(ngModel)]="selectedContrato.fecha" placeholder="Empleado" class="form-control">
                                                       </div> 
                                                       
                                                                        
@@ -487,18 +492,7 @@
                                                                                 
                                               </div>
                                               </div>  
-                                              <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarCliente == 1">
-                                                <div id="close" (click)="cerrarMsjEditCliente()" title="Cerrar">x</div>{{respCliente.msj}}
-                                              </div> 
-                                              <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarEmpleado == 1">
-                                                <div id="close" (click)="cerrarMsjEditEempleado()" title="Cerrar">x</div>{{respEmpleado.msj}}
                                               </div>
-                                              <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarInmueble == 1">
-                                                <div id="close" (click)="cerrarMsjEditIinmueble()" title="Cerrar">x</div>{{respInmueble.msj}}
-                                              </div>   
-                                              <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showEditarVenta == 505">
-                                                <div id="close" (click)="cerrarMsjEdicionVenta()" title="Cerrar">x</div>{{respuesta.msj}}
-                                              </div>                             </div>
                                           </div>
                                               
                                             </div>                
@@ -520,7 +514,7 @@
             </div>
 
             
-
+            <div class="lista-arriendos" style="width: 100%">
               <div class="card mt-4" style="width: 100%" >
                   <div class="card-body">
                     <div class="row">
@@ -549,10 +543,6 @@
                               <td *ngIf="i.visita_id == null" >Sin visita</td>
                               <td *ngIf="i.visita_id != null" >{{i.visita_id}}</td> 
                               
-                              
-                              
-
-
                               <td><button (click)="ver(i)" class="btn south-btn btn-2 m-1">
                                   Ver Arriendo
                                 </button></td>
@@ -567,7 +557,7 @@
                     </div>
                   </div>
                 </div>
-
+              </div>    
                 <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 404">
                   <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
                 </div>
@@ -582,14 +572,15 @@
                   </div>
                     <br>
                     <br>
-
-                <div class="panel single-accordion" id="dtarriendo" style="width: 200%;">
+              
+                <div class="panel single-accordion" id="dtarriendo" style="width: 120%;">
                     <h6>
                         <a role="button" class="collapsed" aria-expanded="true" aria-controls="collapseone" data-parent="#accordion" data-toggle="collapse" href="#collapseone">Informacion Arriendo
                                 <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
                                 <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
                                 </a>
                     </h6>
+                    
                     <div id="collapseone" class="accordion-content collapse">
 
                         <div class="card mt-4"  id="linkp" style="width: 100%;">
@@ -639,9 +630,8 @@
 
                             </div>
                             
-                    </div>
-
-                    </div>
+                          </div>
+                  </div>
                 </div>
                 <br>
               
