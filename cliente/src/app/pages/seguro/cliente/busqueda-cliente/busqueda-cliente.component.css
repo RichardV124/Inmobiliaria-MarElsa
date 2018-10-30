@@ -7,7 +7,3 @@
 agm-map {
     height: 300px;
  }
-
- a:focus, a:active {
-    color: green;
- }
