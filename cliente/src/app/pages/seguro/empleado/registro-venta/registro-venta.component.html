@@ -411,10 +411,10 @@
                                     </div>   
                                     <br>
                                     <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showContrato == 404">
-                                      <div id="close" (click)="cerrarMsjContrato()" title="Cerrar">x</div>{{respuesta.msj}}
+                                      <div id="close" (click)="cerrarMsjContrato()" title="Cerrar">x</div>{{respuestaRegContrato.msj}}
                                     </div>
                                     <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showContrato == 505">
-                                      <div id="close" (click)="cerrarMsjContrato()" title="Cerrar">x</div>{{respuesta.msj}}
+                                      <div id="close" (click)="cerrarMsjContrato()" title="Cerrar">x</div>{{respuestaRegContrato.msj}}
                                     </div>
                               </div>
                               <br>
@@ -450,9 +450,11 @@
                               </div>
                             </div>
                             <br>
+                            
                             <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showMostcontrato == 1">
                               <div id="close" (click)="cerrarMsjContratodatos()" title="Cerrar">x</div>{{respVenta.msj}}
                             </div>
+                            <div class="avisoDos">
                             <div class="panel single-accordion">
                             <h6>
                                 <a role="button" aria-expanded="true"   aria-controls="collapseThree" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseCuatro">informacion del contrato
@@ -513,7 +515,7 @@
                               <div id="close" (click)="cerrarMsjEdicionVenta()" title="Cerrar">x</div>{{respuesta.msj}}
                             </div>                             </div>
                         </div>
-                            
+                      </div>
                           </div>                
                           </div>               
                       </div>
@@ -532,10 +534,10 @@
 
   </div>
   <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 404">
-    <div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuestaV.msj}}
+    <div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}
   </div>
   <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 505">
-    <div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuestaV.msj}}
+    <div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}
   </div>
 
   <br>
@@ -577,7 +579,7 @@
                                       <td>{{v.empleado_cedula}}</td>
                                       <td><label *ngIf="v.visita_id==null">no tiene</label>
                                         {{v.visita_id}}</td>
-                                      <td><button (click)="ver(v)" class="btn south-btn m-1"> ver</button></td>                      
+                                      <td><button (click)="verVenta(v)" class="btn south-btn m-1"> ver</button></td>                      
                                       <td><button (click)="eliminar(v.id)" class="btn south-btn active m-1"> eliminar</button></td>                      
                                     </tr>
                                   </tbody>
@@ -590,8 +592,10 @@
     </div>
 </div>
 <br>
+<div class="aviso">
 <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showMost == 1">
-  <div id="close" (click)="cerrarMsjVer()" title="Cerrar">x</div>{{respVenta.msj}}
+  <div id="close" (click)="cerrarMsjVer()" title="Cerrar">x</div>{{respVentaVer.msj}}
+</div>
 </div>
 <br>
 <div class="panel single-accordion" id="dtarriendo" style="width: 100%;">

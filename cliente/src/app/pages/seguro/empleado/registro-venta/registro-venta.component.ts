@@ -20,6 +20,7 @@ import { VentaDTO } from 'src/app/modelo/dto/VentaDTO';
 import { ArriendosService } from 'src/app/services/arriendos/arriendos.service';
 import { EmpleadoService } from 'src/app/services/empleado/empleado.service';
 import { Contrato } from 'src/app/modelo/contrato';
+import { ScrollHelper } from 'src/app/modelo/ScrollHelper';
 
 @Component({
   selector: 'app-registro-venta',
@@ -36,8 +37,10 @@ export class RegistroVentaComponent implements OnInit {
   selectedLogin: Login = new Login();
   rol: Rol = new Rol();
   respuesta: RespuestaDTO = new RespuestaDTO();
+  respuestaRegContrato: RespuestaDTO = new RespuestaDTO();
   respuesta2: RespuestaDTO = new RespuestaDTO();
   respuestaV: RespuestaDTO = new RespuestaDTO();
+  respVentaVer: RespuestaDTO = new RespuestaDTO();
   respVenta: RespuestaDTO = new RespuestaDTO();
   respCliente: RespuestaDTO = new RespuestaDTO();
   respEmpleado: RespuestaDTO = new RespuestaDTO();
@@ -75,6 +78,9 @@ export class RegistroVentaComponent implements OnInit {
   showEditarVenta = 0;
   showContrato = 0;
   showMostcontrato = 0;
+
+  /** Clase que redirige hace scroll hacia un componente del DOM especifico */
+  private scrollHelper: ScrollHelper = new ScrollHelper();
 
 
   constructor(private empleadoService: EmpleadoService, private inmuebleServie: InmuebleService,private clienteService: ClienteService, private loginService: LoginService
@@ -268,9 +274,9 @@ if(this.validarCampos()=== false){
             }else{
               this.selectedVenta.visita_id = visitas;
               this.ventaService.registroVenta(this.selectedVenta).subscribe(res => {
-              this.respuestaV = JSON.parse(JSON.stringify(res)); 
-              this.cerrarMsjInmueble();
-              this.show = this.respuestaV.id;
+              this.respuesta = JSON.parse(JSON.stringify(res)); 
+              this.cerrarMsjInmueble(); 
+              this.show = this.respuesta.id;
               this.ventaRegistrada = true;
               this.llenarTabla();
               });
@@ -319,7 +325,7 @@ registroContrato(){
         this.selectedContrato.fecha = new Date();
         this.selectedContrato.activo = 1;
         this.ventaService.registrarContrato(this.selectedContrato).subscribe(rspta =>{
-        this.respuesta = JSON.parse(JSON.stringify(rspta));
+        this.respuestaRegContrato = JSON.parse(JSON.stringify(rspta));
         this.showContrato = rspta.id;
         this.llenarTablaContrato();
         
@@ -378,7 +384,7 @@ registroContrato(){
    * Verifica si se seleccionó por lo menos un archivo
    */
   archivosAgregados() {
-    if (this.selectedFile === undefined) {
+    if (this.selectedFile.length === 0) {
       this.respuesta.msj = 'Debe agregar por lo menos un archivo';
       this.show = 404;
       return false;
@@ -477,17 +483,20 @@ registroContrato(){
     })
   }
 
-  ver(venta: VentaDTO){
+  verVenta(venta: VentaDTO){
     this.ventasTabla = venta;
-            this.ventasTabla.fecha = this.clienteService.formatoFecha(venta.fecha); 
-            this.showMost = 1;
-            this.respVenta.msj = 'despliegue para ver los datos';
+              this.showMost = 1;
+              this.respVentaVer.msj = 'despliegue para ver los datos';
+              console.log('entro');
+              this.scrollHelper.scrollToFirst('aviso');
+           
   }
 
   verCcontrato(contrato: Contrato){
     this.selectedCont = contrato;
             this.showMostcontrato = 1;
             this.respVenta.msj = 'despliegue para ver los datos';
+            this.scrollHelper.scrollToFirst('avisoDos');
   }
 
   editarVenta()  {
@@ -632,5 +641,9 @@ if(this.selectedCont.descripcion ===undefined
 
 validarVentaexist(): boolean {
   return this.ventaRegistrada;
+}
+
+ngAfterViewChecked() {
+  this.scrollHelper.doScroll();
 }
 }
