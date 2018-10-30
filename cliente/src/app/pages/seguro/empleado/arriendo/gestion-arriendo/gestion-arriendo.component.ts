@@ -23,6 +23,7 @@ import { ArriendosService } from 'src/app/services/arriendos/arriendos.service';
 import { Municipio } from 'src/app/modelo/municipio';
 import { timingSafeEqual } from 'crypto';
 import { loadDirective } from '@angular/core/src/render3/instructions';
+import { Contrato } from 'src/app/modelo/contrato';
 
 
 @Component({
@@ -78,6 +79,7 @@ export class GestionArriendoComponent implements OnInit {
     selectedArriendo: Arriendo = new Arriendo();
     selectedVisita: Visita = new Visita();
     arriendoDTO: ArriendoDTO = new ArriendoDTO();
+    selectedContrato: Contrato = new Contrato();
 
     listaMunicipios: Municipio[];
     listaDepartamentos: Departamento[];
@@ -93,6 +95,19 @@ export class GestionArriendoComponent implements OnInit {
   cerrarMsj() {
     this.show = 0;
   }
+
+  onFileSelected(event) {
+    this.selectedFile = event.target.files;
+
+    if (this.selectedFile === null) {
+      this.labelFile = 'Ningún archivo seleccionado';
+    } else {
+    this.labelFile = '';
+    for (const file of this.selectedFile) {
+      this.labelFile = this.labelFile + '  ' + file.name;
+    }
+  }
+}
 
   registrarArriendo() {
     this.selectedArriendo.cliente_cedula = this.selectedPersona.cedula;
