@@ -29,6 +29,7 @@ import { Contrato } from 'src/app/modelo/contrato';
 export class RegistroVentaComponent implements OnInit {
 
   img;
+  ventaRegistrada = false;
   labelFile;
   selectedPersona: Persona = new Persona();
   selectedInmueble: Inmueble = new Inmueble();
@@ -230,6 +231,7 @@ cerrarMsjContratodatos(){
 
   buscarVenta(id: number) {
     this.ventaService.buscarVentaPorId(id).subscribe(res => {
+      console.log(res);
       const venta: Venta = res;
       return venta;
     });
@@ -241,13 +243,11 @@ this.selectedVenta.cliente_cedula = this.selectedPersona;
 this.selectedVenta.empleado_cedula = this.empleado.persona_cedula;
 this.selectedVenta.inmueble_id = this.selectedInmueble;
 
-console.log(this.selectedVenta);
+// console.log(this.selectedVenta);
 
 if(this.validarCampos()=== false){
   alert("ingrese todos los datos");
-  console.log('entroo!!');
 }else{
-  console.log('entroo22!!');
 
   this.ventaService.buscarPorInmbuebleyCedula(this.selectedPersona.cedula, this.selectedInmueble.id).subscribe(visitas =>{
 
@@ -256,11 +256,12 @@ if(this.validarCampos()=== false){
         if(inmArrendado === undefined){
           if(inmueble === undefined){
             if(visitas === undefined){
-              console.log(this.selectedVenta);
+              // console.log(this.selectedVenta);
               this.selectedVenta.visita_id = new Visita();
               this.ventaService.registroVenta(this.selectedVenta).subscribe(resAdd => {
               this.respuesta = JSON.parse(JSON.stringify(resAdd));
               this.show = this.respuesta.id;
+              this.ventaRegistrada = true;
               this.llenarTabla();
               });
       
@@ -270,6 +271,7 @@ if(this.validarCampos()=== false){
               this.respuestaV = JSON.parse(JSON.stringify(res)); 
               this.cerrarMsjInmueble();
               this.show = this.respuestaV.id;
+              this.ventaRegistrada = true;
               this.llenarTabla();
               });
             }
@@ -376,7 +378,7 @@ registroContrato(){
    * Verifica si se seleccionó por lo menos un archivo
    */
   archivosAgregados() {
-    if (this.selectedFile === null) {
+    if (this.selectedFile === undefined) {
       this.respuesta.msj = 'Debe agregar por lo menos un archivo';
       this.show = 404;
       return false;
@@ -590,7 +592,7 @@ eliminar(id: number){
          this.ventaService.eliminar(res).subscribe(resEliminar=>{
           this.llenarTabla();  
           alert('se elimino correctamente');
-
+          this.cerrarMsj();
          });
       })
 }
@@ -626,5 +628,9 @@ if(this.selectedCont.descripcion ===undefined
  });
 }
 
+}
+
+validarVentaexist(): boolean {
+  return this.ventaRegistrada;
 }
 }

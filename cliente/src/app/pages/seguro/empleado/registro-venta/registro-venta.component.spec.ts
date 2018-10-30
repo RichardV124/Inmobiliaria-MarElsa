@@ -51,12 +51,18 @@ describe('RegistroVentaComponent', () => {
     component.selectedVenta.visita_id = new Visita();
 
     component.selectedVenta.activo = true; 
-    component.selectedVenta.id = 45;
+    component.selectedVenta.id = 60;
     // console.log(component.selectedVenta);
-    console.log(component.selectedPersona = cliente);
+    // console.log(component.selectedPersona = cliente);
     component.registrarVenta();
 
-    expect(component.buscarVenta(45)).toEqual(component.selectedVenta);
+    //const venta: Venta = component.buscarVenta(60);
+
+    // console.log(component.buscarVenta());
+
+    const existe = component.validarVentaexist();
+
+    expect(existe).toBeTruthy();
 
   });
 

@@ -17,6 +17,7 @@ import {
 
 } from '@angular/http';
 import { Inject } from '@angular/core';
+import { Visita } from 'src/app/modelo/visita';
 
 describe('GestionArriendoComponent', () => {
   let component: GestionArriendoComponent;
@@ -39,22 +40,22 @@ describe('GestionArriendoComponent', () => {
   it('Registrar empleado', () => {
 
     // creamos el cliente
-    component.selectedPersona.cedula = 1095;
+    component.selectedPersona.cedula = 1234567;
 
     // creamos el empleado
     let login = new Login();
     let persona = new Persona();
-    persona.cedula = 1096;
+    persona.cedula = 1234;
     login.persona_cedula = persona;
     component.usuario = login;
 
     // creamos el inmueble
     component.selectedInmueble.id = 1;
-    component.selectedInmueble.matricula = '1';
+    component.selectedInmueble.matricula = '1234';
     component.selectedArriendo.inmueble_id = component.selectedInmueble;
 
     // creamos la visita
-    component.selectedVisita.id = 1;
+    component.selectedVisita = new Visita();
 
     // Creamos el arriendo
     component.selectedArriendo.cliente_cedula = component.selectedPersona.cedula;
