@@ -4,18 +4,19 @@ import { MunicipioService } from './../../../../services/municipio/municipio.ser
 import { Departamento } from './../../../../modelo/departamento';
 import { Municipio } from './../../../../modelo/municipio';
 import { LoginService } from './../../../../services/login/login.service';
-import { Component, OnInit } from '@angular/core';
 import { Login } from '../../../../modelo/login';
 import { Rol } from '../../../../modelo/rol';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { RespuestaDTO } from '../../../../modelo/respuestaDTO';
 import { ClienteService } from '../../../../services/cliente/cliente.service';
+import { ScrollHelper } from 'src/app/modelo/ScrollHelper';
 
 @Component({
   selector: 'app-busqueda-cliente',
   templateUrl: './busqueda-cliente.component.html',
   styleUrls: ['./busqueda-cliente.component.css']
 })
-export class BusquedaClienteComponent implements OnInit {
+export class BusquedaClienteComponent implements OnInit, AfterViewChecked {
 
   selectedPersona: Persona = new Persona();
   selectedLogin: Login = new Login();
@@ -34,12 +35,14 @@ export class BusquedaClienteComponent implements OnInit {
   marcadorAgregado = true;
 
   // Variables de validacion
-
   buscado = false;
   eliminado = false;
   listandoClientes = false;
   listandoMunicipios = false;
   listandoDepartamentos = false;
+
+  /** Clase que redirige hace scroll hacia un componente del DOM especifico */
+  private scrollHelper: ScrollHelper = new ScrollHelper();
 
   constructor(private clienteService: ClienteService, private loginService: LoginService
     , private municipioService: MunicipioService, private accesoRolService: AccesoRolService) {
@@ -160,6 +163,7 @@ export class BusquedaClienteComponent implements OnInit {
     // this.listarMunicipios();
     // this.selectedMunicipio.id = cliente.municipio_id.id;
     this.buscar();
+    this.scrollHelper.scrollToFirst('aviso alert alert-success');
   }
 
   listarClientes() {
@@ -224,5 +228,9 @@ export class BusquedaClienteComponent implements OnInit {
     this.selectedDepartamento.id = 0;
     this.selectedMunicipio.id = 0;
     this.selectedPersona.genero = 0;
+  }
+
+  ngAfterViewChecked() {
+    this.scrollHelper.doScroll();
   }
 }

@@ -279,11 +279,13 @@ if(this.validarCampos()=== false){
             alert("este inmueble ya se encuentra vendido");
             this.respuesta.msj = 'este inmueble ya se encuentra vendido';
             this.show == 1;
+            this.ventaRegistrada = false;
           }
         }else{
           alert("este inmueble ya se encuentra en arriendo");
             this.respuesta.msj = 'este inmueble ya se encuentra en arriendo';
             this.show == 1;
+            this.ventaRegistrada = false;
         }
         
       })
@@ -633,4 +635,5 @@ if(this.selectedCont.descripcion ===undefined
 validarVentaexist(): boolean {
   return this.ventaRegistrada;
 }
+
 }

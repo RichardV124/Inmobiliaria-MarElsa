@@ -35,12 +35,12 @@ describe('RegistroVentaComponent', () => {
     component.selectedVenta = new Venta();
 
     const inmueble = new Inmueble();
-    inmueble.id = 1;
-    inmueble.matricula = '1234';
+    inmueble.id = 20;
+    inmueble.matricula = 'casa 12';
     const cliente = new Persona();
-    cliente.cedula = 1234567;
+    cliente.cedula = 1234;
     const personaE = new Persona();
-    personaE.cedula = 1234;
+    personaE.cedula = 123;
     const empleado = new Empleado();
     empleado.persona_cedula = personaE;
 
@@ -50,13 +50,13 @@ describe('RegistroVentaComponent', () => {
 
     component.selectedVenta.visita_id = new Visita();
 
-    component.selectedVenta.activo = true; 
-    component.selectedVenta.id = 60;
+    component.selectedVenta.activo = true;
+    // component.selectedVenta.id = 60;
     // console.log(component.selectedVenta);
     // console.log(component.selectedPersona = cliente);
     component.registrarVenta();
 
-    //const venta: Venta = component.buscarVenta(60);
+    // const venta: Venta = component.buscarVenta(60);
 
     // console.log(component.buscarVenta());
 
@@ -66,5 +66,4 @@ describe('RegistroVentaComponent', () => {
 
   });
 
-  
 });
