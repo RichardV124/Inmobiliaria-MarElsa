@@ -69,7 +69,6 @@ searchVisita (cedula_cliente, inmueble_id) {
   });
 }
 
-
 buscarArriendoVisitaPrueba(id: number) {
   return this.http.get<any>(`${this.domain}/arriendo/searchprueba/${id}`)
   .map(res => {

@@ -37,7 +37,7 @@ describe('RegistroInmuebleComponent', () => {
   });
 
 
-  fit('validacion de campos vacios', () => {
+  it('validacion de campos vacios', () => {
     component.selectedMunicipio.id === 0;
     let ver = component.validarCamposVacios();
     expect(ver).toBeFalsy();

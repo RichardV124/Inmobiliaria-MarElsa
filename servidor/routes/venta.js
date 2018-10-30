@@ -250,7 +250,6 @@ exports.saveContrato = function (req, res) {
     var input = JSON.parse(JSON.stringify(req.body));
     req.getConnection(function (err, connection) {
 
-        console.log(input.contrato);
         var data = {
             descripcion: input.descripcion,
             contrato: input.contrato,

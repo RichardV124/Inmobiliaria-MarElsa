@@ -228,6 +228,12 @@ cerrarMsjContratodatos(){
     return JSON.parse(JSON.stringify(inmueble[atributo]));
   }
 
+  buscarVenta(id: number) {
+    this.ventaService.buscarVentaPorId(id).subscribe(res => {
+      const venta: Venta = res;
+      return venta;
+    });
+  }
 
 registrarVenta(){
 
@@ -235,9 +241,13 @@ this.selectedVenta.cliente_cedula = this.selectedPersona;
 this.selectedVenta.empleado_cedula = this.empleado.persona_cedula;
 this.selectedVenta.inmueble_id = this.selectedInmueble;
 
+console.log(this.selectedVenta);
+
 if(this.validarCampos()=== false){
   alert("ingrese todos los datos");
+  console.log('entroo!!');
 }else{
+  console.log('entroo22!!');
 
   this.ventaService.buscarPorInmbuebleyCedula(this.selectedPersona.cedula, this.selectedInmueble.id).subscribe(visitas =>{
 
@@ -246,6 +256,7 @@ if(this.validarCampos()=== false){
         if(inmArrendado === undefined){
           if(inmueble === undefined){
             if(visitas === undefined){
+              console.log(this.selectedVenta);
               this.selectedVenta.visita_id = new Visita();
               this.ventaService.registroVenta(this.selectedVenta).subscribe(resAdd => {
               this.respuesta = JSON.parse(JSON.stringify(resAdd));
@@ -308,6 +319,7 @@ registroContrato(){
         this.ventaService.registrarContrato(this.selectedContrato).subscribe(rspta =>{
         this.respuesta = JSON.parse(JSON.stringify(rspta));
         this.showContrato = rspta.id;
+        this.llenarTablaContrato();
         
       })
         })
