@@ -45,7 +45,7 @@ describe('GestionPersonalComponent', () => {
   });
 
 
-  fit('Registrar empleado', () => {
+  it('Registrar empleado', () => {
 
     // Creamos el rol
     component.rol.id = 2;

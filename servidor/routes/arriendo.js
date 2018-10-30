@@ -35,7 +35,7 @@ exports.save = function (req, res) {
             if (err)
             res.send('{"id": 404,"msj": "El registro ha fallado"}');
              
-       
+       console.log(query.sql);
         res.send('{"id": 505,"msj": "Registro exitoso"}');
 
         });
@@ -108,11 +108,12 @@ exports.save_update = function (req, res) {
             inmueble_id: input.inmueble_id,
             cliente_cedula: input.cliente_cedula,
             empleado_cedula: input.empleado_cedula,
-            visita_id: input.visita_id.id,
+            visita_id: input.visita_id,
             activo: 1
         };
-
+        
         connection.query("UPDATE arriendo SET ? WHERE id = ? ", [data, input.id], function (err, rows) {
+            console.log(err);
             if (err)
             res.send('{"id": 404,"msj": "Hubo un error al editar el arriendo"}');
        
@@ -174,21 +175,7 @@ exports.searchI = function (req, res) {
     });
 };
 
-exports.searchVendido = function (req, res) { 
 
-    var inmueble_id = req.params.inmueble_id;
-    req.getConnection(function (err, connection) {
-        var query = connection.query('SELECT * FROM venta WHERE inmueble_id = ? ORDER BY id desc',[inmueble_id], function (err, rows) {
-            if (err)
-                console.log("Error Selecting : %s ", err);
-
-            res.send({
-                data: rows[0]
-            });
-
-        });
-    });
-};
 
 
 exports.searchVisita = function (req, res) {
@@ -206,6 +193,100 @@ exports.searchVisita = function (req, res) {
         });
     });
 };
+
+exports.searchPrueba = function (req, res) {
+
+    var id = req.params.id;
+    console.log(id);
+    req.getConnection(function (err, connection) {
+
+        var query = connection.query('SELECT a.id, a.empleado_cedula, a.cliente_cedula, i.matricula, v.fecha, v.hora, i.id AS inmueble_id, v.id AS visita_id   FROM inmueble i JOIN arriendo a ON i.id = a.inmueble_id LEFT JOIN visita v ON a.visita_id = v.id WHERE a.id = ?', [id], function (err, rows) {
+
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+
+            console.log(rows);
+            res.send({
+                data: rows[0]
+            });
+
+
+        });
+    });
+};
+
+
+exports.buscarVisita = function (req, res) {
+
+    var id = req.params.id;
+    req.getConnection(function (err, connection) {
+
+        var query = connection.query('SELECT * FROM visita v WHERE v.id = ?', [id], function (err, rows) {
+
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            res.send({
+                data: rows[0]
+            });
+
+
+        });
+    });
+};
+
+exports.searchCliente = function (req, res) { 
+
+    var cedula = req.params.cedula;
+    req.getConnection(function (err, connection) {
+        var query = connection.query('SELECT * FROM persona p WHERE p.rol_id = 3 AND p.cedula = ?',[cedula], function (err, rows) {
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            res.send({
+                data: rows[0]
+            });
+
+        });
+    });
+};
+
+exports.searchInmuebleId = function (req, res) { 
+
+    var id = req.params.id;
+    req.getConnection(function (err, connection) {
+        var query = connection.query('SELECT * FROM inmueble WHERE id = ?',[id], function (err, rows) {
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            res.send({
+                data: rows[0]
+            });
+
+        });
+    });
+};
+
+exports.searchInmuebleVendido= function (req, res) { 
+
+    var inmueble_id = req.params.inmueble_id;
+    req.getConnection(function (err, connection) {
+        var query = connection.query('SELECT * FROM venta WHERE inmueble_id = ?',[inmueble_id], function (err, rows) {
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            res.send({
+                data: rows[0]
+            });
+
+        });
+    });
+};
+
+
+
+
 
 
 

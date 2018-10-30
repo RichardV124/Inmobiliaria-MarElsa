@@ -1,11 +1,12 @@
-export class VentaDTO{
+export class VentaDTO {
 
 id: number;
-matricula: number;
-cliente_cedula: number;
-empleado_cedula:number;
+matricula: any;
+cliente_cedula: string;
+empleado_cedula:string;
 visita_id : number;
 fecha : any;
-activo= 1;
+activo: boolean;
 hora: any;
+inmueble_id: number;
 }

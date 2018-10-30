@@ -1,3 +1,5 @@
+import { ArriendoDTO } from './../../../../../modelo/dto/arriendoDTO';
+import { VentaDTO } from './../../../../../modelo/dto/VentaDTO';
 import { VentasService } from './../../../../../services/ventas/ventas.service';
 import { Visita } from './../../../../../modelo/visita';
 import { Cliente } from './../../../../../modelo/cliente';
@@ -19,6 +21,8 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ArriendosService } from 'src/app/services/arriendos/arriendos.service';
 import { Municipio } from 'src/app/modelo/municipio';
+import { timingSafeEqual } from 'crypto';
+import { loadDirective } from '@angular/core/src/render3/instructions';
 
 
 @Component({
@@ -27,6 +31,10 @@ import { Municipio } from 'src/app/modelo/municipio';
   styleUrls: ['./gestion-arriendo.component.css']
 })
 export class GestionArriendoComponent implements OnInit {
+
+  /** Variables de validacion para las pruebas */
+registrado;
+buscado;
 
   constructor(
     // private inmuebleServie: ArriendosService,
@@ -46,7 +54,8 @@ export class GestionArriendoComponent implements OnInit {
 
     this.selectedDepartamento.id = 0;
     this.selectedMunicipio.id = 0;
-
+    this.registrado = false;
+    this.buscado = false;
    }
 
 
@@ -73,6 +82,7 @@ export class GestionArriendoComponent implements OnInit {
     propietario: Persona = new Persona();
     selectedArriendo: Arriendo = new Arriendo();
     selectedVisita: Visita = new Visita();
+    arriendoDTO: ArriendoDTO = new ArriendoDTO();
 
     listaMunicipios: Municipio[];
     listaDepartamentos: Departamento[];
@@ -160,6 +170,7 @@ export class GestionArriendoComponent implements OnInit {
       this.show = 1;
       this.respuesta.msj = 'Debe buscar el cliente y el inmuble';
       this.limpiarCamposArrendo();
+      this.registrado = false;
     } else {
       this.arriendoService.buscarInmuebleArrendado(this.selectedInmueble.id).subscribe(arr => {
         this.ventaService.buscarInmuebleVenta(this.selectedInmueble.id).subscribe(arrven => {
@@ -174,6 +185,8 @@ export class GestionArriendoComponent implements OnInit {
               this.respuesta.msj = 'Se registro el arriendo correctamente';
               this.listarArriendos();
               this.limpiarCamposArrendo();
+              this.registrado = true;
+              console.log('NICEEEEE 1!!! ' + this.registrado);
           });
         });
 
@@ -182,7 +195,7 @@ export class GestionArriendoComponent implements OnInit {
           this.respuesta.msj = 'Ingrese otro ilmueble, este ya se encuentra vendido';
           alert('Ingrese otro ilmueble, este ya se encuentra vendido');
           this.limpiarCamposArrendo();
-
+          this.registrado = false;
           }
 
         } else {
@@ -190,6 +203,7 @@ export class GestionArriendoComponent implements OnInit {
           this.respuesta.msj = 'Ingrese otro ilmueble, este ya se encuentra arrendado';
           alert('Ingrese otro ilmueble, este ya se encuentra arrendado');
           this.limpiarCamposArrendo();
+          this.registrado = false;
         }
 
       });
@@ -302,13 +316,6 @@ export class GestionArriendoComponent implements OnInit {
     return JSON.parse(JSON.stringify(inmueble[atributo]));
   }
 
-   /**
-   * Obtiene los datos de la cadena json retornada en la busqueda del arriendo
-   * @param atributo nombre del campo en la consulta obtenida
-   */
-  obtenerDatosArriendoJSON(atributo: string, arriendo: Arriendo) {
-    return JSON.parse(JSON.stringify(arriendo[atributo]));
-  }
 
   obtenerDatosCombosBusqueda() {
     // Se obtienen los datos del tipo de inmueble
@@ -364,17 +371,36 @@ export class GestionArriendoComponent implements OnInit {
    * @param inmueble inmueble del cual se desea  los datos
    */
   ver (arriendo: Arriendo) {
-    this.selectedArriendo.id = arriendo.id;
+    this.selectedArriendo = arriendo;
     this.buscarArriendo();
+     this.buscarArriendoVisitaPrueba();
     this.Arriendo = true;
     this.respuesta.msj = 'Despliegue para  los datos del arriendo';
     this.show = 505;
   }
 
+  buscarArriendoVisitaPrueba() {
+
+        this.arriendoService.buscarArriendoVisitaPrueba(this.selectedArriendo.id).subscribe(arriendo => {
+          this.arriendoDTO = arriendo;
+          if (this.selectedArriendo.visita_id !== null) {
+            this.arriendoDTO.fecha = this.clienteService.formatoFecha(arriendo.fecha);
+          }
+        });
+        this.listarArriendos();
+
+  }
+
+
   buscarArriendo() {
+
+    this.selectedArriendo.id = 20;
     if (this.selectedArriendo.id === null) {
       this.respuesta.msj = 'Ingrese el identificador del arriendo';
       this.show = 404;
+      this.buscado = false;
+      console.log('ENTRO 1');
+      
     } else {
       this.arriendoService.buscarArriendo(this.selectedArriendo.id)
       .subscribe(arriendo => {
@@ -382,18 +408,27 @@ export class GestionArriendoComponent implements OnInit {
         if (arriendo === undefined) {
           this.respuesta.msj = 'El arriendo no existe';
           this.show = 404;
+          this.buscado = false;
+          console.log('ENTRO 2');
         } else {
 
+          this.selectedArriendo = arriendo;
+
           this.selectedArriendo.id = arriendo.id;
-          this.selectedArriendo.inmueble_id = arriendo.inmueble_id;
+          this.selectedArriendo.inmueble_id = arriendo.inmueble_id.id;
           this.selectedArriendo.cliente_cedula = arriendo.cliente_cedula;
           this.selectedArriendo.empleado_cedula = arriendo.empleado_cedula;
           this.selectedArriendo.visita_id = arriendo.visita_id;
           this.selectedArriendo.activo = arriendo.activo;
+          this.buscado = true;
+          console.log('ENTRO correcto');
+          console.log(this.buscado);
         }
        });
       }
   }
+
+
 
   eliminar(arriendo: Arriendo) {
     this.arriendoService.eliminar(arriendo)
@@ -404,25 +439,6 @@ export class GestionArriendoComponent implements OnInit {
       this.limpiarCamposArrendo();
     });
   }
-
-  editar() {
-    if (this.selectedArriendo.id == null) {
-      this.show = 404;
-      this.respuesta.msj = 'Debe buscar el arriendo previamente';
-    } else {
-      this.arriendoService.EditarArriendo(this.selectedArriendo)
-        .subscribe(arri => {
-          this.respuesta = JSON.parse(JSON.stringify(arri));
-          this.show = this.respuesta.id;
-
-          if (this.show === 505) {
-            this.listarArriendos();
-            this.limpiarCamposArrendo();
-          }
-        });
-    }
-  }
-
 
 
   limpiarCamposArrendo() {
@@ -435,18 +451,126 @@ export class GestionArriendoComponent implements OnInit {
     this.selectedPersona.cedula = null;
   }
 
-  buscarInmuebleArrendado() {
 
-    this.arriendoService.buscarInmuebleArrendado(this.selectedInmueble.id).subscribe(arrendado => {
-      if (arrendado === undefined) {
-        this.show = 404;
-        this.respuesta.msj = 'Ingrese otro ilmueble, este ya se encuentra arrendado';
-      } else {
+  limpiarCamposDTO () {
+    this.arriendoDTO.id = null;
+    this.arriendoDTO.empleado_cedula = null;
+    this.arriendoDTO.cliente_cedula = null;
+    this.arriendoDTO.inmueble_id = null;
+    this.arriendoDTO.fecha = null;
+    this.arriendoDTO.hora = null;
+    this.arriendoDTO.matricula = null;
 
-      }
-
-     });
   }
 
+editarArriendoPrueba() {
+          if (this.arriendoDTO.cliente_cedula === undefined) {
+            this.respuesta.msj = 'Para editar debe buscar previamente';
+                confirm('Para editar debe buscar previamente');
+        } else if (this.arriendoDTO.matricula === undefined) {
+            this.respuesta.msj = 'Para editar debe buscar previamente';
+              confirm('Para editar debe buscar previamente');
+        } else {
+          this.inmuebleService.buscarInmueble(this.arriendoDTO.matricula + '').subscribe(inmueble => {
+            this.arriendoService.buscarInmuebleId(this.arriendoDTO.inmueble_id).subscribe(inmu => {
+              if (inmueble === undefined) {
+                this.respuesta.msj = 'El inmueble no existe';
+                this.show = 1;
+              } else {
+                if (this.arriendoDTO.matricula + '' === inmu.matricula) {
+                  this.arriendoService.buscarCliente(this.arriendoDTO.cliente_cedula).subscribe(cliente => {
+                    if (cliente === undefined) {
+                      this.respuesta.msj = 'El cliente ingresado no existe';
+                      this.show = 1;
+                    } else {
+                        this.arriendoService.buscarVisitaPrueba(this.arriendoDTO.visita_id).subscribe(visita => {
+                          if (visita === undefined) {
+                            this.selectedArriendo.id = this.arriendoDTO.id;
+                            this.selectedArriendo.inmueble_id = inmu.id;
+                            this.selectedArriendo.cliente_cedula = cliente.cedula;
+                            this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
+                            this.selectedArriendo.visita_id = null;
+                          } else {
+                            this.selectedArriendo.id = this.arriendoDTO.id;
+                            this.selectedArriendo.inmueble_id = inmu.id;
+                            this.selectedArriendo.cliente_cedula = cliente.cedula;
+                            this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
+                            this.selectedArriendo.visita_id = visita.id;
+                          }
+                          console.log(this.selectedArriendo);
+                          this.arriendoService.EditarArriendo(this.selectedArriendo).subscribe(arri => {
+                          this.respuesta = JSON.parse(JSON.stringify(arri));
+                          this.show = this.respuesta.id;
+                          this.listarArriendos();
+                          this.limpiarCamposDTO();
+                        });
+                        });
+                    }
+                  });
+                } else {
+                  this.inmuebleService.buscarInmueble(this.arriendoDTO.matricula + '').subscribe(inmueble_existe => {
+                    this.arriendoService.buscarInmuebleVendido(inmueble_existe.id).subscribe(inmueble_vendi => {
+                      console.log(inmueble_existe);
+                      if (inmueble_vendi === undefined) {
+                        this.arriendoService.buscarInmuebleArrendado(inmueble_existe.id).subscribe(inmuarrendado => {
+                          console.log(inmuarrendado);
+                          if (inmuarrendado === undefined) {
+                              this.arriendoService.buscarCliente(this.arriendoDTO.cliente_cedula).subscribe(cliente => {
+                                if (cliente === undefined) {
+                                  this.respuesta.msj = 'El cliente ingresado no existe';
+                                  this.show = 1;
+                                } else {
+                                  this.arriendoService.buscarVisitaPrueba(this.arriendoDTO.visita_id).subscribe(visita => {
+                                    if (visita === undefined) {
+                                      this.selectedArriendo.id = this.arriendoDTO.id;
+                                      this.selectedArriendo.inmueble_id = inmueble_existe.id;
+                                      this.selectedArriendo.cliente_cedula = cliente.cedula;
+                                      this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
+                                      this.selectedArriendo.visita_id = null;
+                                    } else {
+                                      this.selectedArriendo.id = this.arriendoDTO.id;
+                                      this.selectedArriendo.inmueble_id = inmueble_existe.id;
+                                      this.selectedArriendo.cliente_cedula = cliente.cedula;
+                                      this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
+                                      this.selectedArriendo.visita_id = visita.id;
+                                    }
+                                    console.log(this.selectedArriendo);
+                                    this.arriendoService.EditarArriendo(this.selectedArriendo).subscribe(arri => {
+                                    this.respuesta = JSON.parse(JSON.stringify(arri));
+                                    this.show = this.respuesta.id;
+                                    this.listarArriendos();
+                                    this.show = 2;
+                                    confirm('Se edito correctamente el arriendo');
+                                    this.limpiarCamposDTO();
+                                  });
+                                  });
+                                }
+                              });
+                          } else {
+                            this.show = 1;
+                            this.respuesta.msj = 'El inmueble se encuenrta arrendado';
+                          }
+                        });
+                      } else {
+                        this.show = 1;
+                        this.respuesta.msj = 'El inmueble se encuenrta vendido';
+                      }
+
+                    });
+                  });
+                }
+              }
+            });
+          });
+        }
+      }
+
+      validarRegistro(): boolean {
+        return this.registrado;
+          }
+    
+      validarBusqueda(): boolean {
+          return this.buscado;
+         }
 }
 

@@ -129,6 +129,7 @@ app.post('/empleado/delete', empleado.delete);
 app.get('/empleado/listar', empleado.list);
 app.get('/empleado/search/:cedula', empleado.searchEmpleado);
 app.get('/tipopersonal/listar', empleado.listTipoPersonal);
+app.get('/persona/searchPers/:cedula', empleado.searchPers);
 
 // ------- Servicios de experiencias y estudios ------- //
 app.post('/experiencia/save', experiencia.saveExperiencia);
@@ -163,6 +164,7 @@ app.get('/tipoinmueble/search/:id', inmueble.searchTipoInmubeleId);
 app.post('/file/add', inmueble.saveFile);
 app.get('/file/search/:inmueble_id', inmueble.searchFile);
 app.post('/file/delete/', inmueble.delete_file);
+app.get('/inmueble/searchInmueble/:matricula', inmueble.searchInmueble);
 
 // ------------ Arriendos ----------------//
 app.post('/arriendo/add', arriendo.save);
@@ -172,8 +174,12 @@ app.post('/arriendo/update/', arriendo.save_update);
 app.get('/arriendo/search/:arriendo_id', arriendo.search);
 app.get('/arriendo/', arriendo.list);
 app.get('/arriendo/searchI/:inmueble_id', arriendo.searchI);
-app.get('/arriendo/searchVendido/:inmueble_id', arriendo.searchVendido);
 app.get('/arriendo/searchVisita/:cliente_cedula/:inmueble_id',arriendo.searchVisita);
+app.get('/arriendo/searchprueba/:id', arriendo.searchPrueba);
+app.get('/arriendo/searchvisitaprueba/:id', arriendo.buscarVisita);
+app.get('/arriendo/searchCliente/:cedula', arriendo.searchCliente);
+app.get('/arriendo/searchinmuebleid/:id', arriendo.searchInmuebleId);
+app.get('/arriendo/searchinmueblevendido/:inmueble_id', arriendo.searchInmuebleVendido);
 
 
 
@@ -187,6 +193,14 @@ app.post('/venta/addVenta', venta.saveVenta);
 app.get('/visita/buscarPorInmbuebleyCedula/:cliente_cedula/:inmueble_id', venta.buscarPorInmbuebleyCedula);
 app.get('/venta/listVentas', venta.listVentas);
 app.get('/venta/buscarVentaPorId/:id', venta.listVentasPorId);
+app.post('/venta/update/', venta.save_update);
+app.post('/venta/update_contrato/', venta.update_contrato);
+app.post('/contrato/add', venta.saveContrato);
+app.get('/venta/listUltimaVenta', venta.listUltimaVenta);
+app.get('/venta/listContratos', venta.listContratos);
+app.post('/venta/deleteContrato/', venta.delete_contrato);
+app.get('/venta/buscarVisitaId/:visita_id', venta.buscarVisitaId);
+app.get('/venta/buscarVisitaIdInmueble/:visita_id', venta.buscarVisitaIdInmueble);
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);
 app.get('/rol-accesos/listar', roles.listarRolAccesos);
