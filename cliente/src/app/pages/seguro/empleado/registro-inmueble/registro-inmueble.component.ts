@@ -12,12 +12,13 @@ import { RespuestaDTO } from './../../../../modelo/respuestaDTO';
 import { Inmueble } from './../../../../modelo/inmueble';
 import { InmuebleService } from './../../../../services/inmueble/inmueble.service';
 import { TipoInmueble } from './../../../../modelo/tipo_inmueble';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { Login } from '../../../../modelo/login';
 import { LoginService } from '../../../../services/login/login.service';
 import { Persona } from '../../../../modelo/persona';
 import { Rol } from '../../../../modelo/rol';
+import { ScrollHelper } from 'src/app/modelo/ScrollHelper';
 
 const uri = 'http://localhost:3000/file/upload';
 
@@ -26,7 +27,7 @@ const uri = 'http://localhost:3000/file/upload';
   templateUrl: './registro-inmueble.component.html',
   styleUrls: ['./registro-inmueble.component.css'],
 })
-export class RegistroInmuebleComponent implements OnInit {
+export class RegistroInmuebleComponent implements OnInit, AfterViewChecked {
 
 
 /* variables de validacion */
@@ -61,6 +62,9 @@ clientExist = false;
   archivo: Archivo = new Archivo();
   publicarEnArriendo: boolean;
   publicarEnVenta: boolean;
+
+  /** Clase que redirige hace scroll hacia un componente del DOM especifico */
+  private scrollHelper: ScrollHelper = new ScrollHelper();
 
   constructor(private inmuebleServie: InmuebleService, private servicios: LoginService,
     private municipioService: MunicipioService, private personaService: ClienteService,
@@ -515,8 +519,11 @@ clientExist = false;
     this.selectedInmueble.matricula = inmueble.matricula;
     this.buscar();
     this.verInmueble = true;
-    this.respuesta.msj = 'Despliegue el acordion de la parte superior para ver los datos del inmueble';
-    this.show = 505;
+    this.scrollHelper.scrollToFirst('panel single-accordion');
+  }
+
+  ngAfterViewChecked() {
+    this.scrollHelper.doScroll();
   }
 
   /**
