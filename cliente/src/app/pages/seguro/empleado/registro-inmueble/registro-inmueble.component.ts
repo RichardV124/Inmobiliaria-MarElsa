@@ -159,7 +159,7 @@ clientExist = false;
    * Verifica si se seleccionó por lo menos un archivo
    */
   archivosAgregados() {
-    if (this.selectedFile === null) {
+    if (this.selectedFile.length === 0) {
       this.respuesta.msj = 'Debe agregar por lo menos un archivo';
       this.show = 404;
       return false;
@@ -317,6 +317,7 @@ clientExist = false;
   }
 
   crearArchivo(inmueble: Inmueble) {
+    let ban = true;
     for (const file of this.selectedFile) {
       const ext = file.name.substr(file.name.lastIndexOf('.') + 1);
       if (ext.toLowerCase() === 'jpg' || ext.toLowerCase()  === 'png' || ext.toLowerCase()  === 'jpeg') {
@@ -324,11 +325,14 @@ clientExist = false;
       } else if (ext === 'mp4') {
         this.convertirArchivoBase64(file, false, inmueble);
       } else {
+        ban = false;
         this.show = 404;
         this.respuesta.msj = 'El archivo ' + file.name + ' tiene una extensión no permitida';
       }
     }
-    this.limpiarCampos();
+    if (ban) {
+     this.limpiarCampos();
+    }
   }
 
   convertirArchivoBase64(file: File, imgn: boolean, inmueble: Inmueble) {
@@ -480,7 +484,7 @@ clientExist = false;
     } else {
       if (this.validarUbicacionInmueble()) {
       if (this.tipoDePublicacionSeleccionado()) {
-        if (this.archivosAgregados()) {
+        // if (this.archivosAgregados()) {
          this.selectedInmueble.tipo_inmueble_id = this.selectedTipoInmueble;
          this.selectedInmueble.municipio_id = this.selectedMunicipio;
          this.selectedInmueble.persona_cedula = this.usuario;
@@ -496,7 +500,7 @@ clientExist = false;
             this.listarInmuebles();
           }
         });
-       }
+       // }
       }
     }
     }
