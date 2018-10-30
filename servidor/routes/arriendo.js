@@ -35,7 +35,7 @@ exports.save = function (req, res) {
             if (err)
             res.send('{"id": 404,"msj": "El registro ha fallado"}');
              
-       
+       console.log(query.sql);
         res.send('{"id": 505,"msj": "Registro exitoso"}');
 
         });

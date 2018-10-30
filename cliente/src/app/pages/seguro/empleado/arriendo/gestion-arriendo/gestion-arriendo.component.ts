@@ -32,6 +32,10 @@ import { loadDirective } from '@angular/core/src/render3/instructions';
 })
 export class GestionArriendoComponent implements OnInit {
 
+  /** Variables de validacion para las pruebas */
+registrado;
+buscado;
+
   constructor(
     // private inmuebleServie: ArriendosService,
     private inmuebleService: InmuebleService,
@@ -50,7 +54,8 @@ export class GestionArriendoComponent implements OnInit {
 
     this.selectedDepartamento.id = 0;
     this.selectedMunicipio.id = 0;
-
+    this.registrado = false;
+    this.buscado = false;
    }
 
 
@@ -165,6 +170,7 @@ export class GestionArriendoComponent implements OnInit {
       this.show = 1;
       this.respuesta.msj = 'Debe buscar el cliente y el inmuble';
       this.limpiarCamposArrendo();
+      this.registrado = false;
     } else {
       this.arriendoService.buscarInmuebleArrendado(this.selectedInmueble.id).subscribe(arr => {
         this.ventaService.buscarInmuebleVenta(this.selectedInmueble.id).subscribe(arrven => {
@@ -179,6 +185,8 @@ export class GestionArriendoComponent implements OnInit {
               this.respuesta.msj = 'Se registro el arriendo correctamente';
               this.listarArriendos();
               this.limpiarCamposArrendo();
+              this.registrado = true;
+              console.log('NICEEEEE 1!!! ' + this.registrado);
           });
         });
 
@@ -187,7 +195,7 @@ export class GestionArriendoComponent implements OnInit {
           this.respuesta.msj = 'Ingrese otro ilmueble, este ya se encuentra vendido';
           alert('Ingrese otro ilmueble, este ya se encuentra vendido');
           this.limpiarCamposArrendo();
-
+          this.registrado = false;
           }
 
         } else {
@@ -195,6 +203,7 @@ export class GestionArriendoComponent implements OnInit {
           this.respuesta.msj = 'Ingrese otro ilmueble, este ya se encuentra arrendado';
           alert('Ingrese otro ilmueble, este ya se encuentra arrendado');
           this.limpiarCamposArrendo();
+          this.registrado = false;
         }
 
       });
@@ -384,9 +393,14 @@ export class GestionArriendoComponent implements OnInit {
 
 
   buscarArriendo() {
+
+    this.selectedArriendo.id = 20;
     if (this.selectedArriendo.id === null) {
       this.respuesta.msj = 'Ingrese el identificador del arriendo';
       this.show = 404;
+      this.buscado = false;
+      console.log('ENTRO 1');
+      
     } else {
       this.arriendoService.buscarArriendo(this.selectedArriendo.id)
       .subscribe(arriendo => {
@@ -394,6 +408,8 @@ export class GestionArriendoComponent implements OnInit {
         if (arriendo === undefined) {
           this.respuesta.msj = 'El arriendo no existe';
           this.show = 404;
+          this.buscado = false;
+          console.log('ENTRO 2');
         } else {
 
           this.selectedArriendo = arriendo;
@@ -404,6 +420,9 @@ export class GestionArriendoComponent implements OnInit {
           this.selectedArriendo.empleado_cedula = arriendo.empleado_cedula;
           this.selectedArriendo.visita_id = arriendo.visita_id;
           this.selectedArriendo.activo = arriendo.activo;
+          this.buscado = true;
+          console.log('ENTRO correcto');
+          console.log(this.buscado);
         }
        });
       }
@@ -545,5 +564,13 @@ editarArriendoPrueba() {
           });
         }
       }
+
+      validarRegistro(): boolean {
+        return this.registrado;
+          }
+    
+      validarBusqueda(): boolean {
+          return this.buscado;
+         }
 }
 
