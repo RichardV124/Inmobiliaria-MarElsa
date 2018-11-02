@@ -3,7 +3,7 @@ import { Inmueble } from './inmueble';
 import { Persona } from './persona';
 export class Arriendo {
     id: number;
-    inmueble_id: Inmueble;
+    inmueble_id: any;
     cliente_cedula: Persona;
     empleado_cedula: Persona;
     visita_id: Visita;

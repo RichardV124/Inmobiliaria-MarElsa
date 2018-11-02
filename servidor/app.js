@@ -182,6 +182,9 @@ app.get('/arriendo/searchinmuebleid/:id', arriendo.searchInmuebleId);
 app.get('/arriendo/searchinmueblevendido/:inmueble_id', arriendo.searchInmuebleVendido);
 app.get('/arriendo/listarUltimoArriendo', arriendo.listarUltimoArriendo);
 app.get('/arriendo/listarContrato', arriendo.listarContratos);
+app.post('/arriendo/deleteContrato/', arriendo.deleteContrato);
+app.get('/arriendo/searchContrato/:arriendo_id', arriendo.searchContrato);
+app.post('/arriendo/updateContrato/', arriendo.editarContrato);
 
 
 
