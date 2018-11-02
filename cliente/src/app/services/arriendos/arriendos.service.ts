@@ -104,6 +104,20 @@ buscarInmuebleVendido(inmueble_id: number) {
   });
 }
 
+listarUltimoArriendo() {
+  return this.http.get<any>(`${this.domain}/arriendo/listarUltimoArriendo`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+listarContrato() {
+  return this.http.get<any>(`${this.domain}/arriendo/listarContrato`)
+  .map(res => {
+    return res.data;
+  });
+}
+
 
 
 }

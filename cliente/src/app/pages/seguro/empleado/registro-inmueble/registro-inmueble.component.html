@@ -195,7 +195,7 @@
                                 <input type="file" id="file" multiple name="myfile" (change)="onFileSelected($event)" />
                                 <input for="file" [(ngModel)]="labelFile" readonly style="border: 0; margin-left: 10px; width: 60%;" />
                               </div>
-                            </div> 
+                            </div>
                           </div> <br><br>
                           <!--<div class="row">
                             <div class="col-md-12">
@@ -266,7 +266,7 @@
                           </div> <br>
                           <label>Ubicación del inmueble</label><span style="color: red">*</span> <br>
                           <agm-map [zoom]="8" [latitude]="latitudDefecto" [longitude]="longitudDefecto" (mapClick)="onChoseLocation($event)">
-                            <agm-marker *ngIf="marcadorAgregado"  [latitude]="selectedInmueble.latitud" [longitude]="selectedInmueble.longitud"></agm-marker>
+                            <agm-marker *ngIf="marcadorAgregado" [latitude]="selectedInmueble.latitud" [longitude]="selectedInmueble.longitud"></agm-marker>
                           </agm-map>
                         </div>
                       </div>
@@ -280,6 +280,13 @@
                         <button (click)="limpiarCampos()" class="btn south-btn btn-2 m-1">
                           Limpiar Campos
                         </button>
+                      </div><br><br>
+
+                      <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 404">
+                        <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
+                      </div>
+                      <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 505">
+                        <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
                       </div>
                     </div>
                   </div>
@@ -302,18 +309,7 @@
           </div>
         </div>
       </div>
-
-      <!-- </form> -->
-
     </div>
-
-    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 404">
-      <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
-    </div>
-    <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 505">
-      <div id="close" title="Cerrar" (click)="cerrarMsj()">x</div>{{respuesta.msj}}
-    </div>
-
     <br><br>
 
     <div class="card mt-4" style="width: 100%">

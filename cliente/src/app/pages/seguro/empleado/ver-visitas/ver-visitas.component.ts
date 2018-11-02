@@ -6,6 +6,7 @@ import { VisitaService } from './../../../../services/visita/visita.service';
 import { LoginService } from './../../../../services/login/login.service';
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 
+
 @Component({
   selector: 'app-ver-visitas',
   templateUrl: './ver-visitas.component.html',

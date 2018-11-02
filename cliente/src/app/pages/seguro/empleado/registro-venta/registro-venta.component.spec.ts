@@ -30,17 +30,17 @@ describe('RegistroVentaComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('deberia crear una venta', () => {
+  it('deberia crear una venta', () => {
 
     component.selectedVenta = new Venta();
 
     const inmueble = new Inmueble();
-    inmueble.id = 1;
-    inmueble.matricula = '1234';
+    inmueble.id = 4;
+    inmueble.matricula = '6789';
     const cliente = new Persona();
     cliente.cedula = 1234567;
     const personaE = new Persona();
-    personaE.cedula = 1234;
+    personaE.cedula = 555;
     const empleado = new Empleado();
     empleado.persona_cedula = personaE;
 
@@ -50,21 +50,48 @@ describe('RegistroVentaComponent', () => {
 
     component.selectedVenta.visita_id = new Visita();
 
-    component.selectedVenta.activo = true; 
-    component.selectedVenta.id = 60;
+    component.selectedVenta.activo = true;
+    // component.selectedVenta.id = 60;
     // console.log(component.selectedVenta);
     // console.log(component.selectedPersona = cliente);
     component.registrarVenta();
 
-    //const venta: Venta = component.buscarVenta(60);
+    // const venta: Venta = component.buscarVenta(60);
 
-    // console.log(component.buscarVenta());
+    // const existe = component.validarVentaexist();
 
-    const existe = component.validarVentaexist();
-
-    expect(existe).toBeTruthy();
+    expect(component.validarVentaexist()).toBeTruthy();
 
   });
 
-  
+  it ('buscar venta', () => {
+
+    const id = 4;
+
+    const venta = component.buscarVenta(id);
+
+    console.log(venta);
+
+    expect(venta.id).toEqual(id);
+
+  });
+
+  it ('validar campos', () => {
+
+    const inmueble = new Inmueble();
+    inmueble.matricula = 'casa 12';
+
+    const cliente = new Persona();
+    cliente.cedula = 123;
+
+    component.selectedInmueble = inmueble;
+    component.selectedPersona = cliente;
+
+    const res = component.validarCampos();
+
+    expect(res).toBeTruthy();
+
+  });
+
+
 });

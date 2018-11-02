@@ -47,7 +47,7 @@ export class LoginService {
        //Validamos si el usuario inicio sesion
       if (this.usuario == null) {
            //Como no ha iniciado sesion, lo redirigimos al login
-            this.router.navigate(['/login']);
+             this.router.navigate(['/login']);
            //this.router.navigate(['/']);
       } else {
            //Validamos si el usuario tiene acceso a la pagina

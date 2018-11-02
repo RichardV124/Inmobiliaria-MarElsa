@@ -40,6 +40,7 @@ export class GestionPersonalComponent implements OnInit, AfterViewChecked {
   listandoDepartamentos = false;
   listandoExperiencias = false;
   listandoEstudios = false;
+  registrandoExperiencia = false;
 
   // -----------------------------------
   contador = 0;
@@ -126,6 +127,10 @@ this.contador++;
       return this.listandoDepartamentos;
     }
 
+    validarRegistroExperiencia(): boolean {
+      return this.registrandoExperiencia;
+    }
+
     validarlistarExperiencias(): boolean {
       return this.listandoExperiencias;
     }
@@ -179,9 +184,10 @@ console.log(this.validarCampos);
 
   registrarExperiencia() {
 
-    if (this.validarCamposExperiencias()) {
+    if (!true) {
       this.show = 1;
           this.respuesta.msj = 'Debe completar todos los campos';
+          this.registrandoExperiencia = false;
     } else {
       this.experienciaSeleccionada.persona_cedula = this.selectedPersona;
       console.log(this.experienciaSeleccionada);
@@ -193,6 +199,7 @@ console.log(this.validarCampos);
         this.listarExperienciasEmpleado(this.experienciaSeleccionada.persona_cedula.cedula);
         this.limpiarCamposExperiencia();
         this.show = 2;
+        this.registrandoExperiencia = true;
       });
     }
   }

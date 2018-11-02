@@ -285,6 +285,35 @@ exports.searchInmuebleVendido= function (req, res) {
 };
 
 
+exports.listarUltimoArriendo = function(req, res){
+    req.getConnection(function(err,connection){
+          var query = connection.query('select * from arriendo order by id desc limit 1;',function(err,rows)
+          {
+              if(err)
+              res.send('{"id": 404,"msj": "Hubo un error al listar los arriendos"}');    
+
+            res.send({data:rows[0]});  
+                
+           });
+      });
+};
+
+exports.listarContratos = function(req, res){
+    req.getConnection(function(err,connection){
+          var query = connection.query('SELECT * FROM contrato WHERE arriendo_id IS NOT NULL AND activo =1;',function(err,rows)
+          {
+              if(err)
+              res.send('{"id": 404,"msj": "Hubo un error al listar los arriendos"}');    
+
+            res.send({data:rows[0]});  
+                
+           });
+      });
+};
+
+
+
+
 
 
 

@@ -180,6 +180,8 @@ app.get('/arriendo/searchvisitaprueba/:id', arriendo.buscarVisita);
 app.get('/arriendo/searchCliente/:cedula', arriendo.searchCliente);
 app.get('/arriendo/searchinmuebleid/:id', arriendo.searchInmuebleId);
 app.get('/arriendo/searchinmueblevendido/:inmueble_id', arriendo.searchInmuebleVendido);
+app.get('/arriendo/listarUltimoArriendo', arriendo.listarUltimoArriendo);
+app.get('/arriendo/listarContrato', arriendo.listarContratos);
 
 
 
@@ -199,8 +201,12 @@ app.post('/contrato/add', venta.saveContrato);
 app.get('/venta/listUltimaVenta', venta.listUltimaVenta);
 app.get('/venta/listContratos', venta.listContratos);
 app.post('/venta/deleteContrato/', venta.delete_contrato);
+app.post('/venta/deleteContratobyVenta/', venta.delete_contrato_by_venta);
 app.get('/venta/buscarVisitaId/:visita_id', venta.buscarVisitaId);
+app.get('/venta/buscarContratoIdVenta/:venta_id', venta.buscarContratobyIdVenta);
 app.get('/venta/buscarVisitaIdInmueble/:visita_id', venta.buscarVisitaIdInmueble);
+app.get('/venta/contrato/search/:venta_id', venta.buscarContrato);
+
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);
 app.get('/rol-accesos/listar', roles.listarRolAccesos);
