@@ -1,5 +1,6 @@
-import { Venta } from 'src/app/modelo/venta';
 import { Arriendo } from './arriendo';
+import { Venta } from './venta';
+
 
 export class Contrato {
 id: number;

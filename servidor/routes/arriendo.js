@@ -311,6 +311,70 @@ exports.listarContratos = function(req, res){
       });
 };
 
+exports.deleteContrato = function (req, res) {
+
+    var input = JSON.parse(JSON.stringify(req.body));
+    req.getConnection(function (err, connection) {
+
+        connection.query("UPDATE contrato SET activo = 0 WHERE id = ? ", [input.id], function (err, rows) {
+
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al eliminar"}');
+       
+        res.send('{"id": 505,"msj": "Se eliminó correctamente"}');
+
+        });
+
+    });
+};
+
+exports.searchContrato= function (req, res) { 
+
+    var arriendo_id = req.params.arriendo_id;
+    req.getConnection(function (err, connection) {
+        var query = connection.query('SELECT * FROM contrato WHERE arriendo_id = ?',[arriendo_id], function (err, rows) {
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            res.send({
+                data: rows[0]
+            });
+
+        });
+    });
+};
+
+exports.editarContrato = function (req, res) {
+
+    var input = JSON.parse(JSON.stringify(req.body));
+    req.getConnection(function (err, connection) {
+
+        var data = {
+            id: input.id,
+            descripcion: input.descripcion,
+            contrato: input.contrato,
+            arriendo_id: input.arriendo_id,
+            venta_id: null,
+            precio: input.precio,
+            fecha: input.fecha,
+            activo: 1
+
+        };
+        
+        connection.query("UPDATE contrato SET ? WHERE id = ? ", [data, input.id], function (err, rows) {
+            console.log(err);
+            if (err)
+            res.send('{"id": 404,"msj": "Hubo un error al editar el contrato"}');
+       
+        res.send('{"id": 505,"msj": "Se edito correctamente el contrato"}');
+
+        });
+
+    });
+};
+
+
+
 
 
 
