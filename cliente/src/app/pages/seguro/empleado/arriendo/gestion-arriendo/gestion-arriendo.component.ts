@@ -412,6 +412,7 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
       this.respuesta = JSON.parse(JSON.stringify(res));
       this.show = this.respuesta.id;
       this.arriendoService.buscarContrato(arriendo.id).subscribe( contrato => {
+        console.log(contrato);
         this.arriendoService.eliminarContrato(contrato).subscribe(contratoEli => {
           this.listarArriendos();
           this.limpiarCamposArrendo();

@@ -311,7 +311,7 @@ exports.buscarContratobyIdVenta = function (req, res) {
  */
 exports.listContratos = function(req, res){
     req.getConnection(function(err,connection){
-          var query = connection.query('SELECT id,descripcion, contrato, venta_id, precio, substring(fecha,1) as fecha FROM contrato where activo = 1;',function(err,rows)
+          var query = connection.query('SELECT id,descripcion, contrato, venta_id, precio, substring(fecha,1) as fecha FROM contrato where activo = 1 and venta_id is not null;',function(err,rows)
           {
               if(err)
               res.send('{"id": 404,"msj": "Hubo un error al listar las ventas"}');    

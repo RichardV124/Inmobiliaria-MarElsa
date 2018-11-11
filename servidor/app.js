@@ -36,6 +36,8 @@ var arriendo = require('./routes/arriendo');
 var venta = require('./routes/venta');
 //Cargamos el route de visita
 var visita = require('./routes/visita');
+//Cargamos el route de generico servicio
+var generico = require('./routes/generico');
 
 // ------ SERVICIOS ------ //
 
@@ -165,6 +167,7 @@ app.post('/file/add', inmueble.saveFile);
 app.get('/file/search/:inmueble_id', inmueble.searchFile);
 app.post('/file/delete/', inmueble.delete_file);
 app.get('/inmueble/searchInmueble/:matricula', inmueble.searchInmueble);
+app.get('/inmueble/searchMunInmueble/:matricula', inmueble.municipioInmueble);
 
 // ------------ Arriendos ----------------//
 app.post('/arriendo/add', arriendo.save);
@@ -236,6 +239,9 @@ app.get('/visita/listarPorClienteAndEstado/:cliente/:estado', visita.listarPorCl
 app.get('/visita/listarPorEmpleadoAndEstado/:empleado/:estado', visita.listarPorEmpleadoAndEstado);
 app.get('/visita/delete/:id', visita.delete);
 app.get('/visita/listarPorEmpleadoAndFecha/:empleado/:fecha', visita.listarPorEmpleadoAndFecha);
+
+// --------------- Servicios Genericos -------------- //
+app.post('/generico/listar', generico.listar);
 
 app.use(app.router);
 

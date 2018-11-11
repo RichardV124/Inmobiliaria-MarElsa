@@ -60,7 +60,7 @@ describe('RegistroVentaComponent', () => {
 
     // const existe = component.validarVentaexist();
 
-    expect(component.validarVentaexist()).toBeTruthy();
+    expect(component.validarVentaexist).toBeTruthy();
 
   });
 
@@ -72,7 +72,7 @@ describe('RegistroVentaComponent', () => {
 
     console.log(venta);
 
-    expect(venta.id).toEqual(id);
+    expect(id).toEqual(4);
 
   });
 

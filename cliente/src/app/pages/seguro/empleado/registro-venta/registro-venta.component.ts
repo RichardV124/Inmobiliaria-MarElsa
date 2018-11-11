@@ -580,6 +580,7 @@ limpiarCamposContratoDos(){
     this.selectedContrato.precio = contrato.precio;
     this.selectedContrato.descripcion = contrato.descripcion;
     this.selectedContrato.fecha = contrato.fecha;
+    this.labelFile = contrato.contrato;
     this.mostrarEditar = true;
     this.scrollHelper.scrollToFirst('banderDos');
   }
@@ -588,7 +589,7 @@ limpiarCamposContratoDos(){
     this.cerrarMsjEdicionVenta();
     if (this.selectedPersona.cedula === undefined || this.selectedInmueble.matricula === undefined) {
       this.respuesta.msj = 'Para editar debe seleccionar una venta de la tabla';
-          confirm('Para editar debe buscar seleccionar una venta de la tabla');
+          confirm('Para editar debe seleccionar una venta de la tabla');
   }  else {
     this.inmuebleServie.buscarInmueble(this.selectedInmueble.matricula).subscribe(inmueble => {
       
@@ -676,6 +677,7 @@ eliminar(id: number){
                 this.selectedPersona.cedula = null;
                 this.selectedContrato.precio = 0;
                 this.selectedContrato.descripcion = null;
+                this.labelFile = null;
                 this.llenarTabla();  
                 this.llenarTablaContrato();
   //              this.cerrarMsj();
@@ -719,7 +721,7 @@ if(this.selectedFile === null){
       this.contratoEditar.descripcion = this.selectedContrato.descripcion;
       this.contratoEditar.precio = this.selectedContrato.precio;
       this.contratoEditar.fecha = this.selectedContrato.fecha;
-      this.contratoEditar.contrato;
+      this.contratoEditar.contrato = this.labelFile;
       console.log(this.contratoEditar.contrato);
       this.ventaService.editarContrato(this.contratoEditar).subscribe(res =>{
       this.respuesta = JSON.parse(JSON.stringify(res));
