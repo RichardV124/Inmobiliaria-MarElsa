@@ -30,6 +30,11 @@ export class RegistroVentaComponent implements OnInit {
 
   img;
   ventaRegistrada = false;
+  ventaEliminada = false;
+  ventaBuscada = false;
+  ventaEditada = false;
+  listadoRealizado = false;
+  camposLimpiados = false;
   labelFile;
   selectedPersona: Persona = new Persona();
   selectedInmueble: Inmueble = new Inmueble();
@@ -229,12 +234,14 @@ cerrarMsjContratodatos(){
     return JSON.parse(JSON.stringify(inmueble[atributo]));
   }
 
-  buscarVenta(id: number) {
+  buscarVenta(id: number): Venta {
+    let venta: Venta;
     this.ventaService.buscarVentaPorId(id).subscribe(res => {
-      console.log(res);
-      const venta: Venta = res;
+      venta = res;
+      console.log(venta);
       return venta;
     });
+    return venta;
   }
 
 registrarVenta(){
@@ -409,6 +416,7 @@ registroContrato(){
     subscribe(departamento => {
       this.listaDepartamentos = departamento;
     });
+    this.listadoRealizado = true;
   }
 
   listarMunicipios() {
@@ -416,6 +424,7 @@ registroContrato(){
     subscribe(municipio => {
       this.listaMunicipios = municipio;
     });
+    this.listadoRealizado = true;
   }
   listarClientes() {
     this.clienteService.listarClientes()
@@ -423,6 +432,7 @@ registroContrato(){
       this.listaClientes = personas;
       this.rolesMunicipios();
     });
+    this.listadoRealizado = true;
   }
 
   rolesMunicipios() {
@@ -445,6 +455,7 @@ registroContrato(){
     this.selectedDepartamento.id = 0;
     this.selectedMunicipio.id = 0;
     this.selectedPersona.genero = 0;
+    this.camposLimpiados = true;
   }
 
   validarCampos():boolean{
@@ -486,10 +497,18 @@ registroContrato(){
             this.respVenta.msj = 'despliegue para ver los datos';
   }
 
+  verVentaEliminada(): boolean {
+    return this.ventaEliminada;
+  }
+
   verCcontrato(contrato: Contrato){
     this.selectedCont = contrato;
             this.showMostcontrato = 1;
             this.respVenta.msj = 'despliegue para ver los datos';
+  }
+
+  verVentaEditada() {
+    return this.ventaEditada;
   }
 
   editarVenta()  {
@@ -530,6 +549,7 @@ registroContrato(){
                       this.respuesta = JSON.parse(JSON.stringify(resVentEdit));
                       this.showEditarVenta = this.respuesta.id; 
                       this.llenarTabla();
+                      this.ventaEditada = true;
                   });
                   });
               }
@@ -565,6 +585,7 @@ registroContrato(){
                                 this.respuesta = JSON.parse(JSON.stringify(resVentEdit));
                                 this.showEditarVenta = this.respuesta.id; 
                                 this.llenarTabla();
+                                this.ventaEditada = true;
                             });
                             });
                           }
@@ -607,6 +628,10 @@ eliminarContrato(contrato: Contrato){
     })
 }
 
+verBusqueda() {
+  return this.ventaBuscada;
+}
+
 limpiarCamposContrato(){
   this.selectedCont = new Contrato();
 }
@@ -632,8 +657,9 @@ if(this.selectedCont.descripcion ===undefined
 
 }
 
-validarVentaexist(): boolean {
+verVentaRegistrada(): boolean {
   return this.ventaRegistrada;
 }
+
 
 }
