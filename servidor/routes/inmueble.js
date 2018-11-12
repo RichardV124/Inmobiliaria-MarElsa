@@ -334,3 +334,25 @@ exports.delete_inmueble = function (req, res) {
 
     });
 };
+
+
+exports.municipioInmueble = function (req, res) {
+
+    var matricula = req.params.matricula;
+    req.getConnection(function (err, connection) {
+
+        var query = connection.query('SELECT m.nombre as municipio FROM inmueble i JOIN municipio m ON m.id = i.municipio_id JOIN departamento d ON d.id = m.departamento_id WHERE i.activo = 1 and i.matricula = ?;', [matricula], function (err, rows) {
+
+            if (err)
+                console.log("Error Selecting : %s ", err);
+
+            res.send({
+                data: rows[0]
+            });
+
+
+        });
+
+        //console.log(query.sql);
+    });
+};

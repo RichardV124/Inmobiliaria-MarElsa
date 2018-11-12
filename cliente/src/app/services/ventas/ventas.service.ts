@@ -29,6 +29,12 @@ export class VentasService {
     });
   }
 
+  buscarContrato(venta_id: number) {
+    return this.http.get<any>(`${this.domain}/venta/contrato/search/${venta_id}`)
+    .map(res => {
+      return res.data;
+    });
+  }
   eliminar(venta: Venta) {
     return this.http.post<any>(`${this.domain}/venta/delete/`, venta)
     .map(res => res);
@@ -62,12 +68,6 @@ export class VentasService {
   });
 }
 
-buscarVentaPorId(id: number) {
-  return this.http.get<any>(`${this.domain}/venta/buscarVentaPorId/${id}`)
-  .map(res => {
-    return res.data;
-  });
-}
 
 editarVenta(venta: Venta) {
   return this.http.post<any>(`${this.domain}/venta/update/`, venta)
@@ -96,8 +96,28 @@ eliminarContrato(contrato: Contrato) {
   .map(res => res);
 }
 
+eliminarContratoByVenta(contrato: Contrato) {
+  return this.http.post<any>(`${this.domain}/venta/deleteContratobyVenta/`, contrato)
+  .map(res => res);
+}
+
 buscarVisitaId(id: number) {
   return this.http.get<any>(`${this.domain}/venta/buscarVisitaId/${id}`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+
+buscarVentaPorId(id: number) {
+  return this.http.get<any>(`${this.domain}/venta/buscarVentaPorId/${id}`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+buscarContratoByIdVenta(venta_id: number) {
+  return this.http.get<any>(`${this.domain}/venta/buscarContratoIdVenta/${venta_id}`)
   .map(res => {
     return res.data;
   });

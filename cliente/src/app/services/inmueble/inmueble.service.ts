@@ -107,4 +107,11 @@ listarTiposInmueble() {
     });
   }
 
+  buscarInmuMunicipio(matricula: string) {
+    return this.http.get<any>(`${this.domain}/inmueble/searchMunInmueble/${matricula}`)
+    .map(res => {
+      return res.data;
+    });
+  }
+
 }

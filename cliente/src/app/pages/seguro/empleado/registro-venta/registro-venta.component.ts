@@ -20,6 +20,7 @@ import { VentaDTO } from 'src/app/modelo/dto/VentaDTO';
 import { ArriendosService } from 'src/app/services/arriendos/arriendos.service';
 import { EmpleadoService } from 'src/app/services/empleado/empleado.service';
 import { Contrato } from 'src/app/modelo/contrato';
+import { ScrollHelper } from 'src/app/modelo/ScrollHelper';
 
 @Component({
   selector: 'app-registro-venta',
@@ -29,6 +30,7 @@ import { Contrato } from 'src/app/modelo/contrato';
 export class RegistroVentaComponent implements OnInit {
 
   img;
+  mostrarEditar: Boolean;
   ventaRegistrada = false;
   labelFile;
   selectedPersona: Persona = new Persona();
@@ -36,8 +38,11 @@ export class RegistroVentaComponent implements OnInit {
   selectedLogin: Login = new Login();
   rol: Rol = new Rol();
   respuesta: RespuestaDTO = new RespuestaDTO();
+  respuestaDelContr: RespuestaDTO = new RespuestaDTO();
+  respuestaRegContrato: RespuestaDTO = new RespuestaDTO();
   respuesta2: RespuestaDTO = new RespuestaDTO();
   respuestaV: RespuestaDTO = new RespuestaDTO();
+  respVentaVer: RespuestaDTO = new RespuestaDTO();
   respVenta: RespuestaDTO = new RespuestaDTO();
   respCliente: RespuestaDTO = new RespuestaDTO();
   respEmpleado: RespuestaDTO = new RespuestaDTO();
@@ -75,6 +80,10 @@ export class RegistroVentaComponent implements OnInit {
   showEditarVenta = 0;
   showContrato = 0;
   showMostcontrato = 0;
+  showEditarContrato =0;
+
+  /** Clase que redirige hace scroll hacia un componente del DOM especifico */
+  private scrollHelper: ScrollHelper = new ScrollHelper();
 
 
   constructor(private empleadoService: EmpleadoService, private inmuebleServie: InmuebleService,private clienteService: ClienteService, private loginService: LoginService
@@ -97,6 +106,7 @@ export class RegistroVentaComponent implements OnInit {
 
 
   buscar() {
+    this.cerrarMsj();
     if (this.selectedPersona.cedula == null) {
       this.show = 1;
       this.respuesta.msj = 'Debe ingresar la cedula a buscar';
@@ -127,6 +137,33 @@ export class RegistroVentaComponent implements OnInit {
     }
    }
 
+   buscarClienteVer(cedula: string) {
+
+      this.clienteService.buscarPersona(cedula)
+      .subscribe(cliente => {
+        if (cliente === undefined ) {
+          this.respuesta.msj = 'No se encuentra ningun cliente con la cedula ';
+          this.show = 1;
+          console.log('NO SE ENCUENTRA');
+          this.limpiarcampos();
+
+        } else {
+          this.respuesta.msj = 'Despliegue los datos del cliente';
+          this.show = 2;
+          this.selectedPersona = JSON.parse(JSON.stringify(cliente));
+          this.selectedPersona.fecha_nacimiento = this.clienteService.formatoFecha(this.selectedPersona.fecha_nacimiento);
+          this.municipioService.buscarMunicipio(cliente['municipio_id'])
+          .subscribe(mun => {
+              this.selectedDepartamento.id = mun['departamento_id'];
+              this.listarMunicipios();
+              this.selectedMunicipio = mun;
+
+            });
+          }
+        });
+    
+   }
+
    buscarInmueble() {
     this.cerrarMsj();
     if (this.selectedInmueble.matricula == null) {
@@ -149,10 +186,31 @@ export class RegistroVentaComponent implements OnInit {
       });
     }
   }
+
+  buscarInmuebleVer(matricula: string) {
+    this.cerrarMsj();
+      this.inmuebleServie.buscarInmueble(matricula)
+      .subscribe(inmueble => {
+        if (inmueble === undefined) {
+          this.respuesta.msj = 'El inmueble no existe';
+          this.show = 1;
+          this.limpiarCamposInmueble();
+        } else {
+          this.respuesta2.msj = 'Despliegue los datos del inmueble';
+          this.showInm = 2;
+          this.selectedInmueble = inmueble;
+          this.obtenerDatosCombosBusqueda();
+          this.obtenerPublicacionInmueble();
+        }
+      });
+    
+  }
   cerrarMsj() {
     this.show = 0;
   }
-
+  cerrarMsjEditContrato() {
+    this.showEditarContrato = 0;
+  }
   cerrarMsjInmueble() {
     this.showInm = 0;
   }
@@ -229,24 +287,40 @@ cerrarMsjContratodatos(){
     return JSON.parse(JSON.stringify(inmueble[atributo]));
   }
 
-  buscarVenta(id: number) {
-    this.ventaService.buscarVentaPorId(id).subscribe(res => {
-      console.log(res);
-      const venta: Venta = res;
+  buscarVenta(id: number): Venta {
+    console.log('entra');
+    let venta : Venta = null;
+    // setTimeout(() => {
+      this.ventaService.buscarVentaPorId(id).subscribe(res => {
+        venta = res;
+        console.log(venta);
+        return venta;
+      });
+
       return venta;
-    });
+    // }, 10000);
+    /** while (true){
+      if (venta !== null){
+        return venta;
+      }
+    }**/
   }
 
 registrarVenta(){
 
+  //datos de la venta
 this.selectedVenta.cliente_cedula = this.selectedPersona;
 this.selectedVenta.empleado_cedula = this.empleado.persona_cedula;
 this.selectedVenta.inmueble_id = this.selectedInmueble;
 
+
 // console.log(this.selectedVenta);
 
-if(this.validarCampos()=== false){
-  alert("ingrese todos los datos");
+if(this.validarCampos()=== false || (this.validarCamposContrato() === false)
+||(this.archivosAgregados() ===false)){
+  
+  alert("busque  el cliente y el inmueble al que se le registrara la venta e " +
+   "ingrese los datos del contrato");
 }else{
 
   this.ventaService.buscarPorInmbuebleyCedula(this.selectedPersona.cedula, this.selectedInmueble.id).subscribe(visitas =>{
@@ -262,16 +336,26 @@ if(this.validarCampos()=== false){
               this.respuesta = JSON.parse(JSON.stringify(resAdd));
               this.show = this.respuesta.id;
               this.ventaRegistrada = true;
+              this.registrarContrato();
+              this.limpiarcampos();
+              this.limpiarCamposInmueble();
+              //this.cerrarMsj();
+              this.cerrarMsjInmueble();
               this.llenarTabla();
               });
       
             }else{
               this.selectedVenta.visita_id = visitas;
               this.ventaService.registroVenta(this.selectedVenta).subscribe(res => {
-              this.respuestaV = JSON.parse(JSON.stringify(res)); 
-              this.cerrarMsjInmueble();
-              this.show = this.respuestaV.id;
+              this.respuesta = JSON.parse(JSON.stringify(res)); 
+              this.cerrarMsjInmueble(); 
+              this.show = this.respuesta.id;
               this.ventaRegistrada = true;
+              this.registrarContrato();
+              this.limpiarcampos();
+              this.limpiarCamposInmueble();
+              //this.cerrarMsj();
+              this.cerrarMsjInmueble();
               this.llenarTabla();
               });
             }
@@ -294,7 +378,35 @@ if(this.validarCampos()=== false){
 });
 
 }
+}
 
+registrarContrato(){
+    this.crearArchivo();
+
+    this.selectedContrato.id;
+    this.selectedContrato.descripcion;
+    this.selectedContrato.contrato;
+    this.ventaService.listarUltimaVenta().subscribe(resVenta =>{
+      console.log(resVenta.id);
+    this.selectedContrato.venta_id = resVenta;
+    this.selectedContrato.precio;
+    this.selectedContrato.fecha = new Date();
+    this.selectedContrato.activo = 1;
+    this.ventaService.buscarContrato(resVenta.id).subscribe(respsta =>{
+      
+      if(respsta === undefined){     
+          this.ventaService.registrarContrato(this.selectedContrato).subscribe(rspta =>{
+          this.respuestaRegContrato = JSON.parse(JSON.stringify(rspta));
+          this.showContrato = rspta.id;
+          this.ventaRegistrada = false;
+          this.limpiarCamposContratoDos();
+          this.llenarTablaContrato();
+        })
+      }else{
+        alert('este contrato ya existe');
+      }
+    });
+    })
 }
 
 validarCamposContrato():boolean{
@@ -306,35 +418,12 @@ validarCamposContrato():boolean{
     }
 }
 
-registroContrato(){
-
-    if(this.validarCamposContrato()){
-      if(this.archivosAgregados()){
-        this.crearArchivo();
-
-        this.selectedContrato.id;
-        this.selectedContrato.descripcion;
-        this.selectedContrato.contrato;
-        this.ventaService.listarUltimaVenta().subscribe(resVenta =>{
-        this.selectedContrato.venta_id = resVenta;
-        this.selectedContrato.precio;
-        this.selectedContrato.fecha = new Date();
-        this.selectedContrato.activo = 1;
-        this.ventaService.registrarContrato(this.selectedContrato).subscribe(rspta =>{
-        this.respuesta = JSON.parse(JSON.stringify(rspta));
-        this.showContrato = rspta.id;
-        this.llenarTablaContrato();
-        
-      })
-        })
-      } 
-
-    }else{
-      alert('ingrese los campos');
-    }
-       
 
 
+limpiarCamposContratoDos(){
+  this.selectedContrato.precio = null;
+  this.selectedContrato.descripcion = null;
+  this.selectedContrato.contrato = null;
 }
 
 
@@ -344,8 +433,8 @@ registroContrato(){
    */
   onFileSelected(event) {
     this.selectedFile = event.target.files;
-
-    if (this.selectedFile === null) {
+    console.log(this.selectedFile);
+    if (this.selectedFile.length === 0) {
       this.labelFile = 'Ningún archivo seleccionado';
     } else {
     this.labelFile = '';
@@ -371,8 +460,8 @@ registroContrato(){
     const myReader: FileReader = new FileReader();
     myReader.onloadend = (e) => {
       this.img = myReader.result;
-      console.log(this.img);
       this.selectedContrato.contrato = this.img;
+      this.contratoEditar.contrato = this.img;
     };
     myReader.readAsDataURL(file);
   }
@@ -380,9 +469,7 @@ registroContrato(){
    * Verifica si se seleccionó por lo menos un archivo
    */
   archivosAgregados() {
-    if (this.selectedFile === undefined) {
-      this.respuesta.msj = 'Debe agregar por lo menos un archivo';
-      this.show = 404;
+    if (this.selectedFile.length === 0) {
       return false;
     }
     return true;
@@ -391,6 +478,7 @@ registroContrato(){
   
   limpiarCamposInmueble() {
     this.combosPorDefecto();
+    this.propietario.cedula = null;
     this.selectedPersona = new Persona();
     this.selectedInmueble = new Inmueble();
     this.selectedInmueble.zona = 0;
@@ -479,112 +567,97 @@ registroContrato(){
     })
   }
 
-  ver(venta: VentaDTO){
+  verVenta(venta: VentaDTO){
     this.ventasTabla = venta;
-            this.ventasTabla.fecha = this.clienteService.formatoFecha(venta.fecha); 
-            this.showMost = 1;
-            this.respVenta.msj = 'despliegue para ver los datos';
+    this.buscarClienteVer(venta.cliente_cedula);
+    this.buscarInmuebleVer(venta.matricula);
+              this.scrollHelper.scrollToFirst('bandera');
+           
   }
 
-  verCcontrato(contrato: Contrato){
-    this.selectedCont = contrato;
-            this.showMostcontrato = 1;
-            this.respVenta.msj = 'despliegue para ver los datos';
+  verContrato(contrato: Contrato){
+    this.selectedContrato.id = contrato.id;
+    this.selectedContrato.precio = contrato.precio;
+    this.selectedContrato.descripcion = contrato.descripcion;
+    this.selectedContrato.fecha = contrato.fecha;
+    this.labelFile = contrato.contrato;
+    this.mostrarEditar = true;
+    this.scrollHelper.scrollToFirst('banderDos');
   }
 
   editarVenta()  {
-    if (this.ventasTabla.cliente_cedula === undefined) {
-      this.respuesta.msj = 'Para editar debe buscar previamente';
-          confirm('Para editar debe buscar previamente');
-  } else if (this.ventasTabla.matricula === undefined) {
-      this.respuesta.msj = 'Para editar debe buscar previamente';
-        confirm('Para editar debe buscar previamente');
-  } else {
-    this.inmuebleServie.buscarInmueble(this.ventasTabla.matricula).subscribe(inmueble => {
-      this.arriendoService.buscarInmuebleId(this.ventasTabla.inmueble_id).subscribe(inmu => {
+    this.cerrarMsjEdicionVenta();
+    if (this.selectedPersona.cedula === undefined || this.selectedInmueble.matricula === undefined) {
+      this.respuesta.msj = 'Para editar debe seleccionar una venta de la tabla';
+          confirm('Para editar debe seleccionar una venta de la tabla');
+  }  else {
+    this.inmuebleServie.buscarInmueble(this.selectedInmueble.matricula).subscribe(inmueble => {
+      
         if (inmueble === undefined) {
-          this.respuesta.msj = 'El inmueble no existe';
-          this.show = 1;
-        } else {
+          alert('el inmueble no existe');
+        } else { 
+          this.arriendoService.buscarInmuebleId(inmueble.id).subscribe(inmu => { 
           if (this.ventasTabla.matricula === inmu.matricula) {
-            this.clienteService.buscarPersona(this.ventasTabla.cliente_cedula).subscribe(cliente =>{
+            this.clienteService.buscarPersona(this.selectedPersona.cedula).subscribe(cliente =>{
               if (cliente === undefined) {
                 this.respuesta.msj = 'El cliente ingresado no existe';
-                this.show = 1;
+                this.showEditarVenta = 1;
               } else {
-                  this.ventaService.buscarVisitaId(this.ventasTabla.visita_id).subscribe(visita => {
-                    if (visita === undefined) {
                     this.selectedVentaEdit.id = this.ventasTabla.id;
                     this.selectedVentaEdit.inmueble_id = inmu;
                     this.selectedVentaEdit.cliente_cedula = cliente;
                     this.selectedVentaEdit.empleado_cedula = this.empleado.persona_cedula;
                     this.selectedVentaEdit.visita_id = null;
-                    } else {
-                      this.selectedVentaEdit.id = this.ventasTabla.id;
-                      this.selectedVentaEdit.inmueble_id = inmu;
-                      this.selectedVentaEdit.cliente_cedula = cliente;
-                      this.selectedVentaEdit.empleado_cedula = this.empleado.persona_cedula;
-                      this.selectedVentaEdit.visita_id = visita;
-                    }
+                    
                       this.ventaService.editarVenta(this.selectedVentaEdit).subscribe(resVentEdit=>{
                       this.respuesta = JSON.parse(JSON.stringify(resVentEdit));
                       this.showEditarVenta = this.respuesta.id; 
                       this.llenarTabla();
                   });
-                  });
+                
               }
             });
           } else {
-            this.inmuebleServie.buscarInmueble(this.ventasTabla.matricula).subscribe(inmueble_existe => {
-              this.arriendoService.buscarInmuebleVendido(inmueble_existe.id).subscribe(inmueble_vendi => {
-                console.log(inmueble_existe);
+            this.inmuebleServie.buscarInmueble(this.selectedInmueble.matricula).subscribe(inmueble_existe => {
+              this.ventaService.buscarInmuebleVenta(inmueble_existe.id).subscribe(inmueble_vendi => {
                 if (inmueble_vendi === undefined) {
                   this.arriendoService.buscarInmuebleArrendado(inmueble_existe.id).subscribe(inmuarrendado => {
-                    console.log(inmuarrendado);
                     if (inmuarrendado === undefined) {
-                      this.clienteService.buscarPersona(this.ventasTabla.cliente_cedula).subscribe(cliente =>{
+                      this.clienteService.buscarPersona(this.selectedPersona.cedula).subscribe(cliente =>{
                           if (cliente === undefined) {
                             this.respuesta.msj = 'El cliente ingresado no existe';
-                            this.show = 1;
+                            this.showEditarVenta = 1;
                           } else {
-                            this.ventaService.buscarVisitaId(this.ventasTabla.visita_id).subscribe(visita => {
-                              if (visita === undefined) {
                                 this.selectedVentaEdit.id = this.ventasTabla.id;
                                 this.selectedVentaEdit.inmueble_id = inmu;
                                 this.selectedVentaEdit.cliente_cedula = cliente;
                                 this.selectedVentaEdit.empleado_cedula = this.empleado.persona_cedula;
                                 this.selectedVentaEdit.visita_id = null;
-                              } else {
-                                this.selectedVentaEdit.id = this.ventasTabla.id;
-                                this.selectedVentaEdit.inmueble_id = inmu;
-                                this.selectedVentaEdit.cliente_cedula = cliente;
-                                this.selectedVentaEdit.empleado_cedula = this.empleado.persona_cedula;
-                                this.selectedVentaEdit.visita_id = visita;
-                              }
+                            
                               this.ventaService.editarVenta(this.selectedVentaEdit).subscribe(resVentEdit=>{
                                 this.respuesta = JSON.parse(JSON.stringify(resVentEdit));
                                 this.showEditarVenta = this.respuesta.id; 
                                 this.llenarTabla();
                             });
-                            });
+                           
                           }
                         });
                     } else {
-                      this.show = 1;
-                      this.respuesta.msj = 'El inmueble se encuenrta arrendado';
+                      alert('el inmueble ya se encuentra arrendado');
                     }
                   });
                 } else {
-                  this.show = 1;
-                  this.respuesta.msj = 'El inmueble se encuenrta vendido';
+                  alert('el inmueble ya se encuentra vendido');
                 }
 
               });
             });
           }
+        });
         }
-      });
+      
     });
+    
   }
 }
 
@@ -592,17 +665,39 @@ eliminar(id: number){
 
       this.ventaService.buscarVentaPorId(id).subscribe(res =>{
          this.ventaService.eliminar(res).subscribe(resEliminar=>{
-          this.llenarTabla();  
-          alert('se elimino correctamente');
-          this.cerrarMsj();
+           this.ventaService.buscarContratoByIdVenta(res.id).subscribe(resContr =>{
+            this.ventaService.eliminarContratoByVenta(resContr).subscribe(resEl =>{
+              this.respuesta = JSON.parse(JSON.stringify(resEl));
+              this.respuestaDelContr =JSON.parse(JSON.stringify(resEliminar));
+              if(this.respuesta.id === 505 && (this.respuestaDelContr.id === 505)){
+                alert('se elimino la venta y el contrato correctamente');
+                this.cerrarMsj();
+                this.cerrarMsjInmueble();
+                this.selectedInmueble.matricula = null;
+                this.selectedPersona.cedula = null;
+                this.selectedContrato.precio = 0;
+                this.selectedContrato.descripcion = null;
+                this.labelFile = null;
+                this.llenarTabla();  
+                this.llenarTablaContrato();
+  //              this.cerrarMsj();
+              }else{
+                alert('hubo un error al eliminar');
+              }
+            });
+
+           });
+          
          });
-      })
+      });
 }
  
 eliminarContrato(contrato: Contrato){
     this.ventaService.eliminarContrato(contrato).subscribe(rst =>{
       this.llenarTablaContrato();
       this.limpiarCamposContrato();
+      this.cerrarMsjContrato();
+      this.cerrarMsjContratodatos();
       alert('se elimino correctamente');
     })
 }
@@ -612,23 +707,29 @@ limpiarCamposContrato(){
 }
 
 editarContrato(){
-
-if(this.selectedCont.descripcion ===undefined 
-  ||this.selectedCont.precio === undefined||
-  this.selectedCont.fecha ===undefined){
-    alert('no hay datos para modificar')
+if(this.selectedFile === null){
+     alert('debe seleccionar un archivo');
 }else{
-  this.contratoEditar.id = this.selectedCont.id; 
-  this.contratoEditar.descripcion = this.selectedCont.descripcion;
-  this.contratoEditar.precio = this.selectedCont.precio;
-  this.contratoEditar.fecha = this.selectedCont.fecha;
- 
- this.ventaService.editarContrato(this.contratoEditar).subscribe(res =>{
-   this.respuesta = JSON.parse(JSON.stringify(res));
-   this.showEditarVenta = this.respuesta.id; 
- 
- });
+  if(this.selectedContrato.descripcion ===undefined 
+    ||this.selectedContrato.precio === undefined||
+    this.selectedContrato.fecha ===undefined){
+      alert('no hay datos para modificar')
+  }else{
+    console.log(this.selectedFile);
+    this.crearArchivo();
+      this.contratoEditar.id = this.selectedContrato.id; 
+      this.contratoEditar.descripcion = this.selectedContrato.descripcion;
+      this.contratoEditar.precio = this.selectedContrato.precio;
+      this.contratoEditar.fecha = this.selectedContrato.fecha;
+      this.contratoEditar.contrato = this.labelFile;
+      console.log(this.contratoEditar.contrato);
+      this.ventaService.editarContrato(this.contratoEditar).subscribe(res =>{
+      this.respuesta = JSON.parse(JSON.stringify(res));
+      this.showEditarContrato = this.respuesta.id;
+    });
+  }
 }
+
 
 }
 
@@ -636,4 +737,7 @@ validarVentaexist(): boolean {
   return this.ventaRegistrada;
 }
 
+ngAfterViewChecked() {
+  this.scrollHelper.doScroll();
+}
 }
