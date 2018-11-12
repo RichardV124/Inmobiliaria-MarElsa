@@ -30,7 +30,7 @@ describe('RegistroVentaComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('deberia crear una venta', () => {
+  it('deberia crear una venta', () => {
 
     component.selectedVenta = new Venta();
 

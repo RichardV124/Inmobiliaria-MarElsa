@@ -35,8 +35,22 @@ import { loadDirective } from '@angular/core/src/render3/instructions';
 export class GestionArriendoComponent implements OnInit, AfterViewChecked {
 
   /** Variables de validacion para las pruebas */
-registrado;
-buscado;
+  registrado = false;
+  buscado = false;
+  eliminado = false;
+  editado = false;
+  obtuvoDatosCombosBusqueda = false;
+  limpioCamposArriendos = false;
+  limpioCamposDTO = false;
+  cerradoMsj = false;
+  clienteBuscado = false;
+  inmuebleBuscado = false;
+  contratoBuscado = false;
+  contratoRegistrado = false;
+  contratoEditado = false;
+  contratoLimpiado = false;
+  convertidoBase64 = false;
+  archivoCreado = false;
 
 private scrollHelper: ScrollHelper = new ScrollHelper();
 
@@ -58,8 +72,6 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
 
     this.selectedDepartamento.id = 0;
     this.selectedMunicipio.id = 0;
-    this.registrado = false;
-    this.buscado = false;
    }
 
 
@@ -104,6 +116,7 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
 
   cerrarMsj() {
     this.show = 0;
+    this.cerradoMsj = true;
   }
 
   ngAfterViewChecked() {
@@ -122,6 +135,7 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
     }
   }
 }
+
   registrarArriendo3() {
     this.selectedArriendo.cliente_cedula = this.selectedPersona.cedula;
     this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
@@ -142,7 +156,8 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
               this.selectedArriendo.visita_id = this.selectedVisita;
 
               if (this.selectedContrato.precio == null || this.selectedContrato.descripcion == null || this.labelFile == null) {
-                  confirm('Para registrar el arriendo debe llenar los campos del contrato');
+                  alert('Para registrar el arriendo debe llenar los campos del contrato');
+                  this.registrado = false;
               } else {
                 this.arriendoService.registrarInmubeleArriendo(this.selectedArriendo).subscribe(res => {
                   this.respuesta = JSON.parse(JSON.stringify(res));
@@ -150,8 +165,7 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
                   this.respuesta.msj = 'Se registro el arriendo correctamente';
                   this.listarArriendos();
                   this.registrado = true;
-                  console.log('NICEEEEE 1!!! ' + this.registrado);
-                 // this.scrollHelper.scrollToFirst('lista-arriendos');
+                  // this.scrollHelper.scrollToFirst('lista-arriendos');
                   this.crearArchivo();
                   this.registroContrato();
               });
@@ -185,13 +199,14 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
     if (this.selectedPersona.cedula == null) {
       this.show = 404;
       this.respuesta.msj = 'Debe ingresar la cedula del cliente';
-
+      this.clienteBuscado = false;
     } else {
       this.clienteService.buscarPersona(this.selectedPersona.cedula)
       .subscribe(cliente => {
         if (cliente === undefined ) {
           this.respuesta.msj = 'No se encuentra ningun cliente ';
           this.show = 404;
+          this.clienteBuscado = false;
         } else {
           this.respuesta.msj = 'Despliegue los datos del cliente';
           this.show = 505;
@@ -209,10 +224,12 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
               if (login === undefined ) {
                 this.respuesta.msj = 'No se encuentra ningun login con el username ' +  this.selectedPersona.cedula;
                 console.log('NO SE ENCUENTRA EL LOGIN');
+                this.clienteBuscado = false;
               } else {
               this.selectedLogin = JSON.parse(JSON.stringify(login));
               }
             });
+            this.clienteBuscado = true;
           }
         });
     }
@@ -223,6 +240,7 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
     if (this.selectedInmueble.matricula == null) {
       this.respuesta.msj = 'Debe ingresar la matrícula del inmueble';
       this.show = 1;
+      this.inmuebleBuscado = false;
     } else {
       this.inmuebleService.buscarInmueble(this.selectedInmueble.matricula)
       .subscribe(inmueble => {
@@ -230,6 +248,7 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
           this.respuesta.msj = 'No se encuentra ningun inmueble';
           this.show = 1;
            this.boolBuscarInmueble = false;
+           this.inmuebleBuscado = false;
         } else {
            this.marcadorAgregado = true;
            this.mostrarTabArchivos = false;
@@ -239,6 +258,7 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
            this.obtenerPublicacionInmueble();
            this.respuesta.msj = 'Despliegue los datos del inmueble';
            this.show = 2;
+           this.inmuebleBuscado = true;
         }
       });
     }
@@ -283,15 +303,16 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
 
 
   obtenerDatosCombosBusqueda() {
+
     // Se obtienen los datos del tipo de inmueble
     const idTipo = this.obtenerDatosJSON('tipo_inmueble_id', this.selectedInmueble);
     // Se asigna los datos obtenidos al tipo inmueble
     this.selectedTipoInmueble.id = idTipo;
 
     // Se obtienen el id del departamento
-    const idDepto = this.obtenerDatosJSON('id_depto', this.selectedInmueble);
+   const idDepto = this.obtenerDatosJSON('id_depto', this.selectedInmueble);
     // Se asignan los datos obtenidos al departamento
-    this.selectedDepartamento.id = idDepto;
+    this.selectedDepartamento.id = 1;
     this.listarMunicipios();
 
     // Se obtienen el id del municipio
@@ -303,6 +324,7 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
     const cedulaCliente = this.obtenerDatosJSON('cliente_cedula', this.selectedInmueble);
     // Se asigna la cédula al propietario
     this.propietario.cedula = cedulaCliente;
+    this.obtuvoDatosCombosBusqueda = true;
 
   }
 
@@ -336,6 +358,7 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
    * @param inmueble inmueble del cual se desea  los datos
    */
   ver (arriendo: Arriendo) {
+    console.log(arriendo);
     this.selectedArriendo = arriendo;
     this.selectedArriendo.inmueble_id = arriendo.inmueble_id;
     this.buscarArriendo();
@@ -352,7 +375,7 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
       this.arriendoService.buscarContrato(this.selectedArriendo.id).subscribe(contrato => {
         this.selectedContrato = contrato;
         this.labelFile = contrato.contrato;
-        confirm('Despliegue la informacion general');
+        alert('Despliegue la informacion general');
       });
 
     });
@@ -376,7 +399,6 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
       this.respuesta.msj = 'Ingrese el identificador del arriendo';
       this.show = 404;
       this.buscado = false;
-      console.log('ENTRO 1');
 
     } else {
       this.arriendoService.buscarArriendo(this.selectedArriendo.id)
@@ -386,7 +408,6 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
           this.respuesta.msj = 'El arriendo no existe';
           this.show = 404;
           this.buscado = false;
-          console.log('ENTRO 2');
         } else {
 
           this.selectedArriendo = arriendo;
@@ -398,8 +419,6 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
           this.selectedArriendo.visita_id = arriendo.visita_id;
           this.selectedArriendo.activo = arriendo.activo;
           this.buscado = true;
-          console.log('ENTRO correcto');
-          console.log(this.buscado);
         }
        });
       }
@@ -429,6 +448,7 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
     this.selectedArriendo.visita_id = null;
     this.selectedInmueble.matricula = null;
     this.selectedPersona.cedula = null;
+    this.limpioCamposArriendos = true;
   }
 
 
@@ -440,28 +460,34 @@ private scrollHelper: ScrollHelper = new ScrollHelper();
     this.arriendoDTO.fecha = null;
     this.arriendoDTO.hora = null;
     this.arriendoDTO.matricula = null;
+    this.limpioCamposDTO = true;
 
   }
 
 editarArriendoPrueba() {
           if (this.arriendoDTO.cliente_cedula === undefined) {
             this.respuesta.msj = 'Para editar debe buscar previamente';
-                confirm('Para editar debe buscar previamente');
+                alert('Para editar debe buscar previamente');
+                this.editado = false;
         } else if (this.arriendoDTO.matricula === undefined) {
-            this.respuesta.msj = 'Para editar debe buscar previamente';
-              confirm('Para editar debe buscar previamente');
+            this.respuesta.msj = 'Para editar debe buscar previamente por matricula';
+              alert('Para editar debe buscar previamente');
+              this.editado = false;
         } else {
           this.inmuebleService.buscarInmueble(this.arriendoDTO.matricula + '').subscribe(inmueble => {
             this.arriendoService.buscarInmuebleId(this.arriendoDTO.inmueble_id).subscribe(inmu => {
               if (inmueble === undefined) {
                 this.respuesta.msj = 'El inmueble no existe';
                 this.show = 1;
+                this.editado = false;
               } else {
                 if (this.arriendoDTO.matricula + '' === inmu.matricula) {
                   this.arriendoService.buscarCliente(this.arriendoDTO.cliente_cedula).subscribe(cliente => {
                     if (cliente === undefined) {
                       this.respuesta.msj = 'El cliente ingresado no existe';
                       this.show = 1;
+                      this.editado = false;
+                      console.log('Cliente no existe');
                     } else {
                         this.arriendoService.buscarVisitaPrueba(this.arriendoDTO.visita_id).subscribe(visita => {
                           if (visita === undefined) {
@@ -470,12 +496,14 @@ editarArriendoPrueba() {
                             this.selectedArriendo.cliente_cedula = cliente.cedula;
                             this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
                             this.selectedArriendo.visita_id = null;
+                            this.editado = true;
                           } else {
                             this.selectedArriendo.id = this.arriendoDTO.id;
                             this.selectedArriendo.inmueble_id = inmu.id;
                             this.selectedArriendo.cliente_cedula = cliente.cedula;
                             this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
                             this.selectedArriendo.visita_id = visita.id;
+                            this.editado = true;
                           }
                           console.log(this.selectedArriendo);
                           this.arriendoService.EditarArriendo(this.selectedArriendo).subscribe(arri => {
@@ -490,38 +518,41 @@ editarArriendoPrueba() {
                 } else {
                   this.inmuebleService.buscarInmueble(this.arriendoDTO.matricula + '').subscribe(inmueble_existe => {
                     this.arriendoService.buscarInmuebleVendido(inmueble_existe.id).subscribe(inmueble_vendi => {
-                      console.log(inmueble_existe);
                       if (inmueble_vendi === undefined) {
                         this.arriendoService.buscarInmuebleArrendado(inmueble_existe.id).subscribe(inmuarrendado => {
-                          console.log(inmuarrendado);
                           if (inmuarrendado === undefined) {
                               this.arriendoService.buscarCliente(this.arriendoDTO.cliente_cedula).subscribe(cliente => {
                                 if (cliente === undefined) {
                                   this.respuesta.msj = 'El cliente ingresado no existe';
                                   this.show = 1;
+                                  console.log('NICEEE');
                                 } else {
                                   this.arriendoService.buscarVisitaPrueba(this.arriendoDTO.visita_id).subscribe(visita => {
+                                    console.log('arriendo DTO !!');
+                                    console.log(this.arriendoDTO);
                                     if (visita === undefined) {
                                       this.selectedArriendo.id = this.arriendoDTO.id;
                                       this.selectedArriendo.inmueble_id = inmueble_existe.id;
                                       this.selectedArriendo.cliente_cedula = cliente.cedula;
                                       this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
                                       this.selectedArriendo.visita_id = null;
+                                      this.editado = true;
+                                      console.log('visita indefinida');
                                     } else {
                                       this.selectedArriendo.id = this.arriendoDTO.id;
                                       this.selectedArriendo.inmueble_id = inmueble_existe.id;
                                       this.selectedArriendo.cliente_cedula = cliente.cedula;
                                       this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
                                       this.selectedArriendo.visita_id = visita.id;
+                                      this.editado = true;
                                     }
-                                    console.log(this.selectedArriendo);
                                     this.arriendoService.EditarArriendo(this.selectedArriendo).subscribe(arri => {
                                     this.respuesta = JSON.parse(JSON.stringify(arri));
                                     this.show = this.respuesta.id;
                                     this.listarArriendos();
                                     this.show = 2;
                                     this.editarContrato();
-                                    confirm('Se edito correctamente el arriendo');
+                                    alert('Se edito correctamente el arriendo');
                                     this.limpiarCamposDTO();
                                   });
                                   });
@@ -529,7 +560,7 @@ editarArriendoPrueba() {
                               });
                           } else {
                             this.show = 1;
-                            this.respuesta.msj = 'El inmueble se encuenrta arrendado';
+                            this.respuesta.msj = 'El inmueble se encuentra arrendado';
                           }
                         });
                       } else {
@@ -545,14 +576,6 @@ editarArriendoPrueba() {
           });
         }
       }
-
-      validarRegistro(): boolean {
-        return this.registrado;
-          }
-      validarBusqueda(): boolean {
-          return this.buscado;
-         }
-
 
     registroContrato() {
         this.arriendoService.listarUltimoArriendo().subscribe(ultimoarriendo => {
@@ -579,11 +602,12 @@ editarArriendoPrueba() {
     limpiarContrato() {
       this.selectedContrato.descripcion = null;
       this.selectedContrato.precio = null;
+      this.contratoLimpiado = true;
     }
 
     editarContrato() {
       if (this.selectedContrato.precio == null || this.selectedContrato.descripcion == null || this.labelFile == null) {
-          confirm('Diligencia todos los datos del contrato');
+          alert('Diligencia todos los datos del contrato');
       } else {
           this.selectedContrato.fecha = new Date();
           this.selectedContrato.activo = 1;
@@ -603,9 +627,11 @@ editarArriendoPrueba() {
         const ext = file.name.substr(file.name.lastIndexOf('.') + 1);
         if (ext.toLowerCase() === 'pdf') {
           this.convertirArchivoBase64(file);
+          this.archivoCreado = true;
         } else {
           this.show = 404;
           this.respuesta.msj = 'El archivo ' + file.name + ' tiene una extensión no permitida';
+          this.archivoCreado = false;
         }
       }
     }
@@ -617,6 +643,7 @@ editarArriendoPrueba() {
         this.selectedContrato.contrato = this.img;
       };
       myReader.readAsDataURL(file);
+      this.convertidoBase64 = true;
     }
 }
 
