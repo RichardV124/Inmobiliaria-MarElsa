@@ -1,10 +1,8 @@
-import { Arriendo } from "./arriendo";
-import { Venta } from "./venta";
+import { Arriendo } from './arriendo';
+import { Venta } from './venta';
 
 
-
-export class Contrato{
-
+export class Contrato {
 id: number;
 descripcion: string;
 contrato: string;

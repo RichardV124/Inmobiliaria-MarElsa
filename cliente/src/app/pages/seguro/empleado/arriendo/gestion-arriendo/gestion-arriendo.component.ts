@@ -1,3 +1,5 @@
+import { ScrollHelper } from './../../../../../modelo/ScrollHelper';
+import { Contrato } from './../../../../../modelo/contrato';
 import { ArriendoDTO } from './../../../../../modelo/dto/arriendoDTO';
 import { VentaDTO } from './../../../../../modelo/dto/VentaDTO';
 import { VentasService } from './../../../../../services/ventas/ventas.service';
@@ -18,7 +20,7 @@ import { Login } from './../../../../../modelo/login';
 import { ClienteService } from './../../../../../services/cliente/cliente.service';
 import { LoginService } from './../../../../../services/login/login.service';
 import { Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { ArriendosService } from 'src/app/services/arriendos/arriendos.service';
 import { Municipio } from 'src/app/modelo/municipio';
 import { timingSafeEqual } from 'crypto';
@@ -30,11 +32,13 @@ import { loadDirective } from '@angular/core/src/render3/instructions';
   templateUrl: './gestion-arriendo.component.html',
   styleUrls: ['./gestion-arriendo.component.css']
 })
-export class GestionArriendoComponent implements OnInit {
+export class GestionArriendoComponent implements OnInit, AfterViewChecked {
 
   /** Variables de validacion para las pruebas */
 registrado;
 buscado;
+
+private scrollHelper: ScrollHelper = new ScrollHelper();
 
   constructor(
     // private inmuebleServie: ArriendosService,
@@ -50,7 +54,7 @@ buscado;
     this.listarDepartamentos();
     this.listarTiposInmueble();
     this.listarArriendos();
-    console.log(this.listarArriendos());
+    this.listarContratos();
 
     this.selectedDepartamento.id = 0;
     this.selectedMunicipio.id = 0;
@@ -67,6 +71,7 @@ buscado;
    boolBuscarInmueble = false;
   Arriendo = false;
   labelFile;
+  img;
   arrendado;
 
     usuario: Login = new Login();
@@ -83,11 +88,13 @@ buscado;
     selectedArriendo: Arriendo = new Arriendo();
     selectedVisita: Visita = new Visita();
     arriendoDTO: ArriendoDTO = new ArriendoDTO();
+    selectedContrato: Contrato = new Contrato();
 
     listaMunicipios: Municipio[];
     listaDepartamentos: Departamento[];
     listaTiposInmueble: TipoInmueble[];
     listaArriendos: Arriendo[];
+    listaContratos: Contrato[];
     selectedFile: File[] = null;
 
    ngOnInit() {
@@ -99,68 +106,22 @@ buscado;
     this.show = 0;
   }
 
-  registrarArriendo() {
-    this.selectedArriendo.cliente_cedula = this.selectedPersona.cedula;
-    this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
-    this.selectedArriendo.inmueble_id = this.selectedInmueble;
-
-    if ( this.selectedPersona.cedula == null || this.selectedInmueble.matricula == null) {
-      this.show = 1;
-      this.respuesta.msj = 'Debe buscar el cliente y el inmuble';
-      this.limpiarCamposArrendo();
-    } else {
-      this.arriendoService.searchVisita(this.selectedPersona.cedula, this.selectedInmueble.id ).subscribe(visita => {
-        this.selectedVisita = visita;
-        this.selectedArriendo.visita_id = this.selectedVisita;
-        this.arriendoService.registrarInmubeleArriendo(this.selectedArriendo).subscribe(res => {
-        this.respuesta = JSON.parse(JSON.stringify(res));
-        this.show = 2;
-        this.respuesta.msj = 'Se registro el arriendo correctamente';
-        this.listarArriendos();
-        this.limpiarCamposArrendo();
-    });
-  });
-    }
-
-
-  }
-  registrarArriendo2() {
-    this.selectedArriendo.cliente_cedula = this.selectedPersona.cedula;
-    this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
-    this.selectedArriendo.inmueble_id = this.selectedInmueble;
-
-    if ( this.selectedPersona.cedula == null || this.selectedInmueble.matricula == null) {
-      this.show = 1;
-      this.respuesta.msj = 'Debe buscar el cliente y el inmuble';
-      this.limpiarCamposArrendo();
-    } else {
-      this.arriendoService.buscarInmuebleArrendado(this.selectedInmueble.id).subscribe(arr => {
-        if (arr === undefined) {
-            this.arriendoService.searchVisita(this.selectedPersona.cedula, this.selectedInmueble.id ).subscribe(visita => {
-            this.selectedVisita = visita;
-            this.selectedArriendo.visita_id = this.selectedVisita;
-            this.arriendoService.registrarInmubeleArriendo(this.selectedArriendo).subscribe(res => {
-            this.respuesta = JSON.parse(JSON.stringify(res));
-            this.show = 2;
-            this.respuesta.msj = 'Se registro el arriendo correctamente';
-            this.listarArriendos();
-            this.limpiarCamposArrendo();
-        });
-      });
-
-        } else {
-          this.show = 404;
-          this.respuesta.msj = 'Ingrese otro ilmueble, este ya se encuentra arrendado';
-          alert('Ingrese otro ilmueble, este ya se encuentra arrendado');
-          this.limpiarCamposArrendo();
-        }
-
-      });
-    }
-
-
+  ngAfterViewChecked() {
+    this.scrollHelper.doScroll();
   }
 
+  onFileSelected(event) {
+    this.selectedFile = event.target.files;
+
+    if (this.selectedFile === null) {
+      this.labelFile = 'Ningún archivo seleccionado';
+    } else {
+    this.labelFile = '';
+    for (const file of this.selectedFile) {
+      this.labelFile = this.labelFile + '  ' + file.name;
+    }
+  }
+}
   registrarArriendo3() {
     this.selectedArriendo.cliente_cedula = this.selectedPersona.cedula;
     this.selectedArriendo.empleado_cedula = this.usuario.persona_cedula.cedula;
@@ -179,15 +140,22 @@ buscado;
             this.arriendoService.searchVisita(this.selectedPersona.cedula, this.selectedInmueble.id ).subscribe(visita => {
               this.selectedVisita = visita;
               this.selectedArriendo.visita_id = this.selectedVisita;
-              this.arriendoService.registrarInmubeleArriendo(this.selectedArriendo).subscribe(res => {
-              this.respuesta = JSON.parse(JSON.stringify(res));
-              this.show = 2;
-              this.respuesta.msj = 'Se registro el arriendo correctamente';
-              this.listarArriendos();
-              this.limpiarCamposArrendo();
-              this.registrado = true;
-              console.log('NICEEEEE 1!!! ' + this.registrado);
-          });
+
+              if (this.selectedContrato.precio == null || this.selectedContrato.descripcion == null || this.labelFile == null) {
+                  confirm('Para registrar el arriendo debe llenar los campos del contrato');
+              } else {
+                this.arriendoService.registrarInmubeleArriendo(this.selectedArriendo).subscribe(res => {
+                  this.respuesta = JSON.parse(JSON.stringify(res));
+                  this.show = 2;
+                  this.respuesta.msj = 'Se registro el arriendo correctamente';
+                  this.listarArriendos();
+                  this.registrado = true;
+                  console.log('NICEEEEE 1!!! ' + this.registrado);
+                 // this.scrollHelper.scrollToFirst('lista-arriendos');
+                  this.crearArchivo();
+                  this.registroContrato();
+              });
+              }
         });
 
           } else {
@@ -212,9 +180,6 @@ buscado;
 
 
   }
-
-
-
 
   buscarCliente() {
     if (this.selectedPersona.cedula == null) {
@@ -372,11 +337,25 @@ buscado;
    */
   ver (arriendo: Arriendo) {
     this.selectedArriendo = arriendo;
+    this.selectedArriendo.inmueble_id = arriendo.inmueble_id;
     this.buscarArriendo();
      this.buscarArriendoVisitaPrueba();
     this.Arriendo = true;
-    this.respuesta.msj = 'Despliegue para  los datos del arriendo';
+    this.respuesta.msj = 'Despliegue la informacion del arriendo';
     this.show = 505;
+    // buscar el cliente
+    this.selectedPersona.cedula = this.selectedArriendo.cliente_cedula;
+    this.buscarCliente();
+    this.arriendoService.buscarInmuebleId(this.selectedArriendo.inmueble_id).subscribe(inmueble => {
+      this.selectedInmueble.matricula = inmueble.matricula;
+      this.buscarInmueble();
+      this.arriendoService.buscarContrato(this.selectedArriendo.id).subscribe(contrato => {
+        this.selectedContrato = contrato;
+        this.labelFile = contrato.contrato;
+        confirm('Despliegue la informacion general');
+      });
+
+    });
   }
 
   buscarArriendoVisitaPrueba() {
@@ -393,14 +372,12 @@ buscado;
 
 
   buscarArriendo() {
-
-    this.selectedArriendo.id = 20;
     if (this.selectedArriendo.id === null) {
       this.respuesta.msj = 'Ingrese el identificador del arriendo';
       this.show = 404;
       this.buscado = false;
       console.log('ENTRO 1');
-      
+
     } else {
       this.arriendoService.buscarArriendo(this.selectedArriendo.id)
       .subscribe(arriendo => {
@@ -431,12 +408,16 @@ buscado;
 
 
   eliminar(arriendo: Arriendo) {
-    this.arriendoService.eliminar(arriendo)
-    .subscribe(res => {
+    this.arriendoService.eliminar(arriendo).subscribe(res => {
       this.respuesta = JSON.parse(JSON.stringify(res));
       this.show = this.respuesta.id;
-      this.listarArriendos();
-      this.limpiarCamposArrendo();
+      this.arriendoService.buscarContrato(arriendo.id).subscribe( contrato => {
+        console.log(contrato);
+        this.arriendoService.eliminarContrato(contrato).subscribe(contratoEli => {
+          this.listarArriendos();
+          this.limpiarCamposArrendo();
+        });
+      });
     });
   }
 
@@ -540,6 +521,7 @@ editarArriendoPrueba() {
                                     this.show = this.respuesta.id;
                                     this.listarArriendos();
                                     this.show = 2;
+                                    this.editarContrato();
                                     confirm('Se edito correctamente el arriendo');
                                     this.limpiarCamposDTO();
                                   });
@@ -568,9 +550,75 @@ editarArriendoPrueba() {
       validarRegistro(): boolean {
         return this.registrado;
           }
-    
       validarBusqueda(): boolean {
           return this.buscado;
          }
+
+
+    registroContrato() {
+        this.arriendoService.listarUltimoArriendo().subscribe(ultimoarriendo => {
+          this.selectedContrato.arriendo_id = ultimoarriendo.id;
+          this.selectedContrato.fecha = new Date();
+          this.selectedContrato.activo = 1;
+
+          this.ventaService.registrarContrato(this.selectedContrato).subscribe(rspta => {
+          this.respuesta = JSON.parse(JSON.stringify(rspta));
+          confirm('Se registro correctamente el contrato');
+          console.log(this.selectedContrato);
+          // this.limpiarContrato();
+            this.listarArriendos();
+        });
+          });
+    }
+
+    listarContratos() {
+      this.arriendoService.listarContrato().subscribe(contratos => {
+      this.listaContratos = contratos;
+      });
+    }
+
+    limpiarContrato() {
+      this.selectedContrato.descripcion = null;
+      this.selectedContrato.precio = null;
+    }
+
+    editarContrato() {
+      if (this.selectedContrato.precio == null || this.selectedContrato.descripcion == null || this.labelFile == null) {
+          confirm('Diligencia todos los datos del contrato');
+      } else {
+          this.selectedContrato.fecha = new Date();
+          this.selectedContrato.activo = 1;
+
+          console.log(this.selectedContrato);
+          this.crearArchivo();
+          this.arriendoService.EditarContrato(this.selectedContrato).subscribe( contrato => {
+
+          });
+
+      }
+
+    }
+
+    crearArchivo() {
+      for (const file of this.selectedFile) {
+        const ext = file.name.substr(file.name.lastIndexOf('.') + 1);
+        if (ext.toLowerCase() === 'pdf') {
+          this.convertirArchivoBase64(file);
+        } else {
+          this.show = 404;
+          this.respuesta.msj = 'El archivo ' + file.name + ' tiene una extensión no permitida';
+        }
+      }
+    }
+
+    convertirArchivoBase64(file: File) {
+      const myReader: FileReader = new FileReader();
+      myReader.onloadend = (e) => {
+        this.img = myReader.result;
+        this.selectedContrato.contrato = this.img;
+      };
+      myReader.readAsDataURL(file);
+    }
 }
+
 

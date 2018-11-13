@@ -36,6 +36,8 @@ var arriendo = require('./routes/arriendo');
 var venta = require('./routes/venta');
 //Cargamos el route de visita
 var visita = require('./routes/visita');
+//Cargamos el route de generico servicio
+var generico = require('./routes/generico');
 
 // ------ SERVICIOS ------ //
 
@@ -165,6 +167,7 @@ app.post('/file/add', inmueble.saveFile);
 app.get('/file/search/:inmueble_id', inmueble.searchFile);
 app.post('/file/delete/', inmueble.delete_file);
 app.get('/inmueble/searchInmueble/:matricula', inmueble.searchInmueble);
+app.get('/inmueble/searchMunInmueble/:matricula', inmueble.municipioInmueble);
 
 // ------------ Arriendos ----------------//
 app.post('/arriendo/add', arriendo.save);
@@ -180,6 +183,11 @@ app.get('/arriendo/searchvisitaprueba/:id', arriendo.buscarVisita);
 app.get('/arriendo/searchCliente/:cedula', arriendo.searchCliente);
 app.get('/arriendo/searchinmuebleid/:id', arriendo.searchInmuebleId);
 app.get('/arriendo/searchinmueblevendido/:inmueble_id', arriendo.searchInmuebleVendido);
+app.get('/arriendo/listarUltimoArriendo', arriendo.listarUltimoArriendo);
+app.get('/arriendo/listarContrato', arriendo.listarContratos);
+app.post('/arriendo/deleteContrato/', arriendo.deleteContrato);
+app.get('/arriendo/searchContrato/:arriendo_id', arriendo.searchContrato);
+app.post('/arriendo/updateContrato/', arriendo.editarContrato);
 
 
 
@@ -199,8 +207,12 @@ app.post('/contrato/add', venta.saveContrato);
 app.get('/venta/listUltimaVenta', venta.listUltimaVenta);
 app.get('/venta/listContratos', venta.listContratos);
 app.post('/venta/deleteContrato/', venta.delete_contrato);
+app.post('/venta/deleteContratobyVenta/', venta.delete_contrato_by_venta);
 app.get('/venta/buscarVisitaId/:visita_id', venta.buscarVisitaId);
+app.get('/venta/buscarContratoIdVenta/:venta_id', venta.buscarContratobyIdVenta);
 app.get('/venta/buscarVisitaIdInmueble/:visita_id', venta.buscarVisitaIdInmueble);
+app.get('/venta/contrato/search/:venta_id', venta.buscarContrato);
+
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);
 app.get('/rol-accesos/listar', roles.listarRolAccesos);
@@ -227,6 +239,9 @@ app.get('/visita/listarPorClienteAndEstado/:cliente/:estado', visita.listarPorCl
 app.get('/visita/listarPorEmpleadoAndEstado/:empleado/:estado', visita.listarPorEmpleadoAndEstado);
 app.get('/visita/delete/:id', visita.delete);
 app.get('/visita/listarPorEmpleadoAndFecha/:empleado/:fecha', visita.listarPorEmpleadoAndFecha);
+
+// --------------- Servicios Genericos -------------- //
+app.post('/generico/listar', generico.listar);
 
 app.use(app.router);
 

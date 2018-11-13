@@ -363,7 +363,7 @@ clientExist = false;
    * Obtiene los datos que se registraron en los cambos para llenarlos en la lista
    */
   obtenerDatosCombosLista() {
-    // tslint:disable-next-line:prefer-const
+    // tslint:disable-next-line:prefer-const 
     for (let inmueble of this.listaInmuebles) {
       this.inmuebleServie.buscarTipoInmuebleId(JSON.parse(JSON.stringify(inmueble['tipo_inmueble_id'])))
       .subscribe(tipo => {

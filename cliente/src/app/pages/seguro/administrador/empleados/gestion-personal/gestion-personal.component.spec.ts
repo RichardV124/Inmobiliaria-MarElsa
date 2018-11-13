@@ -23,6 +23,7 @@ import {
 
 } from '@angular/http';
 import { Inject } from '@angular/core';
+import { Experiencia } from 'src/app/modelo/experiencia';
 
 describe('GestionPersonalComponent', () => {
 
@@ -223,6 +224,31 @@ describe('GestionPersonalComponent', () => {
     console.log('--------------Listando-------------');
     expect(component.validarlistarDepartamentos).toBeTruthy();
   });
+
+  it('registrar experiencia', () => {
+
+    const experiencia = new Experiencia();
+    experiencia.fecha_inicio = new Date();
+    experiencia.fecha_fin = new Date();
+    experiencia.cargo = 'admin';
+    experiencia.direccion = 'caare';
+    experiencia.nom_empresa = 'eam';
+    experiencia.nombre_certificado = 'certi';
+
+    const persona = new Persona();
+    persona.cedula = 555;
+
+    experiencia.persona_cedula = persona;
+    experiencia.telefono = '123';
+
+    component.selectedPersona = persona;
+    component.experienciaSeleccionada = experiencia;
+
+    component.registrarExperiencia();
+
+    expect(component.validarRegistroExperiencia).toBeTruthy();
+
+  })
 
   it('Listar municipios', () => {
 

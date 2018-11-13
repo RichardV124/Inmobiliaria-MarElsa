@@ -41,12 +41,12 @@ describe('RegistroVentaComponent', () => {
     component.selectedVenta = new Venta();
 
     const inmueble = new Inmueble();
-    inmueble.id = 20;
-    inmueble.matricula = 'casa 12';
+    inmueble.id = 4;
+    inmueble.matricula = '6789';
     const cliente = new Persona();
-    cliente.cedula = 1234;
+    cliente.cedula = 1234567;
     const personaE = new Persona();
-    personaE.cedula = 123;
+    personaE.cedula = 555;
     const empleado = new Empleado();
     empleado.persona_cedula = personaE;
 
@@ -136,7 +136,7 @@ describe('RegistroVentaComponent', () => {
 
     component.eliminar(id);
 
-    expect(component.verVentaEliminada).toBeTruthy();
+    expect(component.verEliminacion).toBeTruthy();
 
   });
 
@@ -211,17 +211,11 @@ describe('RegistroVentaComponent', () => {
 
     const ventaDTO = new VentaDTO();
     ventaDTO.cliente_cedula = '123';
-    ventaDTO.empleado_cedula = '234';
     ventaDTO.matricula = 'casa 12';
-    ventaDTO.visita_id = 1;
-    ventaDTO.inmueble_id = 12;
-    ventaDTO.id = 1;
-    ventaDTO.fecha = '2000-12-10';
-    ventaDTO.hora = 2;
 
-    component.ver(ventaDTO);
+    component.verVenta(ventaDTO);
 
-    expect(component.showMost).toEqual(1);
+    expect(component.ventaVista).toBeTruthy();
 
   });
 
@@ -233,6 +227,14 @@ describe('RegistroVentaComponent', () => {
     component.selectedPersona = cliente;
 
     component.buscar();
+
+    expect(component.verBusqueda).toBeTruthy();
+
+  });
+
+  it ('buscar cliente ver', () => {
+
+    component.buscarClienteVer('123');
 
     expect(component.verBusqueda).toBeTruthy();
 
@@ -271,6 +273,14 @@ describe('RegistroVentaComponent', () => {
     component.selectedInmueble = inmueble;
 
     component.buscarInmueble();
+
+    expect(component.verBusqueda).toBeTruthy();
+
+  });
+
+  it('buscar inmueble', () => {
+
+    component.buscarInmuebleVer('casa12');
 
     expect(component.verBusqueda).toBeTruthy();
 
@@ -472,11 +482,82 @@ describe('RegistroVentaComponent', () => {
 
   });
 
-  fit ('limpiar campos', () => {
+  it ('limpiar campos', () => {
 
     component.limpiarcampos();
 
     expect(component.camposLimpiados).toBeTruthy();
+
+  });
+
+  it ('validar campos edicion', () => {
+
+    const venta = new VentaDTO();
+    venta.cliente_cedula = '123';
+    venta.empleado_cedula = '1234';
+    venta.matricula = 'casa 12';
+
+    component.ventasTabla = venta;
+
+    const res = component.validarCamposEdicion();
+
+    expect(res).toBeTruthy();
+
+  });
+
+  it ('validar campos edicion false', () => {
+
+    const venta = new VentaDTO();
+    venta.cliente_cedula = '123';
+    venta.empleado_cedula = '1234';
+
+    component.ventasTabla = venta;
+
+    const res = component.validarCamposEdicion();
+
+    expect(res).toBeFalsy();
+
+  });
+
+  it ('llenar tabla', () => {
+
+    component.llenarTabla();
+    expect(component.tablaLLena).toBeTruthy();
+
+  });
+
+  it ('llenar tabla', () => {
+
+    component.llenarTablaContrato();
+    expect(component.tablaLLena).toBeTruthy();
+
+  });
+
+  it ('ver Contrato', () => {
+
+    const contrato = new Contrato();
+    contrato.precio = 2000000;
+    contrato.id = 1;
+    contrato.descripcion = 'nuevo';
+    contrato.fecha = new Date();
+
+    component.verContrato(contrato);
+
+    expect(component.mostrarEditar).toBeTruthy();
+
+  });
+
+  it ('eliminar Contrato', () => {
+
+    const contrato = new Contrato();
+    contrato.precio = 2000000;
+    contrato.id = 1;
+    contrato.descripcion = 'nuevo';
+    contrato.fecha = new Date();
+
+    component.eliminarContrato(contrato);
+
+    expect(component.verEliminacion).toBeTruthy();
 
   });
 

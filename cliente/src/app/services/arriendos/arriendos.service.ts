@@ -1,3 +1,4 @@
+import { Contrato } from 'src/app/modelo/contrato';
 import { Arriendo } from './../../modelo/arriendo';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -102,6 +103,37 @@ buscarInmuebleVendido(inmueble_id: number) {
   .map(res => {
     return res.data;
   });
+}
+
+listarUltimoArriendo() {
+  return this.http.get<any>(`${this.domain}/arriendo/listarUltimoArriendo`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+listarContrato() {
+  return this.http.get<any>(`${this.domain}/arriendo/listarContrato`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+eliminarContrato(contrato: Contrato) {
+  return this.http.post<any>(`${this.domain}/arriendo/deleteContrato/`, contrato)
+  .map(res => res);
+}
+
+buscarContrato(arriendo_id: number) {
+  return this.http.get<any>(`${this.domain}/arriendo/searchContrato/${arriendo_id}`)
+  .map(res => {
+    return res.data;
+  });
+}
+
+EditarContrato(contrato: Contrato) {
+  return this.http.post<any>(`${this.domain}/arriendo/updateContrato/`, contrato)
+  .map(res => res);
 }
 
 

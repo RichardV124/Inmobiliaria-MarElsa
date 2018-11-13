@@ -43,6 +43,7 @@
             <input  min="0" style="margin-left: 97px;" [(ngModel)]="selectedInmueble.matricula" placeholder="Ingrese Matricula"
               class="form-control">
           </div>
+          <div class="bandera"></div>
           <div class="col-md-2" style="margin-left: 116px; margin-top: -16px;">
             <button (click)="buscarInmueble()" class="btn south-btn btn-2 m-1">
               Buscar
@@ -66,6 +67,7 @@
   </div>
   <br>
   <div class="panel single-accordion" style="width: 100%;">
+    <div class="banderDos"></div>
     <h6>
         <a role="button" style="width: 96%;" class="collapsed" aria-expanded="true" aria-controls="collapseTwo" data-parent="#accordion" data-toggle="collapse" href="#collapseTwo">Datos Buscados
                 <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
@@ -78,101 +80,113 @@
                     <div class="south-tabs-content">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link" id="tab--1" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="false">Datos Cliente</a>
+                                <a class="nav-link active" id="tab--1" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Datos Contrato</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" id="tab--2" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Datos Inmueble</a>
+                                <a class="nav-link" id="tab--2" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Datos Inmueble</a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="tab--3" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="true">contrato</a>
+                              <a class="nav-link" id="tab--3" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false" style="width:170px">Datos cliente</a>
                           </li>
                         </ul>
 
                         <div class="tab-content mb-100" id="myTabContent">
-                            <div class="tab-pane fade" id="tab1" role="tabpanel" aria-labelledby="tab--1">
+                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab--1">
                                 <div class="south-tab-content" style="width: 138%;">
                                     <!-- Tab Text -->
-                                    <div class="card mt-4"  id="link" style="width: 147%;">
-                                            <div class="card-body" style="width: 97%;">                  
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                      <div class="col-md-2"><label>Cédula</label></div>
-                                                      <div class="col-md-4">
-                                                        <input type="number" disabled [(ngModel)]="selectedPersona.cedula" placeholder="Ingrese cedula" class="form-control">
-                                                      </div>
-                                                      <div class="col-md-2"><label>Nombre</label></div>
-                                                      <div class="col-md-4">
-                                                        <input type="text" disabled [(ngModel)]="selectedPersona.nombre" placeholder="Ingrese nombre" class="form-control">
-                                                      </div>
+                                    <div class="card mt-4"  id="link" style="width: 145%;">
+                                      <div class="south-tab-text">
+                                          <br>
+                                          <div style="margin-left: 38px;">
+                                          <div class="form-group">
+                                              <div class="row">
+                                                <div class="col-md-2"><label>Precio</label></div>
+                                                <div class="col-md-4">
+                                                  <input type="number"  [(ngModel)]="selectedContrato.precio" placeholder="Ingrese precio" class="form-control" required="required">
+                                                </div>
+                                              </div>
+                                            <div class="row">
+                                                <div class="col-md-2"><label>Descripcion</label></div>
+                                                <div class="col-md-10">
+                                                <textarea  [(ngModel)]="selectedContrato.descripcion" placeholder="Ingrese los comentarios que desee acerca del contrato"
+                                              class="form-control"></textarea>
+                                          </div>
+                                              </div>
+                                              <div class="row">
+                                                  <div class="col-md-12">
+                                                    <div class="upload-btn-wrapper">
+                                                        <button id="btnArchivo">ELEGIR ARCHIVO</button>
+                                                        <input type="file" id="file" multiple name="myfile" (change)="onFileSelected($event)" />
+                                                      <input for="file" [(ngModel)]="labelFile" readonly style="border: 0; margin-left: 10px; width: 60%;" ng-reflect-model="Ningún archivo seleccionado" />
                                                     </div>
-                                                  </div>
-                                                  <div class="form-group">
-                                                    <div class="row">
-                                                      <div class="col-md-2"><label>Apellido</label></div>
-                                                      <div class="col-md-4">
-                                                        <input type="text" disabled [(ngModel)]="selectedPersona.apellido" placeholder="Ingrese apellido" class="form-control">
-                                                      </div>
-                                                      <div class="col-md-2"><label>Fecha nacimiento</label></div>
-                                                      <div class="col-md-4">
-                                                        <input type="date" disabled [(ngModel)]="selectedPersona.fecha_nacimiento" placeholder="Ingrese fecha de nacimiento yyyy-dd-mm"
-                                                          class="form-control">
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="form-group">
-                                                    <div class="row">
-                                                      <div class="col-md-2"><label>Dirección</label></div>
-                                                      <div class="col-md-4">
-                                                        <input type="text" disabled [(ngModel)]="selectedPersona.direccion" placeholder="Ingrese direccion"
-                                                          class="form-control">
-                                                      </div>
-                                                      <div class="col-md-2"><label>Telefono</label></div>
-                                                      <div class="col-md-4">
-                                                        <input type="number" disabled [(ngModel)]="selectedPersona.telefono" placeholder="Ingrese telefono"
-                                                          class="form-control">
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="form-group">
-                                                    <div class="row">
-                                                      <div class="col-md-2"><label>Correo</label></div>
-                                                      <div class="col-md-4">
-                                                        <input type="text" disabled [(ngModel)]="selectedPersona.correo" placeholder="Ingrese correo" class="form-control">
-                                                      </div>
-                                                      <div class="col-md-2"><label>Genero</label></div>
-                                                      <div class="col-md-4">
-                                                        <select disabled [(ngModel)]="selectedPersona.genero" class="form-control">
-                                                          <option [ngValue]="0" selected disabled hidden>Seleccione un genero</option>
-                                                          <option [ngValue]="1">Masculino</option>
-                                                          <option [ngValue]="2">Femenino</option>
-                                                        </select>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="form-group">
-                                                    <div class="row">
-                                                      <div class="col-md-2"><label>Departamento</label></div>
-                                                      <div class="col-md-4">
-                                                        <select disabled [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
-                                                          <option [ngValue]="0" selected hidden>Seleccione un Departamento</option>
-                                                          <option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
-                                                        </select>
-                                                      </div>
-                                                      <div class="col-md-2"><label>Municipio</label></div>
-                                                      <div class="col-md-4">
-                                                        <select disabled [(ngModel)]="selectedMunicipio.id" class="form-control">
-                                                          <option [ngValue]="0" selected disabled hidden>Seleccione un Municipio</option>
-                                                          <option *ngFor="let ms of listaMunicipios" [value]="ms.id">{{ms.nombre}}</option>
-                                                        </select>
-                                                      </div>
-                                                    </div>
-                                                  </div>
+                                                  </div> 
+                                                </div>
+                                                <br>
+                                               
                                             </div>
-                                            
+                                          </div>
+                                          <div *ngIf="mostrarEditar">
+                                            <div class="form-group">
+                                              <div class="row">  
+                                                  <div class="col-md-2" style="margin-top: -12px;" style="margin-left: 41%;">
+                                                      <button  (click)="editarContrato()" class="btn south-btn btn-2 m-1"> 
+                                                              Editar Contrato
+                                                           </button>
+                                                  </div>      
+                                                                            
+                                          </div>
+                                          </div> 
+                                        </div> 
+                                        <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showEditarContrato == 505">
+                                          <div id="close" (click)="cerrarMsjEdicionVenta()" title="Cerrar">x</div>{{respuesta.msj}}
+                                        </div>  
+                                      </div>
+                                      <br>
+                                      <div class="panel single-accordion">
+                                        <h6>
+                                            <a role="button" aria-expanded="true" aria-controls="collapseThree" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseThree">contratos realizados
+                                                    <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                    <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                </a>
+                                        </h6>
+                                        <div id="collapseThree" class="accordion-content collapse">
+                                          <table class="table">
+                                            <thead>
+                                              <tr>                        
+                                                <th scope="col"><p class="coltabla">codigo</p></th>
+                                                <th scope="col"><p class="coltabla">venta</p></th>  
+                                                <th scope="col"><p class="coltabla">precio</p></th>                
+                                                <th scope="col"><p class="coltabla">fecha</p></th>
+                                                <th scope="col"><p class="coltabla">ver</p></th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let v of contratos">      
+                                                <th scope="row">{{v.id}}</th>
+                                                <td>{{v.venta_id}}</td>
+                                                <td>${{v.precio}}</td>
+                                                <td>{{v.fecha}}</td>
+                                                <td><button (click)="verContrato(v)" class="btn south-btn m-1"> ver</button></td>                      
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                      </div>
                                     </div>
+                                    <br>
+                                  
+                                    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarCliente == 1">
+                                      <div id="close" (click)="cerrarMsjEditCliente()" title="Cerrar">x</div>{{respCliente.msj}}
+                                    </div> 
+                                    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarEmpleado == 1">
+                                      <div id="close" (click)="cerrarMsjEditEempleado()" title="Cerrar">x</div>{{respEmpleado.msj}}
+                                    </div>
+                                    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarInmueble == 1">
+                                      <div id="close" (click)="cerrarMsjEditIinmueble()" title="Cerrar">x</div>{{respInmueble.msj}}
+                                    </div>                                                             
+                                  </div> 
                                 </div>
                             </div>
-                            <div class="tab-pane fade show active" id="tab2" role="tabpanel" aria-labelledby="tab--2">
+                            <div class="tab-pane fade " id="tab2" role="tabpanel" aria-labelledby="tab--2">
                                 <div class="south-tab-content">
                                     <!-- Tab Text -->
                                     <div class="tab-content mb-100" id="myTabContent">
@@ -376,145 +390,86 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab--3">
-                          <div class="south-tab-content">
+                          <div class="south-tab-content" style="width: 135%;">
                               <!-- Tab Text -->
-                              <div class="card mt-4"  id="link" style="width: 200%;">
-                              <div class="south-tab-text">
-                                  <div class="form-group">
-                                      <div class="row">
-                                        <div class="col-md-2"><label>Precio</label></div>
-                                        <div class="col-md-4">
-                                          <input type="number"  [(ngModel)]="selectedContrato.precio" placeholder="Ingrese precio" class="form-control" required="required">
+                              <div class="card mt-4"  id="link" style="width: 147%;">
+                                <div class="card-body" style="width: 97%;">                  
+                                    <div class="form-group">
+                                        <div class="row">
+                                          <div class="col-md-2"><label>Cédula</label></div>
+                                          <div class="col-md-4">
+                                            <input type="number" disabled [(ngModel)]="selectedPersona.cedula" placeholder="Ingrese cedula" class="form-control">
+                                          </div>
+                                          <div class="col-md-2"><label>Nombre</label></div>
+                                          <div class="col-md-4">
+                                            <input type="text" disabled [(ngModel)]="selectedPersona.nombre" placeholder="Ingrese nombre" class="form-control">
+                                          </div>
                                         </div>
                                       </div>
-                                    <div class="row">
-                                        <div class="col-md-2"><label>Descripcion</label></div>
-                                        <div class="col-md-10">
-                                        <textarea  [(ngModel)]="selectedContrato.descripcion" placeholder="Ingrese los comentarios que desee acerca del contrato"
-                                      class="form-control"></textarea>
-                                  </div>
-                                      </div>
-                                      <div class="row">
-                                          <div class="col-md-12">
-                                            <div class="upload-btn-wrapper">
-                                                <button id="btnArchivo">ELEGIR ARCHIVO</button>
-                                                <input type="file" id="file" multiple name="myfile" (change)="onFileSelected($event)" />
-                                              <input for="file" [(ngModel)]="labelFile" readonly style="border: 0; margin-left: 10px; width: 60%;" ng-reflect-model="Ningún archivo seleccionado" />
-                                            </div>
-                                          </div> 
+                                      <div class="form-group">
+                                        <div class="row">
+                                          <div class="col-md-2"><label>Apellido</label></div>
+                                          <div class="col-md-4">
+                                            <input type="text" disabled [(ngModel)]="selectedPersona.apellido" placeholder="Ingrese apellido" class="form-control">
+                                          </div>
+                                          <div class="col-md-2"><label>Fecha nacimiento</label></div>
+                                          <div class="col-md-4">
+                                            <input type="date" disabled [(ngModel)]="selectedPersona.fecha_nacimiento" placeholder="Ingrese fecha de nacimiento yyyy-dd-mm"
+                                              class="form-control">
+                                          </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-2" style="margin-top: -12px;" style="margin-left: 38%;">
-                                        <button  (click)="registroContrato()" class="btn south-btn btn-2 m-1"> 
-                                                registrar Contrato
-                                             </button>
-                                    </div>   
-                                    <br>
-                                    <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showContrato == 404">
-                                      <div id="close" (click)="cerrarMsjContrato()" title="Cerrar">x</div>{{respuesta.msj}}
-                                    </div>
-                                    <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showContrato == 505">
-                                      <div id="close" (click)="cerrarMsjContrato()" title="Cerrar">x</div>{{respuesta.msj}}
-                                    </div>
-                              </div>
-                              <br>
-                              <div class="panel single-accordion">
-                                <h6>
-                                    <a role="button" aria-expanded="true" aria-controls="collapseThree" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseThree">contratos realizados
-                                            <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                            <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                        </a>
-                                </h6>
-                                <div id="collapseThree" class="accordion-content collapse">
-                                  <table class="table">
-                                    <thead>
-                                      <tr>                        
-                                        <th scope="col"><p class="coltabla">codigo</p></th>
-                                        <th scope="col"><p class="coltabla">venta</p></th>  
-                                        <th scope="col"><p class="coltabla">precio</p></th>                
-                                        <th scope="col"><p class="coltabla">fecha</p></th>
-                                        <th scope="col"><p class="coltabla">Eliminar</p></th>                     
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let v of contratos">      
-                                        <th scope="row">{{v.id}}</th>
-                                        <td>{{v.venta_id}}</td>
-                                        <td>{{v.precio}}</td>
-                                        <td>{{v.fecha}}</td>
-                                        <td><button (click)="verCcontrato(v)" class="btn south-btn m-1"> ver</button></td>                      
-                                        <td><button (click)="eliminarContrato(v)" class="btn south-btn active m-1"> eliminar</button></td>                      
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                              </div>
-                            </div>
-                            <br>
-                            <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showMostcontrato == 1">
-                              <div id="close" (click)="cerrarMsjContratodatos()" title="Cerrar">x</div>{{respVenta.msj}}
-                            </div>
-                            <div class="panel single-accordion">
-                            <h6>
-                                <a role="button" aria-expanded="true"   aria-controls="collapseThree" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseCuatro">informacion del contrato
-                                        <span  class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                        <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                    </a>
-                            </h6>
-                            <div id="collapseCuatro" class="accordion-content collapse">
-                              <div class="form-group" style="margin-top: 32px;">
-                                <div class="row"> 
-                                    <div class="col-md-2"><label>Codigo Contrato:</label></div>
-                                    <div class="col-md-4">
-                                        <input type="number" disabled [(ngModel)]="selectedCont.id"  class="form-control">    
-                                    </div>  
-                                    <div class="col-md-2"><label>Descripcion:</label></div>
-                                    <textarea  [(ngModel)]="selectedCont.descripcion" style="width: 30%;" 
-                                      class="form-control"></textarea>
-                                    <div class="col-md-2"><label>CodigoVenta:</label></div>
-                                    <div class="col-md-4">
-                                        <input type="text" disabled [(ngModel)]="selectedCont.venta_id"  class="form-control">
-                                    </div>   
-                                    <div class="col-md-2"><label>Precio:</label></div>
-                                    <div class="col-md-4">
-                                        <input type="text"  [(ngModel)]="selectedCont.precio" style="width: 95%; margin-left:-13px;"  class="form-control">
-                                    </div>               
-                                </div>                                     
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-2"><label>Fecha</label></div>
-                                    <div class="col-md-4">
-                                        <input type="text"  [(ngModel)]="selectedCont.fecha" placeholder="Empleado" class="form-control">
-                                    </div> 
-                                    
-                                                     
-                                </div>                                     
-                            </div>               
-                            <div class="form-group">
-                                <div class="row">  
-                                    <div class="col-md-2" style="margin-top: -12px;" style="margin-left: 43%;">
-                                        <button  (click)="editarContrato()" class="btn south-btn btn-2 m-1"> 
-                                                Editar Contrato
-                                             </button>
-                                    </div>      
-                                                              
-                            </div>
-                            </div>  
-                            <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarCliente == 1">
-                              <div id="close" (click)="cerrarMsjEditCliente()" title="Cerrar">x</div>{{respCliente.msj}}
-                            </div> 
-                            <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarEmpleado == 1">
-                              <div id="close" (click)="cerrarMsjEditEempleado()" title="Cerrar">x</div>{{respEmpleado.msj}}
-                            </div>
-                            <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarInmueble == 1">
-                              <div id="close" (click)="cerrarMsjEditIinmueble()" title="Cerrar">x</div>{{respInmueble.msj}}
-                            </div>   
-                            <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showEditarVenta == 505">
-                              <div id="close" (click)="cerrarMsjEdicionVenta()" title="Cerrar">x</div>{{respuesta.msj}}
-                            </div>                             </div>
-                        </div>
-                            
-                          </div>                
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="row">
+                                          <div class="col-md-2"><label>Dirección</label></div>
+                                          <div class="col-md-4">
+                                            <input type="text" disabled [(ngModel)]="selectedPersona.direccion" placeholder="Ingrese direccion"
+                                              class="form-control">
+                                          </div>
+                                          <div class="col-md-2"><label>Telefono</label></div>
+                                          <div class="col-md-4">
+                                            <input type="number" disabled [(ngModel)]="selectedPersona.telefono" placeholder="Ingrese telefono"
+                                              class="form-control">
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="row">
+                                          <div class="col-md-2"><label>Correo</label></div>
+                                          <div class="col-md-4">
+                                            <input type="text" disabled [(ngModel)]="selectedPersona.correo" placeholder="Ingrese correo" class="form-control">
+                                          </div>
+                                          <div class="col-md-2"><label>Genero</label></div>
+                                          <div class="col-md-4">
+                                            <select disabled [(ngModel)]="selectedPersona.genero" class="form-control">
+                                              <option [ngValue]="0" selected disabled hidden>Seleccione un genero</option>
+                                              <option [ngValue]="1">Masculino</option>
+                                              <option [ngValue]="2">Femenino</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="row">
+                                          <div class="col-md-2"><label>Departamento</label></div>
+                                          <div class="col-md-4">
+                                            <select disabled [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
+                                              <option [ngValue]="0" selected hidden>Seleccione un Departamento</option>
+                                              <option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
+                                            </select>
+                                          </div>
+                                          <div class="col-md-2"><label>Municipio</label></div>
+                                          <div class="col-md-4">
+                                            <select disabled [(ngModel)]="selectedMunicipio.id" class="form-control">
+                                              <option [ngValue]="0" selected disabled hidden>Seleccione un Municipio</option>
+                                              <option *ngFor="let ms of listaMunicipios" [value]="ms.id">{{ms.nombre}}</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </div>
+                                
+                        </div>       
                           </div>               
                       </div>
 
@@ -525,19 +480,36 @@
 </div>
 </div>
 
-<div class="col-md-2" style="margin: auto; display: block; margin-top:45px; margin-left: 40%;">
-    <button (click)="registrarVenta()" class="btn south-btn btn-2 m-1">
-      Registrar Venta
-    </button>
-
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-2" style="margin: auto; display: block; margin-top:45px; margin-left: 31%;">
+            <button (click)="registrarVenta()" [disabled]="ventaRegistrada"  class="btn south-btn btn-2 m-1" id="botonRegistroVenta">
+              Registrar Venta
+            </button>
+          </div>
+          <div class="col-md-2" style="margin-left: 48%; margin-top:-5.1%;">
+              <button  (click)="editarVenta()" class="btn south-btn btn-2 m-1"> 
+                      Editar Venta
+                   </button>
+          </div>  
+    </div>
   </div>
+
+  <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showEditarVenta == 505">
+    <div id="close" (click)="cerrarMsjEdicionVenta()" title="Cerrar">x</div>{{respuesta.msj}}
+  </div> 
+  <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarVenta == 1">
+    <div id="close" (click)="cerrarMsjEdicionVenta()" title="Cerrar">x</div>{{respuesta.msj}}
+  </div> 
   <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 404">
-    <div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuestaV.msj}}
+    <div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}
   </div>
   <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 505">
-    <div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuestaV.msj}}
+    <div id="close" (click)="cerrarMsj()" title="Cerrar">x</div>{{respuesta.msj}}
   </div>
-
+  <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showMost == 1">
+      <div id="close" (click)="cerrarMsjVer()" title="Cerrar">x</div>{{respVentaVer.msj}}
+    </div>
   <br>
   <br>
   <br>
@@ -577,7 +549,7 @@
                                       <td>{{v.empleado_cedula}}</td>
                                       <td><label *ngIf="v.visita_id==null">no tiene</label>
                                         {{v.visita_id}}</td>
-                                      <td><button (click)="ver(v)" class="btn south-btn m-1"> ver</button></td>                      
+                                      <td><button (click)="verVenta(v)" class="btn south-btn m-1"> ver</button></td>                      
                                       <td><button (click)="eliminar(v.id)" class="btn south-btn active m-1"> eliminar</button></td>                      
                                     </tr>
                                   </tbody>
@@ -589,90 +561,9 @@
       </div>
     </div>
 </div>
-<br>
-<div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showMost == 1">
-  <div id="close" (click)="cerrarMsjVer()" title="Cerrar">x</div>{{respVenta.msj}}
 </div>
-<br>
-<div class="panel single-accordion" id="dtarriendo" style="width: 100%;">
-  <h6>
-      <a role="button" class="collapsed" aria-expanded="true" aria-controls="collapseone" data-parent="#accordion" data-toggle="collapse" href="#collapseone">Informacion venta
-              <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
-              <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
-              </a>
-  </h6>
-  <div id="collapseone" class="accordion-content collapse">
 
-      <div class="card mt-4"  id="link" style="width: 100%;">
-          <div class="card-body">                  
-              <div class="form-group">
-                  <div class="row"> 
-                      <div class="col-md-2"><label>Id</label></div>
-                      <div class="col-md-4">
-                          <input type="number" disabled [(ngModel)]="ventasTabla.id" placeholder="venta" class="form-control">    
-                      </div>  
-                      <div class="col-md-2"><label>Inmueble</label></div>
-                      <div class="col-md-4">
-                          <input type="text"  [(ngModel)]="ventasTabla.matricula" placeholder="inmueble" class="form-control">
-                      </div> 
-                      <div class="col-md-2"><label>Cliente</label></div>
-                      <div class="col-md-4">
-                          <input type="text" [(ngModel)]="ventasTabla.cliente_cedula" placeholder="cliente" class="form-control">
-                      </div>   
-                      <div class="col-md-2"><label>Visita</label></div>
-                      <div class="col-md-4">
-                          <input type="text" disabled [(ngModel)]="ventasTabla.fecha" placeholder="visita" class="form-control">
-                      </div>               
-                  </div>                                     
-              </div>
-              <div class="form-group">
-                  <div class="row">
-                      <div class="col-md-2"><label>Empleado</label></div>
-                      <div class="col-md-4">
-                          <input type="text" disabled [(ngModel)]="ventasTabla.empleado_cedula" placeholder="Empleado" class="form-control">
-                      </div> 
-                      <div class="col-md-2"><label>Hora Visita:</label></div>
-                      <div class="col-md-4">
-                          <input type="text" disabled [(ngModel)]="ventasTabla.hora" placeholder="hora" class="form-control">
-                      </div> 
-                                       
-                  </div>                                     
-              </div>               
-              <div class="form-group">
-                  <div class="row">
-                      <div class="col-md-2"><label>Estado</label></div>
-                      <div class="col-md-4">
-                          <input type="text" disabled [(ngModel)]="ventasTabla.activo" placeholder="estado" class="form-control">
-                      </div>
-                     
-                      <div class="col-md-2" style="margin-top: -12px;" style="margin-left: 43%;">
-                          <button  (click)="editarVenta()" class="btn south-btn btn-2 m-1"> 
-                                  Editar Venta
-                               </button>
-                      </div>      
-                                                
-              </div>
-              </div>  
-              <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarCliente == 1">
-                <div id="close" (click)="cerrarMsjEditCliente()" title="Cerrar">x</div>{{respCliente.msj}}
-              </div> 
-              <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarEmpleado == 1">
-                <div id="close" (click)="cerrarMsjEditEempleado()" title="Cerrar">x</div>{{respEmpleado.msj}}
-              </div>
-              <div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="showEditarInmueble == 1">
-                <div id="close" (click)="cerrarMsjEditIinmueble()" title="Cerrar">x</div>{{respInmueble.msj}}
-              </div>   
-              <div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="showEditarVenta == 505">
-                <div id="close" (click)="cerrarMsjEdicionVenta()" title="Cerrar">x</div>{{respuesta.msj}}
-              </div>                 
-           </div> 
 
-          </div>
-          
-  </div>
-
-  </div>
-</div>
 
 
 
