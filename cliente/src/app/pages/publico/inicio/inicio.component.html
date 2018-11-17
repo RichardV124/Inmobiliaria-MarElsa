@@ -67,15 +67,27 @@
 								<option [ngValue]="1">Arriendo</option>
 								<option [ngValue]="2">Venta</option>
 							  </select>
-							
 							</div>
+
+							<div class="col-md-2"><label>habitaciones</label></div>                                               
+							<div class="col-md-4">
+								<input type="number" min="1" [(ngModel)]="inmueble.num_habitaciones" class="form-control">
+							</div>
+					
 							
 					</div>
-					<div class="col-md-2" style="margin-left: 42%;">
-							<button (click)="filtrar()" class="btn south-btn btn-2 m-1">
-							  Filtrar
-							</button>
-						  </div>
+
+					<div style="margin-left: 35%;">
+						<button (click)="filtrar()" class="btn south-btn btn-2 m-1">
+							Filtrar
+						</button>
+						<button (click)="eliminarFiltro()" class="btn south-btn btn-2 m-1">
+							Quitar Filtro
+						</button>
+					</div>
+
+				
+							
 							
 				</div>
 				</div>

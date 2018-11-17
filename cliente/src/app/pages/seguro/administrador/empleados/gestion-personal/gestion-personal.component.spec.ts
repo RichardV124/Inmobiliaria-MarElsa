@@ -225,7 +225,7 @@ describe('GestionPersonalComponent', () => {
     expect(component.validarlistarDepartamentos).toBeTruthy();
   });
 
-  fit('registrar experiencia', () => {
+  it('registrar experiencia', () => {
 
     const experiencia = new Experiencia();
     experiencia.fecha_inicio = new Date();

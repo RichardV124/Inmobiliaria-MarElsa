@@ -211,7 +211,7 @@ app.post('/venta/deleteContratobyVenta/', venta.delete_contrato_by_venta);
 app.get('/venta/buscarVisitaId/:visita_id', venta.buscarVisitaId);
 app.get('/venta/buscarContratoIdVenta/:venta_id', venta.buscarContratobyIdVenta);
 app.get('/venta/buscarVisitaIdInmueble/:visita_id', venta.buscarVisitaIdInmueble);
-app.get('/venta/contrato/search/:venta_id', venta.buscarContrato);
+app.get('/venta/contrato/search/:venta_id', venta.buscarContrato); 
 
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);

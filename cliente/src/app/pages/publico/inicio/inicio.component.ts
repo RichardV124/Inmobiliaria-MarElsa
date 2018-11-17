@@ -6,6 +6,7 @@ import { InmuebleService } from 'src/app/services/inmueble/inmueble.service';
 import { TipoInmueble } from 'src/app/modelo/tipo_inmueble';
 import { Inmueble } from 'src/app/modelo/inmueble';
 import { GenericoService } from 'src/app/services/generico/generico.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
@@ -29,11 +30,11 @@ export class InicioComponent implements OnInit {
   // fin combox
   selectedDepartamento: Departamento = new Departamento();
   inmueble: Inmueble = new Inmueble(); // el inmueble con los datos para filtrar
-  constructor(private genericoService: GenericoService,private municipioService: MunicipioService,private inmuebleServie: InmuebleService) {
+  constructor(private genericoService: GenericoService,private municipioService: MunicipioService,private inmuebleServie: InmuebleService, private router: Router) {
     this.listarDepartamentos();
     this.listarMunicipios();
-    this.listarTiposInmueble() 
-   
+    this.listarTiposInmueble();
+    this.inmueble.activo= 1;
   }
   ngOnInit() {
     // validamos si hay parametros para filtrar
@@ -102,6 +103,7 @@ export class InicioComponent implements OnInit {
   listarByParametros(objeto) {
     // convertimos el texto a objeto json
     const json = JSON.parse(objeto);
+
     // Obtenemos la lista de inmuebles
     this.genericoService.listar('inmueble', json).subscribe(r => {
       if (r != null) {
@@ -139,7 +141,11 @@ export class InicioComponent implements OnInit {
     // Redireccionamos al index con los parametros a buscar
     location.href = '/?objeto=' + json;
   }
-
+  
+  eliminarFiltro(){
+      this.router.navigate(['/']);
+      window.location.reload();
+}
   verMas(){
 
   }
