@@ -71,14 +71,16 @@ console.log(input);
 
     req.getConnection(function (err, connection) {
 
-      var visita = {
-          cliente_cedula : input.cliente_cedula.cedula,
-          tipo_visita : input.tipo_visita,
-          descripcion : input.descripcion,
-          estado : input.estado,
-          fecha : input.fecha,
-          hora : input.hora
-      };
+        var visita = {
+            cliente_cedula : input.cliente_cedula.cedula,
+            tipo_visita : input.tipo_visita,
+            descripcion : input.descripcion,
+            estado : input.estado,
+            fecha : input.fecha,
+            hora : input.hora,
+            comentarios: input.comentarios,
+        };
+      
 
         var query = connection.query("INSERT INTO visita set ? ",visita, function(err, rows)
         {
@@ -220,3 +222,37 @@ exports.listarPorEmpleadoAndFecha = function(req, res){
       });
     
   };
+
+    /*Guarda una solicitar visita*/
+    exports.saveSolicitarVisitaCliente = function(req,res){
+      
+        var input = JSON.parse(JSON.stringify(req.body));
+        
+    console.log(input);
+    
+        req.getConnection(function (err, connection) {
+    
+            var visita = {
+                cliente_cedula : input.cliente_cedula.cedula,
+                tipo_visita : input.tipo_visita,
+                descripcion : input.descripcion,
+                estado : input.estado,
+                fecha : input.fecha,
+                hora : input.hora,
+                comentarios: input.comentarios,
+                inmueble_id: input.inmueble_id.id
+            };
+          
+    
+            var query = connection.query("INSERT INTO visita set ? ",visita, function(err, rows)
+            {
+      
+              if (err)
+                  res.send('{"id": 404,"msj": "Error al registrar la visita"}');    
+                  
+            res.send('{"id": 505,"msj": "Registro exitoso"}');       
+                  });
+            console.log(query.sql);
+        });                                 
+    };
+

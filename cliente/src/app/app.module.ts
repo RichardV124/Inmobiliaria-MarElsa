@@ -1,3 +1,4 @@
+import { GestionVisitasComponent } from './pages/publico/gestion-visitas/gestion-visitas.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 import { AgmCoreModule } from '@agm/core';
@@ -42,7 +43,8 @@ import { VerVisitasComponent } from './pages/seguro/empleado/ver-visitas/ver-vis
     GestionArriendoComponent,
     RegistroVentaComponent,
     GestionVisitaComponent,
-    VerVisitasComponent
+    VerVisitasComponent,
+    GestionVisitasComponent
   ],
   imports: [
     BrowserModule,
