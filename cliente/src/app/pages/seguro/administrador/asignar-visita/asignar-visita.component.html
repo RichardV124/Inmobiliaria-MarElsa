@@ -27,7 +27,6 @@
               <th scope="col">Hora</th>
               <th scope="col">Comentarios</th>
               <th scope="col">Ver</th>
-              <th scope="col">Eliminar</th>
             </tr>
           </thead>
           <tbody>
@@ -41,10 +40,6 @@
               <td>{{v.comentarios}}</td>
               <td><button (click)="ver(v)" class="btn south-btn btn-2 m-1"> 
                           Seleccionar visita
-                  </button>
-              </td>
-              <td><button (click)="eliminar(v)" class="btn south-btn active m-1"> 
-                              Eliminar
                   </button>
               </td>
             </tr>

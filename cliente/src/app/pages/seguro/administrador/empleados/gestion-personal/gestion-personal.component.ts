@@ -306,7 +306,7 @@ this.experienciaSeleccionada = new Experiencia();
       || this.selectedPersona.fecha_nacimiento == null || this.selectedPersona.cedula == null
       || this.selectedPersona.telefono == null || this.selectedPersona.direccion == null
       || this.selectedPersona.correo == null || this.selectedLogin.username == null
-      || this.selectedLogin.contrasenia == null || this.selectedPersona.municipio_id.id === 0) {
+      || this.selectedLogin.contrasenia == null ) {
         return false;
     } else {
       return true;
@@ -480,7 +480,7 @@ this.experienciaSeleccionada = new Experiencia();
 
   editar() {
 
-    if (this.validarCampos()) {
+    if (!this.validarCampos()) {
       this.show = 1;
           this.respuesta.msj = 'Debe completar todos los campos';
           this.editado = false;
@@ -502,10 +502,15 @@ this.experienciaSeleccionada = new Experiencia();
       this.empleadoService.editarEmpleado(this.empleadoDTO)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
-        console.log(this.respuesta.msj + ' EDIT');
-        this.limpiarCampos();
-        this.show = 2;
-        this.editado = true;
+        if (this.respuesta.id === 404) {
+          this.show = 1;
+          this.editado = false;
+        } else {
+          this.limpiarCampos();
+          this.show = 2;
+          this.editado = true;
+          this.listarEmpleados();
+        }
       });
     }
 }
