@@ -25,6 +25,7 @@ import { GestionArriendoComponent } from './pages/seguro/empleado/arriendo/gesti
 import { RegistroVentaComponent } from './pages/seguro/empleado/registro-venta/registro-venta.component';
 import { GestionVisitaComponent } from './pages/seguro/cliente/gestion-visita/gestion-visita.component';
 import { VerVisitasComponent } from './pages/seguro/empleado/ver-visitas/ver-visitas.component';
+import { ReportesComponent } from './pages/seguro/administrador/reportes/reportes.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { VerVisitasComponent } from './pages/seguro/empleado/ver-visitas/ver-vis
     RegistroVentaComponent,
     GestionVisitaComponent,
     VerVisitasComponent,
-    GestionVisitasComponent
+    GestionVisitasComponent,
+    ReportesComponent
   ],
   imports: [
     BrowserModule,

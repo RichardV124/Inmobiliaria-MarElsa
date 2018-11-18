@@ -125,7 +125,7 @@ exports.delete = function(req,res){
     
      req.getConnection(function (err, connection) {
         
-        var query= connection.query("DELETE FROM visita  WHERE id = ? ",[id], function(err, rows)
+        var query= connection.query("UPDATE visita SET estado = 3 WHERE id = ? ",[id], function(err, rows)
         {
              if(err)
                  res.send('{"id": 404,"msj": "Hubo un error al eliminar la visita"}');
