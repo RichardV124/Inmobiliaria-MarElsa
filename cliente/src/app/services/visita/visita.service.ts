@@ -103,4 +103,12 @@ listarVisitasPorEmpleadoAndFecha(empleado, fecha) {
 });
 }
 
+  /* Metodo que inserta una visita que solicita el cliente para el registro de su inmueble en la BD
+  * @param newVisita, la visita que se va a registrar en la BD
+  */
+ registrarSolicitarVisitaCliente(newVisita: Visita) {
+  return this.http.post<any>(`${this.domain}/visita/save-solicitar-visita-cliente`, newVisita)
+    .map(res => res);
+}
+
 }

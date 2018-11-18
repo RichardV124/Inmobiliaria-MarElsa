@@ -1,3 +1,4 @@
+import { GestionVisitasComponent } from './pages/publico/gestion-visitas/gestion-visitas.component';
 import { GestionArriendoComponent } from './pages/seguro/empleado/arriendo/gestion-arriendo/gestion-arriendo.component';
 import { VerVisitasComponent } from './pages/seguro/empleado/ver-visitas/ver-visitas.component';
 import { AsignarVisitaComponent } from './pages/seguro/administrador/asignar-visita/asignar-visita.component';
@@ -29,7 +30,8 @@ const appRoutes: Routes = [
   {path: 'registro-arriendo', component: GestionArriendoComponent},
   {path: 'gestion-visita', component: GestionVisitaComponent},
   {path: 'ver-visitas', component: VerVisitasComponent},
-  {path: 'registro-venta', component: RegistroVentaComponent}
+  {path: 'registro-venta', component: RegistroVentaComponent},
+  {path: 'gestion-visitas-cliente', component: GestionVisitasComponent}
 ];
 
 @NgModule({

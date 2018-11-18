@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { MunicipioService } from 'src/app/services/municipio/municipio.service';
 import { Departamento } from 'src/app/modelo/departamento';
 import { Municipio } from 'src/app/modelo/municipio';
@@ -6,17 +7,20 @@ import { InmuebleService } from 'src/app/services/inmueble/inmueble.service';
 import { TipoInmueble } from 'src/app/modelo/tipo_inmueble';
 import { Inmueble } from 'src/app/modelo/inmueble';
 import { GenericoService } from 'src/app/services/generico/generico.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
+
+@Injectable()
 export class InicioComponent implements OnInit {
 
   arriendo: any;
   venta: any;
+  inmuebleSeleccionado: Inmueble;
+  inmuebleMatricula: string;
 
   /**
    * Listado de inmuebles
@@ -30,11 +34,14 @@ export class InicioComponent implements OnInit {
   // fin combox
   selectedDepartamento: Departamento = new Departamento();
   inmueble: Inmueble = new Inmueble(); // el inmueble con los datos para filtrar
-  constructor(private genericoService: GenericoService,private municipioService: MunicipioService,private inmuebleServie: InmuebleService, private router: Router) {
+  constructor(private genericoService: GenericoService,
+    private municipioService: MunicipioService,
+    private inmuebleServie: InmuebleService,
+    private router: Router) {
     this.listarDepartamentos();
     this.listarMunicipios();
     this.listarTiposInmueble();
-    this.inmueble.activo= 1;
+    this.inmueble.activo = 1;
   }
   ngOnInit() {
     // validamos si hay parametros para filtrar
@@ -49,7 +56,7 @@ export class InicioComponent implements OnInit {
     }
   }
 
-  
+
  /**
    * Obtiene la lista de departamentos
    */
@@ -72,7 +79,7 @@ export class InicioComponent implements OnInit {
 
  /**
    * Obtiene la lista de tipos de inmuebles
-   */ 
+   */
   listarTiposInmueble() {
     console.log(TipoInmueble);
     this.inmuebleServie.listarTiposInmueble()
@@ -89,7 +96,6 @@ export class InicioComponent implements OnInit {
     this.genericoService.listar('inmueble', {'activo': 1}).subscribe(r => {
       if (r != null) {
         this.inmuebles = r;
-        
         console.log(this.inmuebles);
         // Agregamos los datos (objetos) adicionales a cada inmueble
         this.agregarObjetos(this.inmuebles);
@@ -129,7 +135,7 @@ export class InicioComponent implements OnInit {
           i.tipo_inmueble_id = tipoInmueble;
         });
     });
-   
+
     }
   }
   /**
@@ -141,12 +147,17 @@ export class InicioComponent implements OnInit {
     // Redireccionamos al index con los parametros a buscar
     location.href = '/?objeto=' + json;
   }
-  
-  eliminarFiltro(){
+
+  eliminarFiltro() {
       this.router.navigate(['/']);
       window.location.reload();
 }
-  verMas(){
+  verMas(inmueble: Inmueble) {
 
+    this.inmuebleMatricula = inmueble.matricula;
+    this.inmuebleSeleccionado = inmueble;
+    this.router.navigate(['gestion-visitas-cliente']);
+    localStorage.setItem('matricula', this.inmuebleMatricula);
+    localStorage.setItem('inmueble', JSON.stringify(this.inmuebleSeleccionado));
   }
 }

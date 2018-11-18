@@ -235,6 +235,7 @@ app.get('/visita/listarPorEstado/:estado', visita.listarPorEstado);
 app.post('/visita/asignarVisita', visita.asignarVisita);
 app.post('/visita/cambiarEstadoVisitaAsignada', visita.cambiarEstadoVisitaAsignada);
 app.post('/visita/save-visita-cliente', visita.saveVisitaCliente);
+app.post('/visita/save-solicitar-visita-cliente', visita.saveSolicitarVisitaCliente);
 app.get('/visita/listarPorClienteAndEstado/:cliente/:estado', visita.listarPorClienteAndEstado);
 app.get('/visita/listarPorEmpleadoAndEstado/:empleado/:estado', visita.listarPorEmpleadoAndEstado);
 app.get('/visita/delete/:id', visita.delete);
