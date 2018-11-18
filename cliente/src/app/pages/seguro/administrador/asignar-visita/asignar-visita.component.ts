@@ -73,9 +73,6 @@ export class AsignarVisitaComponent implements OnInit {
     this.show = 0;
   }
 
-  eliminar(v) {
-  }
-
   ver(v) {
       this.mostrarEmpleados = 1 ;
       this.visitaSeleccionada = v;

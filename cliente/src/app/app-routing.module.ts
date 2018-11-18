@@ -15,6 +15,7 @@ import { BusquedaClienteComponent } from './pages/seguro/cliente/busqueda-client
 import { EditarClienteComponent } from './pages/seguro/cliente/editar-cliente/editar-cliente.component';
 import { RegistroVentaComponent } from './pages/seguro/empleado/registro-venta/registro-venta.component';
 import { GestionVisitaComponent } from './pages/seguro/cliente/gestion-visita/gestion-visita.component';
+import { ReportesComponent } from './pages/seguro/administrador/reportes/reportes.component';
 
 
 const appRoutes: Routes = [
@@ -31,7 +32,8 @@ const appRoutes: Routes = [
   {path: 'gestion-visita', component: GestionVisitaComponent},
   {path: 'ver-visitas', component: VerVisitasComponent},
   {path: 'registro-venta', component: RegistroVentaComponent},
-  {path: 'gestion-visitas-cliente', component: GestionVisitasComponent}
+  {path: 'gestion-visitas-cliente', component: GestionVisitasComponent},
+  {path: 'reportes', component: ReportesComponent}
 ];
 
 @NgModule({

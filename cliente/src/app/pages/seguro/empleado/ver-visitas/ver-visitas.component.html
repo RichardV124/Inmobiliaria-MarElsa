@@ -89,8 +89,7 @@
                                   <th scope="col"><p class="coltabla">Tipo de visita</p></th>
                                   <th scope="col"><p class="coltabla">Fecha</p></th>                
                                   <th scope="col"><p class="coltabla">Hora</p></th>
-                                  <th scope="col"><p class="coltabla">Atender</p></th>
-                                  <th scope="col"><p class="coltabla">Eliminar</p></th>                     
+                                  <th scope="col"><p class="coltabla">Atender</p></th>                  
                                 </tr>
                               </thead>
                               <tbody>
@@ -99,9 +98,7 @@
                                   <td>{{v.tipo_visita}}</td>
                                   <td>{{v.fecha}}</td>
                                   <td>{{v.hora}}:00</td>
-                                  <td><button (click)="verVisita(v)" class="btn south-btn m-1"> Atender</button></td>                      
-                                  <td><button (click)="eliminar(v.id)" class="btn south-btn active m-1"> Cancelar</button></td>                      
-                                </tr>
+                                  <td><button (click)="verVisita(v)" class="btn south-btn m-1"> Atender</button></td>                       </tr>
                               </tbody>
                             </table>
                       </div>
