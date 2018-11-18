@@ -1,3 +1,5 @@
+import { LoginService } from 'src/app/services/login/login.service';
+import { Login } from './../../../modelo/login';
 import { Router } from '@angular/router';
 import { Component, OnInit, Injectable } from '@angular/core';
 import { MunicipioService } from 'src/app/services/municipio/municipio.service';
@@ -21,6 +23,7 @@ export class InicioComponent implements OnInit {
   venta: any;
   inmuebleSeleccionado: Inmueble;
   inmuebleMatricula: string;
+  user: Login = new Login();
 
   /**
    * Listado de inmuebles
@@ -37,6 +40,7 @@ export class InicioComponent implements OnInit {
   constructor(private genericoService: GenericoService,
     private municipioService: MunicipioService,
     private inmuebleServie: InmuebleService,
+    private servicios: LoginService,
     private router: Router) {
     this.listarDepartamentos();
     this.listarMunicipios();
@@ -54,6 +58,7 @@ export class InicioComponent implements OnInit {
       // listamos los inmuebles
       this.listarInmuebles();
     }
+    this.user = this.servicios.getUsuario();
   }
 
 
@@ -154,10 +159,14 @@ export class InicioComponent implements OnInit {
 }
   verMas(inmueble: Inmueble) {
 
+    if ( this.user === null) {
+      confirm('Debe iniciar sesion');
+  } else {
     this.inmuebleMatricula = inmueble.matricula;
     this.inmuebleSeleccionado = inmueble;
     this.router.navigate(['gestion-visitas-cliente']);
     localStorage.setItem('matricula', this.inmuebleMatricula);
     localStorage.setItem('inmueble', JSON.stringify(this.inmuebleSeleccionado));
+  }
   }
 }
