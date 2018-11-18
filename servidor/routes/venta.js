@@ -48,6 +48,14 @@ exports.saveVenta = function (req, res) {
 
         });
 
+        var query = connection.query("UPDATE inmueble SET activo = 2 WHERE id = ?", [data.inmueble_id],function(err, rows){
+            if (err)
+            res.send('{"id": 404,"msj": "actualizacion fallida"}');
+       
+        res.send('{"id": 505,"msj": "actualizacion exitosa"}');
+        });
+
+
     });
 };
 
@@ -305,7 +313,7 @@ exports.buscarContratobyIdVenta = function (req, res) {
         //console.log(query.sql);
     });
 };
-
+ 
 /**
  * Lista de contratos
  */

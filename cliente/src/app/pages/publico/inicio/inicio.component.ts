@@ -41,7 +41,7 @@ export class InicioComponent implements OnInit {
     this.listarDepartamentos();
     this.listarMunicipios();
     this.listarTiposInmueble();
-
+    this.inmueble.activo = 1;
   }
   ngOnInit() {
     // validamos si hay parametros para filtrar
@@ -109,6 +109,7 @@ export class InicioComponent implements OnInit {
   listarByParametros(objeto) {
     // convertimos el texto a objeto json
     const json = JSON.parse(objeto);
+
     // Obtenemos la lista de inmuebles
     this.genericoService.listar('inmueble', json).subscribe(r => {
       if (r != null) {
@@ -147,6 +148,10 @@ export class InicioComponent implements OnInit {
     location.href = '/?objeto=' + json;
   }
 
+  eliminarFiltro() {
+      this.router.navigate(['/']);
+      window.location.reload();
+}
   verMas(inmueble: Inmueble) {
 
     this.inmuebleMatricula = inmueble.matricula;

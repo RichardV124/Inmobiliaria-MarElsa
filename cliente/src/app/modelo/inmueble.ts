@@ -41,4 +41,5 @@ observaciones: string;
 publicacion: number;
 latitud: number;
 longitud: number;
+activo: any;
 }
