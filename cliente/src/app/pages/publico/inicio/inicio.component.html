@@ -102,7 +102,7 @@
   <div id="collapseOne" class="accordion-content collapse">
     <agm-map [zoom]="8" [latitude]="latitudDefecto" [longitude]="longitudDefecto" (mapClick)="onChoseLocation($event)">
       <agm-marker *ngIf="marcadorAgregado" [latitude]="latitud" [longitude]="longitud"></agm-marker>
-      <agm-marker *ngFor="let e of inmuebles" [latitude]="e.latitud" [longitude]="e.longitud">
+      <agm-marker *ngFor="let e of inmuebles" [latitude]="e.latitud" [longitude]="e.longitud" (markerClick)="navigate(e)">
         <agm-info-window>
           <strong>Direccion: {{e.direccion}}</strong><br>
           <!--<strong>Propietario: {{e.cliente_cedula.nombre}}</strong>-->

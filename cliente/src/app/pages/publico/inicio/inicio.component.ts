@@ -108,6 +108,12 @@ export class InicioComponent implements OnInit {
     this.longitudInferior = this.longitud - 0.006176;
   }
 
+  navigate(i: Inmueble) {
+    this.router.navigate(['gestion-visitas-cliente']);
+    localStorage.setItem('matricula', i.matricula);
+    localStorage.setItem('inmueble', JSON.stringify(i));
+  }
+
   /**
    * Lista los inmuebles que se encuentran en el rengo seleccionado
    */
@@ -221,14 +227,14 @@ export class InicioComponent implements OnInit {
 }
   verMas(inmueble: Inmueble) {
 
-//  if ( this.user === null) {
- //     confirm('Debe iniciar sesion');
-//  } else {
+    if ( this.user === null) {
+      confirm('Debe iniciar sesion');
+  } else {
     this.inmuebleMatricula = inmueble.matricula;
     this.inmuebleSeleccionado = inmueble;
     this.router.navigate(['gestion-visitas-cliente']);
     localStorage.setItem('matricula', this.inmuebleMatricula);
     localStorage.setItem('inmueble', JSON.stringify(this.inmuebleSeleccionado));
- // }
+  }
   }
 }
