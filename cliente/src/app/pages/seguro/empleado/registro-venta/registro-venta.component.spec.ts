@@ -13,14 +13,13 @@ import { Empleado } from 'src/app/modelo/empleado';
 import { Venta } from 'src/app/modelo/venta';
 import { Visita } from 'src/app/modelo/visita';
 
-describe('RegistroVentaComponent', () => {
+fdescribe('RegistroVentaComponent', () => {
   let component: RegistroVentaComponent;
   let fixture: ComponentFixture<RegistroVentaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ RegistroVentaComponent ],
-      providers: [VentasService],
       imports: [RouterTestingModule, FormsModule, HttpClientModule]
     })
     .compileComponents();
@@ -50,11 +49,114 @@ describe('RegistroVentaComponent', () => {
     const empleado = new Empleado();
     empleado.persona_cedula = personaE;
 
+    const contrato = new Contrato();
+    contrato.id = 12;
+    contrato.contrato = 'nuevo';
+    contrato.descripcion = 'nuevo';
+
+    component.selectedContrato = contrato;
     component.empleado = empleado;
     component.selectedPersona = cliente;
     component.selectedInmueble = inmueble;
 
     component.selectedVenta.visita_id = new Visita();
+
+    component.selectedVenta.activo = true;
+    component.registrarVenta();
+
+    expect(component.verVentaRegistrada).toBeTruthy();
+
+  });
+
+  it('registrar venta inmueble arrendado', () => {
+
+    component.selectedVenta = new Venta();
+
+    const inmueble = new Inmueble();
+    inmueble.id = 4;
+    inmueble.matricula = '6789';
+    const cliente = new Persona();
+    cliente.cedula = 1234567;
+    const personaE = new Persona();
+    personaE.cedula = 555;
+    const empleado = new Empleado();
+    empleado.persona_cedula = personaE;
+
+    const contrato = new Contrato();
+    contrato.id = 123;
+    contrato.contrato = 'nuevo';
+    contrato.descripcion = 'nuevo';
+
+    component.selectedContrato = contrato;
+    component.empleado = empleado;
+    component.selectedPersona = cliente;
+    component.selectedInmueble = inmueble;
+
+    component.selectedVenta.visita_id = new Visita();
+
+    component.selectedVenta.activo = true;
+    component.registrarVenta();
+
+    expect(component.verVentaRegistrada).toBeTruthy();
+
+  });
+
+  it('registrar venta inmueble vendido', () => {
+
+    component.selectedVenta = new Venta();
+
+    const inmueble = new Inmueble();
+    inmueble.id = 4;
+    inmueble.matricula = '6789';
+    const cliente = new Persona();
+    cliente.cedula = 1234567;
+    const personaE = new Persona();
+    personaE.cedula = 555;
+    const empleado = new Empleado();
+    empleado.persona_cedula = personaE;
+
+    const contrato = new Contrato();
+    contrato.id = 124;
+    contrato.contrato = 'nuevo';
+    contrato.descripcion = 'nuevo';
+
+    component.selectedContrato = contrato;
+    component.empleado = empleado;
+    component.selectedPersona = cliente;
+    component.selectedInmueble = inmueble;
+
+    component.selectedVenta.visita_id = new Visita();
+
+    component.selectedVenta.activo = true;
+    component.registrarVenta();
+
+    expect(component.verVentaRegistrada).toBeTruthy();
+
+  });
+
+  it('registrar venta con visita', () => {
+
+    component.selectedVenta = new Venta();
+
+    const inmueble = new Inmueble();
+    inmueble.id = 4;
+    inmueble.matricula = '6789';
+    const cliente = new Persona();
+    cliente.cedula = 1234567;
+    const personaE = new Persona();
+    personaE.cedula = 555;
+    const empleado = new Empleado();
+    empleado.persona_cedula = personaE;
+
+    const contrato = new Contrato();
+    contrato.id = 12;
+    contrato.contrato = 'nuevo';
+    contrato.descripcion = 'nuevo';
+
+    component.selectedContrato = contrato;
+    component.empleado = empleado;
+    component.selectedPersona = cliente;
+    component.selectedInmueble = inmueble;
 
     component.selectedVenta.activo = true;
     component.registrarVenta();
@@ -86,6 +188,30 @@ describe('RegistroVentaComponent', () => {
     component.registrarVenta();
 
     expect(component.verVentaRegistrada()).toBeFalsy();
+
+  });
+
+  it ('registrar contrato', () => {
+    const contrato = new Contrato();
+    contrato.id = 2;
+    contrato.contrato = 'nuevo';
+    contrato.descripcion = 'contrato nuevo';
+
+    component.selectedContrato = contrato;
+
+    component.registrarContrato();
+
+  });
+
+  it ('registrar contrato existe', () => {
+    const contrato = new Contrato();
+    contrato.id = 2;
+    contrato.contrato = 'nuevo';
+    contrato.descripcion = 'contrato nuevo';
+
+    component.selectedContrato = contrato;
+
+    component.registrarContrato();
 
   });
 
@@ -144,16 +270,25 @@ describe('RegistroVentaComponent', () => {
 
     const ventaDTO = new VentaDTO();
     ventaDTO.cliente_cedula = '123';
-    ventaDTO.matricula = 'casa 12';
+    ventaDTO.matricula = '123';
     ventaDTO.visita_id = 1;
     ventaDTO.inmueble_id = 12;
+    ventaDTO.id = 3;
+
+    const inmueble = new Inmueble();
+    inmueble.matricula = '123';
 
     const personaE = new Persona();
     personaE.cedula = 123;
 
+    const cliente = new Persona();
+    cliente.cedula = 1234;
+
     const empleado = new Empleado();
     empleado.persona_cedula = personaE;
 
+    component.selectedInmueble = inmueble;
+    component.selectedPersona = cliente;
     component.ventasTabla = ventaDTO;
     component.empleado = empleado;
 
@@ -163,19 +298,59 @@ describe('RegistroVentaComponent', () => {
 
   });
 
-  it ('editar venta sin cliente', () => {
+  it ('editar venta inmueble no existe', () => {
 
     const ventaDTO = new VentaDTO();
+    ventaDTO.cliente_cedula = '123';
     ventaDTO.matricula = 'casa 12';
+    ventaDTO.visita_id = 1;
+    ventaDTO.inmueble_id = 12;
+
+    const inmueble = new Inmueble();
+    inmueble.matricula = '1231231casa';
+
+    const personaE = new Persona();
+    personaE.cedula = 123;
+
+    const cliente = new Persona();
+    cliente.cedula = 1234;
+
+    const empleado = new Empleado();
+    empleado.persona_cedula = personaE;
+
+    component.selectedInmueble = inmueble;
+    component.selectedPersona = cliente;
+    component.ventasTabla = ventaDTO;
+    component.empleado = empleado;
+
+    component.editarVenta();
+
+    expect(component.verVentaEditada).toBeTruthy();
+
+  });
+
+
+  it ('editar venta cliente no existe', () => {
+
+    const ventaDTO = new VentaDTO();
+    ventaDTO.matricula = '1234';
     ventaDTO.visita_id = 1;
     ventaDTO.inmueble_id = 12;
 
     const personaE = new Persona();
     personaE.cedula = 123;
 
+    const inmueble = new Inmueble();
+    inmueble.matricula = '1234';
+
+    const cliente = new Persona();
+    cliente.cedula = 1234234234;
+
     const empleado = new Empleado();
     empleado.persona_cedula = personaE;
 
+    component.selectedInmueble = inmueble;
+    component.selectedPersona = cliente;
     component.ventasTabla = ventaDTO;
     component.empleado = empleado;
 
@@ -185,7 +360,7 @@ describe('RegistroVentaComponent', () => {
 
   });
 
-  it ('editar venta sin matricula', () => {
+  it ('editar venta sin validar campos', () => {
 
     const ventaDTO = new VentaDTO();
     ventaDTO.cliente_cedula = '123';
@@ -240,6 +415,14 @@ describe('RegistroVentaComponent', () => {
 
   });
 
+  it ('buscar cliente ver no existe', () => {
+
+    component.buscarClienteVer('12343323');
+
+    expect(component.verBusqueda()).toBeFalsy();
+
+  });
+
   it ('buscar cliente que no existe', () => {
 
     const cliente = new Persona();
@@ -278,11 +461,32 @@ describe('RegistroVentaComponent', () => {
 
   });
 
+  it('buscar inmueble no existe', () => {
+
+    const inmueble = new Inmueble();
+    inmueble.matricula = 'casa 12234';
+
+    component.selectedInmueble = inmueble;
+
+    component.buscarInmueble();
+
+    expect(component.verBusqueda()).toBeFalsy();
+
+  });
+
   it('buscar inmueble', () => {
 
     component.buscarInmuebleVer('casa12');
 
     expect(component.verBusqueda).toBeTruthy();
+
+  });
+
+  it('buscar inmueble ver no existe', () => {
+
+    component.buscarInmuebleVer('casa12354');
+
+    expect(component.verBusqueda()).toBeFalsy();
 
   });
 
@@ -370,14 +574,14 @@ describe('RegistroVentaComponent', () => {
 
   });
 
-  /**it('ObtenerDatosCombosBusqueda', () => {
+  // it('ObtenerDatosCombosBusqueda', () => {
 
-    const inmueble: Inmueble = {tipo_inmueble_id: 1, id_depto: 1, municipio_id: 1, cliente_cedula: 2000};
-    component.selectedInmueble = inmueble;
-    component.obtenerDatosCombosBusqueda();
-    expect(component.selectedTipoInmueble.id).toEqual(1);
+  //   const inmueble: Inmueble = {tipo_inmueble_id: 1, id_depto: 1, municipio_id: 1, cliente_cedula: 2000};
+  //   component.selectedInmueble = inmueble;
+  //   component.obtenerDatosCombosBusqueda();
+  //   expect(component.selectedTipoInmueble.id).toEqual(1);
 
-  }); */
+  // });
 
   it('ObtenerPublicacionInmueble en Arriendo', () => {
 
@@ -458,6 +662,14 @@ describe('RegistroVentaComponent', () => {
 
   });
 
+  it ('verificar eliminacion', () => {
+
+    const res = component.verEliminacion();
+
+    expect(res).toBeTruthy();
+
+  });
+
   it ('listar departamentos', () => {
 
     component.listarDepartamentos();
@@ -474,7 +686,7 @@ describe('RegistroVentaComponent', () => {
 
   });
 
-  it ('listar departamentos', () => {
+  it ('listar clientes', () => {
 
     component.listarClientes();
 
@@ -487,6 +699,14 @@ describe('RegistroVentaComponent', () => {
     component.limpiarcampos();
 
     expect(component.camposLimpiados).toBeTruthy();
+
+  });
+
+  it ('verificar venta editada', () => {
+
+    const res = component.verVentaEditada();
+
+    expect(res).toBeTruthy();
 
   });
 
@@ -526,7 +746,7 @@ describe('RegistroVentaComponent', () => {
 
   });
 
-  it ('llenar tabla', () => {
+  it ('llenar tabla contrato', () => {
 
     component.llenarTablaContrato();
     expect(component.tablaLLena).toBeTruthy();
@@ -547,6 +767,14 @@ describe('RegistroVentaComponent', () => {
 
   });
 
+  it ('verificar busqueda', () => {
+
+    const res = component.verBusqueda();
+
+    expect(res).toBeTruthy();
+
+  });
+
   it ('eliminar Contrato', () => {
 
     const contrato = new Contrato();
@@ -558,6 +786,95 @@ describe('RegistroVentaComponent', () => {
     component.eliminarContrato(contrato);
 
     expect(component.verEliminacion).toBeTruthy();
+
+  });
+
+  it ('limpiar campos contrato', () => {
+
+    component.empleado = new Empleado();
+
+    const res = component.limpiarCamposContrato();
+    expect(res).toBeTruthy();
+
+  });
+
+  it ('limpiar campos contrato dos', () => {
+    component.limpiarCamposContratoDos();
+  });
+
+  it ('editar contrato', () => {
+
+    component.selectedFile = undefined;
+
+    const contrato = new Contrato();
+    contrato.descripcion = 'nuevo';
+    contrato.precio = 1000000;
+    contrato.fecha = new Date();
+    contrato.id = 1;
+    contrato.contrato = 'nuevo contrato';
+
+    component.selectedContrato = contrato;
+    component.contratoEditar = contrato;
+
+    const res = component.editarContrato();
+
+    expect(res).toBeTruthy();
+
+  });
+
+  it ('editar contrato selected file vacio', () => {
+
+    component.selectedFile = null;
+
+    const contrato = new Contrato();
+    contrato.descripcion = 'nuevo';
+    contrato.precio = 1000000;
+    contrato.fecha = new Date();
+    contrato.id = 1;
+    contrato.contrato = 'nuevo contrato';
+
+    component.selectedContrato = contrato;
+    component.contratoEditar = contrato;
+
+    const res = component.editarContrato();
+
+    expect(res).toBeFalsy();
+
+  });
+
+  it ('editar contrato sin descripcion', () => {
+
+    component.selectedFile = undefined;
+
+    const contrato = new Contrato();
+    contrato.precio = 1000000;
+    contrato.descripcion = undefined;
+    contrato.fecha = new Date();
+    contrato.id = 1;
+    contrato.contrato = 'nuevo contrato';
+
+    component.selectedContrato = contrato;
+    component.contratoEditar = contrato;
+
+    const res = component.editarContrato();
+
+    expect(res).toBeFalsy();
+
+  });
+
+  it ('verificar venta', () => {
+
+    const res = component.verVentaRegistrada();
+
+    expect(res).toBeTruthy();
+
+  });
+
+  it ('ngAfterViewChecked', () => {
+
+    const res = component.ngAfterViewChecked();
+
+    expect(res).toBeTruthy();
 
   });
 

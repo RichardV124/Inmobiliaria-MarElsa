@@ -1,159 +1,178 @@
- <!-- ##### Breadcumb Area Start ##### -->
- <section class="breadcumb-area bg-img" style="background-image: url(https://colorlib.com/preview/theme/south/img/bg-img/hero1.jpg);">
-	<div class="container h-100">
-		<div class="row h-100 align-items-center">
-			<div class="col-12">
-				<div class="breadcumb-content">
-					<h3 class="breadcumb-title">Inmobiliaria MarElsa</h3>
-				</div>
-			</div>
-		</div>
-	</div>
+<!-- ##### Breadcumb Area Start ##### -->
+<section class="breadcumb-area bg-img" style="background-image: url(https://colorlib.com/preview/theme/south/img/bg-img/hero1.jpg);">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-12">
+        <div class="breadcumb-content">
+          <h3 class="breadcumb-title">Inmobiliaria MarElsa</h3>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 <!-- ##### Breadcumb Area End ##### -->
 
 <div class="south-search-area">
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="advanced-search-form">
-					<!-- Search Title -->
-					<div class="search-title">
-						<p>busca tu hogar</p>
-					</div>
-					<!-- Search Form -->
-						
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="advanced-search-form">
+          <!-- Search Title -->
+          <div class="search-title">
+            <p>busca tu hogar</p>
+          </div>
+          <!-- Search Form -->
 
-					<div class="form-group">	
-							<div class="row">
-								<div class="col-md-2"><label>Departamento</label></div>
-								<div class="col-md-4">
-								  <select [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
-									<option [ngValue]="0" selected disabled hidden>Seleccione un Departamento</option>
-									<option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
-								  </select>
-								</div>
-								<div class="col-md-2"><label>Municipio</label></div>
-								<div class="col-md-4">
-								<select [(ngModel)]="inmueble.municipio_id" class="form-control">
-									<option [ngValue]="0" selected disabled hidden>Seleccione un Municipio</option>
-									<option *ngFor="let ms of listaMunicipios" [value]="ms.id">{{ms.nombre}}</option>
-								</select>
-								</div>
-						</div>	
-						
-						<div class="row">
-						<div class="col-md-2"><label>Zona</label></div>
-						<div class="col-md-4">
-						  <select class="form-control" [(ngModel)]="inmueble.zona">
-							<option [ngValue]="0" selected disabled hidden>Seleccione la zona del inmubele</option>
-							<option [ngValue]="1">Rural</option>
-							<option [ngValue]="2">Urbano</option>
-						  </select>
-						</div>
-						<div class="col-md-2"><label>Tipo de inmueble</label></div>
-									  <div class="col-md-4">
-										<select [(ngModel)]="inmueble.tipo_inmueble_id" class="form-control">
-										  <option [ngValue]="0" selected disabled hidden>Seleccione el tipo de inmueble</option>
-										  <option *ngFor="let tp of listaTiposInmueble" [value]="tp.id">{{tp.descripcion}}</option>
-										</select>
-									  </div>
-					</div>
-					<div class="row">
-							<div class="col-md-2"><label>en venta o arriendo?</label></div>
-							<div class="col-md-4">
-							  <select class="form-control" [(ngModel)]="inmueble.publicacion">
-								<option [ngValue]="0" selected disabled hidden>Seleccione la zona del inmubele</option>
-								<option [ngValue]="1">Arriendo</option>
-								<option [ngValue]="2">Venta</option>
-							  </select>
-							
-							</div>
-							
-					</div>
-					<div class="col-md-2" style="margin-left: 42%;">
-							<button (click)="filtrar()" class="btn south-btn btn-2 m-1">
-							  Filtrar
-							</button>
-						  </div>
-							
-				</div>
-				</div>
-			</div>
-		</div>
-	</div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-2"><label>Departamento</label></div>
+              <div class="col-md-4">
+                <select [(ngModel)]="selectedDepartamento.id" class="form-control" (change)="listarMunicipios()">
+                  <option [ngValue]="0" selected disabled hidden>Seleccione un Departamento</option>
+                  <option *ngFor="let dpto of listaDepartamentos" [value]="dpto.id">{{dpto.nombre}}</option>
+                </select>
+              </div>
+              <div class="col-md-2"><label>Municipio</label></div>
+              <div class="col-md-4">
+                <select [(ngModel)]="inmueble.municipio_id" class="form-control">
+                  <option [ngValue]="0" selected disabled hidden>Seleccione un Municipio</option>
+                  <option *ngFor="let ms of listaMunicipios" [value]="ms.id">{{ms.nombre}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-2"><label>Zona</label></div>
+              <div class="col-md-4">
+                <select class="form-control" [(ngModel)]="inmueble.zona">
+                  <option [ngValue]="0" selected disabled hidden>Seleccione la zona del inmubele</option>
+                  <option [ngValue]="1">Rural</option>
+                  <option [ngValue]="2">Urbano</option>
+                </select>
+              </div>
+              <div class="col-md-2"><label>Tipo de inmueble</label></div>
+              <div class="col-md-4">
+                <select [(ngModel)]="inmueble.tipo_inmueble_id" class="form-control">
+                  <option [ngValue]="0" selected disabled hidden>Seleccione el tipo de inmueble</option>
+                  <option *ngFor="let tp of listaTiposInmueble" [value]="tp.id">{{tp.descripcion}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><label>en venta o arriendo?</label></div>
+              <div class="col-md-4">
+                <select class="form-control" [(ngModel)]="inmueble.publicacion">
+                  <option [ngValue]="0" selected disabled hidden>Seleccione la zona del inmubele</option>
+                  <option [ngValue]="1">Arriendo</option>
+                  <option [ngValue]="2">Venta</option>
+                </select>
+
+              </div>
+
+            </div>
+            <div class="col-md-2" style="margin-left: 42%;">
+              <button (click)="filtrar()" class="btn south-btn btn-2 m-1">
+                Filtrar
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> <br>
+
+<div class="panel single-accordion" style="margin-left: 10%; margin-right: 10%;">
+  <h6><a role="button" class="collapsed" aria-expanded="true" aria-controls="collapseOne" data-toggle="collapse"
+      data-parent="#accordion" href="#collapseOne">DE CLIC AQUÍ PARA FILTRAR INMUEBLES DESDE EL MAPA
+      <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+      <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+    </a></h6>
+  <div id="collapseOne" class="accordion-content collapse">
+    <agm-map [zoom]="8" [latitude]="latitudDefecto" [longitude]="longitudDefecto" (mapClick)="onChoseLocation($event)">
+      <agm-marker *ngIf="marcadorAgregado" [latitude]="latitud" [longitude]="longitud"></agm-marker>
+      <agm-marker *ngFor="let e of inmuebles" [latitude]="e.latitud" [longitude]="e.longitud">
+        <agm-info-window>
+          <strong>Direccion: {{e.direccion}}</strong><br>
+          <!--<strong>Propietario: {{e.cliente_cedula.nombre}}</strong>-->
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+    <button *ngIf="marcadorAgregado" class="btn south-btn active m-1" (click)="ocultarMarcador()">eliminar filtro</button>
+  </div>
 </div>
 
 <!-- ##### Listing Content Wrapper Area Start ##### -->
 <section class="listings-content-wrapper section-padding-100">
-	<div class="container">
-	  <!-- ##### Advance Search Area Start ##### -->
-		<div class="row">
+  <div class="container">
+    <!-- ##### Advance Search Area Start ##### -->
+    <div class="row">
 
-			<!-- Single Featured Property -->
-			<div *ngFor="let i of inmuebles" class="col-12 col-md-6 col-xl-4">
-				<div class="single-featured-property mb-50">
-					<!-- Property Thumbnail -->
-					<div class="property-thumb">
-						<img src="https://colorlib.com/preview/theme/south/img/bg-img/feature1.jpg" alt="">
+      <!-- Single Featured Property -->
+      <div *ngFor="let i of inmuebles" class="col-12 col-md-6 col-xl-4">
+        <div class="single-featured-property mb-50">
+          <!-- Property Thumbnail -->
+          <div class="property-thumb">
+            <img src="https://colorlib.com/preview/theme/south/img/bg-img/feature1.jpg" alt="">
 
-						<div class="tag">
-								<span>{{i.tipo_inmueble_id.descripcion}}</span>
-						</div>
-					
-						<div class="list-price">
-							<p>${{i.valor}}</p>
-						</div>
-					</div>
-					<!-- Property Content -->
-					<div class="property-content">
+            <div class="tag">
+              <span>{{i.tipo_inmueble_id.descripcion}}</span>
+            </div>
 
-						<h5>{{i.municipio_id.municipio}}</h5>
+            <div class="list-price">
+              <p>${{i.valor}}</p>
+            </div>
+          </div>
+          <!-- Property Content -->
+          <div class="property-content">
 
-						<p class="location"><img src="https://colorlib.com/preview/theme/south/img/icons/location.png" alt="">{{i.direccion}}</p>
-						<span>habitaciones: {{i.num_habitaciones}}</span>
-						<br>
-						<br>
-						<div class="property-meta-data d-flex align-items-end justify-content-between">
-							<div class="bathroom">
-								<img src="https://colorlib.com/preview/theme/south/img/icons/bathtub.png" alt="">
-								<span>{{i.num_banios}}</span>
-							</div>
-							<div class="garage">
-								<img src="https://colorlib.com/preview/theme/south/img/icons/garage.png" alt="">
-								<span>{{i.garaje}}</span>
-							</div>
-							<div class="space">
-								<img src="https://colorlib.com/preview/theme/south/img/icons/space.png" alt="">
-								<span>{{i.area}} mt2</span>
-							</div>
-						</div>
-						<br>
-						<div class="col-md-2" style="margin-left: 15%; width: 15px;">
-								<button (click)="verMas()" class="btn south-btn btn-2 m-1">
-									ver mas
-								</button>
-								</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
+            <h5>{{i.municipio_id.municipio}}</h5>
 
-		<div class="row">
-			<div class="col-12">
-				<div class="south-pagination d-flex justify-content-end">
-					<nav aria-label="Page navigation">
-						<ul class="pagination">
-							<li class="page-item"><a class="page-link active" href="#">01</a></li>
-							<li class="page-item"><a class="page-link" href="#">02</a></li>
-							<li class="page-item"><a class="page-link" href="#">03</a></li>
-						</ul>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</div>
+            <p class="location"><img src="https://colorlib.com/preview/theme/south/img/icons/location.png" alt="">{{i.direccion}}</p>
+            <span>habitaciones: {{i.num_habitaciones}}</span>
+            <br>
+            <br>
+            <div class="property-meta-data d-flex align-items-end justify-content-between">
+              <div class="bathroom">
+                <img src="https://colorlib.com/preview/theme/south/img/icons/bathtub.png" alt="">
+                <span>{{i.num_banios}}</span>
+              </div>
+              <div class="garage">
+                <img src="https://colorlib.com/preview/theme/south/img/icons/garage.png" alt="">
+                <span>{{i.garaje}}</span>
+              </div>
+              <div class="space">
+                <img src="https://colorlib.com/preview/theme/south/img/icons/space.png" alt="">
+                <span>{{i.area}} mt2</span>
+              </div>
+            </div>
+            <br>
+            <div class="col-md-2" style="margin-left: 15%; width: 15px;">
+              <button (click)="verMas()" class="btn south-btn btn-2 m-1">
+                ver mas
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="south-pagination d-flex justify-content-end">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link active" href="#">01</a></li>
+              <li class="page-item"><a class="page-link" href="#">02</a></li>
+              <li class="page-item"><a class="page-link" href="#">03</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 <!-- ##### Listing Content Wrapper Area End ##### -->
-

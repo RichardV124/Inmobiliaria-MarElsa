@@ -35,6 +35,7 @@ export class RegistroVentaComponent implements OnInit {
   ventaEliminada = false;
   ventaBuscada = false;
   ventaEditada = false;
+  contratoEditado = false;
   labelFile;
   selectedPersona: Persona = new Persona();
   selectedInmueble: Inmueble = new Inmueble();
@@ -476,7 +477,6 @@ limpiarCamposContratoDos(){
     return true;
   }
 
-  
   limpiarCamposInmueble() {
     this.combosPorDefecto();
     this.propietario.cedula = null;
@@ -722,18 +722,21 @@ verBusqueda() {
   return this.ventaBuscada;
 }
 
-limpiarCamposContrato(){
+limpiarCamposContrato(): boolean {
   this.selectedCont = new Contrato();
+  return true;
 }
 
 editarContrato(){
 if(this.selectedFile === null){
      alert('debe seleccionar un archivo');
+     return false;
 }else{
   if(this.selectedContrato.descripcion ===undefined 
     ||this.selectedContrato.precio === undefined||
     this.selectedContrato.fecha ===undefined){
-      alert('no hay datos para modificar')
+      alert('no hay datos para modificar');
+      return false;
   }else{
     console.log(this.selectedFile);
     this.crearArchivo();
@@ -747,6 +750,7 @@ if(this.selectedFile === null){
       this.respuesta = JSON.parse(JSON.stringify(res));
       this.showEditarContrato = this.respuesta.id;
     });
+    return true;
   }
 }
 
@@ -759,5 +763,6 @@ verVentaRegistrada(): boolean {
 
 ngAfterViewChecked() {
   this.scrollHelper.doScroll();
+  return true;
 }
 }

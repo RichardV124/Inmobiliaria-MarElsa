@@ -46,6 +46,8 @@ clientExist = false;
   longitudDefecto = -75.665193;
   verInmueble = false;
   marcadorAgregado = false;
+  imgs: Archivo[];
+  ruta = 'https://colorlib.com/preview/theme/south/img/bg-img/';
 
   listaInmuebles: Inmueble[];
   listaTiposInmueble: TipoInmueble[];
@@ -57,9 +59,10 @@ clientExist = false;
   selectedTipoInmueble: TipoInmueble = new TipoInmueble();
   respuesta: RespuestaDTO = new RespuestaDTO();
   selectedFile: File[] = null;
+  fotos: string[] = [];
+  copiaFotos: string[] = [];
   usuario: Login = new Login();
   propietario: Persona = new Persona();
-  archivo: Archivo = new Archivo();
   publicarEnArriendo: boolean;
   publicarEnVenta: boolean;
 
@@ -257,6 +260,9 @@ clientExist = false;
     this.publicarEnArriendo = false;
     this.publicarEnVenta = false;
     this.selectedFile = [];
+    this.fotos = [];
+    this.copiaFotos = [];
+    this.imgs = [];
     this.mostrarTabArchivos = false;
     this.labelFile = 'Ningún archivo seleccionado';
     this.verInmueble = false;
@@ -283,19 +289,23 @@ clientExist = false;
     if (this.selectedFile === null) {
       this.labelFile = 'Ningún archivo seleccionado';
     } else {
+
+    this.mostrarTabArchivos = true;
     this.labelFile = '';
+
     for (const file of this.selectedFile) {
-      this.labelFile = this.labelFile + '  ' + file.name;
+      let fotoExiste = false;
+      for (const f of this.fotos) {
+        if (f === this.ruta + file.name) {
+          fotoExiste = true;
+          break;
+        }
+      }
+      if (!fotoExiste) {
+        this.labelFile = this.labelFile + '  ' + file.name;
+        this.fotos.push(this.ruta + file.name);
+      }
     }
-
-    /** this.selectedFile = event.target.files[0];
-
-    const reader = new FileReader();
-
-    reader.onload = (e: any) => {
-        this.selectedFile = e.target.result;
-    };
-    reader.readAsDataURL(event.target.files[0]); **/
 
    }
   }
@@ -325,9 +335,9 @@ clientExist = false;
     for (const file of this.selectedFile) {
       const ext = file.name.substr(file.name.lastIndexOf('.') + 1);
       if (ext.toLowerCase() === 'jpg' || ext.toLowerCase()  === 'png' || ext.toLowerCase()  === 'jpeg') {
-        this.convertirArchivoBase64(file, true, inmueble);
+        this.convertirArchivoBase64(file, ext, inmueble);
       } else if (ext === 'mp4') {
-        this.convertirArchivoBase64(file, false, inmueble);
+        this.convertirArchivoBase64(file, ext, inmueble);
       } else {
         ban = false;
         this.show = 404;
@@ -339,31 +349,63 @@ clientExist = false;
     }
   }
 
-  convertirArchivoBase64(file: File, imgn: boolean, inmueble: Inmueble) {
-    const myReader: FileReader = new FileReader();
-    myReader.onloadend = (e) => {
-      this.img = myReader.result;
-      const archivoIngresado: Archivo = new Archivo();
-      archivoIngresado.nombre = this.img;
-      archivoIngresado.inmueble_id = inmueble;
-      if (imgn) {
-        archivoIngresado.archivo = 'imagen';
+  quitarFoto(foto) {
+    let banQuitar = false;
+    if (this.copiaFotos.length > 0) {
+      if (this.fotos.length === 1) {
+        this.respuesta.msj = 'No puede eliminar todas las fotos';
+        this.show = 404;
       } else {
-        archivoIngresado.archivo = 'video';
+        banQuitar = true;
       }
-      this.inmuebleServie.registrarArchivo(archivoIngresado)
-      .subscribe(res => {
+    } else {
+      banQuitar = true;
+    }
+    if (banQuitar) {
+      let cont = 0;
+      for (const f of this.fotos) {
+        if (f === foto) {
+          this.fotos.splice(cont, 1);
+          break;
+        }
+        cont++;
+      }
+    }
+  }
+
+  convertirArchivoBase64(file: File, tipo, inmueble: Inmueble) {
+      const archivoIngresado: Archivo = new Archivo();
+      archivoIngresado.nombre = file.name;
+      archivoIngresado.inmueble_id = inmueble;
+      archivoIngresado.archivo = tipo;
+      let yaExiste = false;
+      if (this.copiaFotos.length !== 0) {
+        for (const c of this.copiaFotos) {
+          if (c === file.name) {
+            yaExiste = true;
+            break;
+          }
+        }
+        if (!yaExiste) {
+          this.registarFoto(archivoIngresado);
+        }
+      } else {
+        this.registarFoto(archivoIngresado);
+      }
+  }
+
+  registarFoto(archivo: Archivo) {
+    this.inmuebleServie.registrarArchivo(archivo)
+        .subscribe(res => {
         // registrado
-      });
-    };
-    myReader.readAsDataURL(file);
+        });
   }
 
   /**
    * Obtiene los datos que se registraron en los cambos para llenarlos en la lista
    */
   obtenerDatosCombosLista() {
-    // tslint:disable-next-line:prefer-const 
+    // tslint:disable-next-line:prefer-const
     for (let inmueble of this.listaInmuebles) {
       this.inmuebleServie.buscarTipoInmuebleId(JSON.parse(JSON.stringify(inmueble['tipo_inmueble_id'])))
       .subscribe(tipo => {
@@ -415,7 +457,15 @@ clientExist = false;
   listarArchivos() {
     this.inmuebleServie.listarArchivos(this.selectedInmueble.id)
     .subscribe(archivo => {
-      this.archivo = archivo;
+      this.imgs = [];
+      this.imgs = archivo;
+      this.fotos = [];
+      this.copiaFotos = [];
+      for (const i of this.imgs) {
+        this.fotos.push(this.ruta + i.nombre);
+        this.copiaFotos.push(i.nombre);
+      }
+      this.mostrarTabArchivos = true;
       return true;
     });
   }
@@ -500,6 +550,7 @@ clientExist = false;
           this.respuesta = JSON.parse(JSON.stringify(inmueble));
           this.show = this.respuesta.id;
           if (this.show === 505) {
+            this.verificarEliminacionArchivos();
             this.crearArchivo(this.selectedInmueble);
             this.listarInmuebles();
           }
@@ -507,6 +558,27 @@ clientExist = false;
        // }
       }
     }
+    }
+  }
+
+  /**
+   * Verifica si un archivo fue eliminado, si es así se elimina de la bd
+   */
+  verificarEliminacionArchivos() {
+    for (const a of this.imgs) {
+      let archivoEliminado = true;
+      for (const f of this.fotos) {
+        const nombreArchivo = this.ruta + a.nombre;
+        if (nombreArchivo === f) {
+          archivoEliminado = false;
+          break;
+        }
+      }
+      if (archivoEliminado) {
+        this.inmuebleServie.eliminarArchivo(a).subscribe(res => {
+          // Archivo eliminado
+        });
+      }
     }
   }
 
