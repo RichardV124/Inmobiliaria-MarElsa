@@ -1,7 +1,7 @@
+import { Experiencia } from 'src/app/modelo/experiencia';
 import { ScrollHelper } from './../../../../../modelo/ScrollHelper';
 import { LoginService } from './../../../../../services/login/login.service';
 import { Estudio } from './../../../../../modelo/estudio';
-import { Experiencia } from './../../../../../modelo/experiencia';
 import { EmpleadoDTO } from './../../../../../modelo/dto/empleadoDTO';
 import { EmpleadoService } from './../../../../../services/empleado/empleado.service';
 import { ClienteService } from './../../../../../services/cliente/cliente.service';
@@ -57,9 +57,12 @@ export class GestionPersonalComponent implements OnInit, AfterViewChecked {
   selectedPersona: Persona = new Persona();
   selectedLogin: Login = new Login();
   selectedEmpleado: Empleado = new Empleado();
+  estudio: Estudio = new Estudio();
+  experiencia: Experiencia = new Experiencia();
   /**Experiencias y Estudios*/
   experienciaSeleccionada: Experiencia = new Experiencia();
   estudioSeleccionado: Estudio = new Estudio();
+
 
   rol: Rol = new Rol();
   respuesta: RespuestaDTO = new RespuestaDTO();
@@ -84,7 +87,7 @@ export class GestionPersonalComponent implements OnInit, AfterViewChecked {
       this.selectedPersona.genero = 0;
       this.tipoPersonalSeleccionado.id = 0;
        // Validamos si el usuario tiene acceso a la pagina
-     this.usuarioServicio.esAccesible('gestion-personal');
+    // this.usuarioServicio.esAccesible('gestion-personal');
       this.labelFile = 'Ningún archivo seleccionado';
   }
 

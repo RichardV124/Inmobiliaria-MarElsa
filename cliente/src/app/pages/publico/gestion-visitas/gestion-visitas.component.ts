@@ -69,8 +69,8 @@ export class GestionVisitasComponent implements OnInit, AfterViewChecked {
    }
 
   ngOnInit() {
-     this.servicios.esAccesible('gestion-visitas-cliente');
-     this.user = this.servicios.getUsuario();
+    // this.servicios.esAccesible('gestion-visitas-cliente');
+  //   this.user = this.servicios.getUsuario();
   }
 
   ngAfterViewChecked() {
@@ -289,10 +289,6 @@ export class GestionVisitasComponent implements OnInit, AfterViewChecked {
     this.selectedVisita.inmueble_id = this.selectedInmueble;
     this.selectedVisita.cliente_cedula = this.user.persona_cedula;
     console.log(this.selectedVisita);
-  }
-
-  validarHora() {
-
   }
 }
 

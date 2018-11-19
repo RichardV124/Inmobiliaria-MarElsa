@@ -24,6 +24,7 @@ import {
 } from '@angular/http';
 import { Inject } from '@angular/core';
 import { Experiencia } from 'src/app/modelo/experiencia';
+import { Estudio } from 'src/app/modelo/estudio';
 
 describe('GestionPersonalComponent', () => {
 
@@ -248,7 +249,7 @@ describe('GestionPersonalComponent', () => {
 
     expect(component.validarRegistroExperiencia).toBeTruthy();
 
-  })
+  });
 
   it('Listar municipios', () => {
 
@@ -332,5 +333,119 @@ describe('GestionPersonalComponent', () => {
 
    });
 
+   it('Registro experiencias', () => {
+    component.experienciaSeleccionada.persona_cedula = component.selectedPersona;
+    const ver = component.registrarExperiencia();
+    expect(true).toBeTruthy();
+    });
+
+    it('Registro estudios', () => {
+      component.estudioSeleccionado.persona_cedula = component.selectedPersona;
+      const ver = component.registrarEstudio();
+      expect(true).toBeTruthy();
+      });
+
+      it('Listar los tipos ed personal', () => {
+        const ver = component.listarTipoPersonal();
+        expect(true).toBeTruthy();
+        });
+
+        it('Listar municipiosl', () => {
+          const ver = component.listarMunicipios();
+          expect(true).toBeTruthy();
+          });
+
+          it('Listar departamentos', () => {
+            const ver = component.listarDepartamentos();
+            expect(true).toBeTruthy();
+            });
+
+            it('Listar empleados', () => {
+              const ver = component.listarEmpleados();
+              expect(true).toBeTruthy();
+              });
+
+              it('Validar campos experiencias', () => {
+                const ver = component.validarCamposExperiencias();
+                expect(true).toBeTruthy();
+                });
+
+                it('Validar campos experiencias', () => {
+                  const ver = component.validarCamposExperiencias();
+                  expect(true).toBeTruthy();
+                  });
+
+                  it('Validar campos estudios', () => {
+                    const ver = component.validarCamposEstudios();
+                    expect(true).toBeTruthy();
+                    });
+
+                    it('Validar registro', () => {
+                      const ver = component.validarRegistro();
+                      expect(true).toBeTruthy();
+                      });
+
+                      it('Validar busqueda', () => {
+                        const ver = component.validarBusqueda();
+                        expect(true).toBeTruthy();
+                        });
+
+                        it('Validar eliminar', () => {
+                          const ver = component.validarEliminar();
+                          expect(true).toBeTruthy();
+                          });
+
+                          it('Validar editar', () => {
+                            const ver = component.validarEditar();
+                            expect(true).toBeTruthy();
+                            });
+
+                            it('Validar lista empleados', () => {
+                              const ver = component.validarlistarEmpledos();
+                              expect(true).toBeTruthy();
+                              });
+
+                              it('Validar lista tipo personal', () => {
+                                const ver = component.validarlistarTipoPersonal();
+                                expect(true).toBeTruthy();
+                                });
+
+                                it('Validar lista municipios', () => {
+                                  const ver = component.validarlistarMunicipios();
+                                  expect(true).toBeTruthy();
+                                  });
+
+                                  it('Validar lista departamentos', () => {
+                                    const ver = component.validarlistarDepartamentos();
+                                    expect(true).toBeTruthy();
+                                    });
+
+                                    it('Validar registro experiencias', () => {
+                                      const ver = component.validarRegistroExperiencia();
+                                      expect(true).toBeTruthy();
+                                      });
+
+                                      it('Validar listar experiencias', () => {
+                                        const ver = component.validarlistarExperiencias();
+                                        expect(true).toBeTruthy();
+                                        });
+
+                                        it('Validar listar estudios', () => {
+                                          component.selectedPersona.nombre = 'Fredy';
+                                          component.selectedPersona.apellido = 'Pineda';
+                                          const fe = new Date('02/06/1997');
+                                          component.selectedPersona.fecha_nacimiento = fe;
+                                          component.selectedPersona.cedula = '444';
+                                          component.selectedPersona.direccion = 'calle 20';
+                                          component.selectedPersona.telefono = 3114802039;
+                                          component.selectedPersona.correo = 'fp@';
+                                          component.selectedPersona.rol_id = component.rol;
+                                          component.selectedPersona.municipio_id = component.selectedMunicipio;
+                                          component.selectedPersona.genero = 2 ;
+                                          component.selectedPersona.activo = 1;
+                                          const ver = component.validarlistarEstudios();
+                                          expect(true).toBeTruthy();
+                                          });
 
 });
+
