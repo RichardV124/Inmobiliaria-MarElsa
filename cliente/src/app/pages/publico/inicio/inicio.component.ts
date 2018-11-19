@@ -21,6 +21,15 @@ export class InicioComponent implements OnInit {
 
   arriendo: any;
   venta: any;
+  latitudDefecto = 4.540130;
+  longitudDefecto = -75.665193;
+  latitud = 0;
+  longitud = 0;
+  latitudSuperior = 0;
+  latitudInferior = 0;
+  longitudSuperior = 0;
+  longitudInferior = 0;
+  marcadorAgregado = false;
   inmuebleSeleccionado: Inmueble;
   inmuebleMatricula: string;
   user: Login = new Login();
@@ -29,6 +38,9 @@ export class InicioComponent implements OnInit {
    * Listado de inmuebles
    */
   inmuebles: Array<Inmueble> = [];
+
+  copiaInmuebles: Array<Inmueble> = [];
+  nuevaLista: Array<Inmueble> = [];
 
   // listados de los combobox
   listaTiposInmueble: TipoInmueble[];
@@ -61,6 +73,56 @@ export class InicioComponent implements OnInit {
     this.user = this.servicios.getUsuario();
   }
 
+  /**
+   * Agrega un marcador al mapa
+   * @param event marcador agregado
+   */
+  onChoseLocation(event) {
+    if (this.marcadorAgregado) {
+      this.ocultarMarcador();
+    }
+    this.latitud = event.coords.lat;
+    this.longitud = event.coords.lng;
+    this.marcadorAgregado = true;
+    this.obtenerRango();
+    this.listarInmueblesEnRago();
+  }
+
+  /**
+   * Elimina el filtro el rango y oculta el marcador
+   */
+  ocultarMarcador() {
+    this.marcadorAgregado = false;
+    this.inmuebles = [];
+    this.inmuebles = this.copiaInmuebles;
+    this.copiaInmuebles = [];
+  }
+
+  /**
+   * Obtiene el rango en el cual se listaran los inmuebles
+   */
+  obtenerRango() {
+    this.latitudSuperior = this.latitud + 0.006176;
+    this.latitudInferior = this.latitud - 0.006176;
+    this.longitudSuperior = this.longitud + 0.006176;
+    this.longitudInferior = this.longitud - 0.006176;
+  }
+
+  /**
+   * Lista los inmuebles que se encuentran en el rengo seleccionado
+   */
+  listarInmueblesEnRago() {
+    this.copiaInmuebles = this.inmuebles;
+    this.nuevaLista = [];
+    for (const i of this.inmuebles) {
+      if (i.latitud >= this.latitudInferior && i.latitud <= this.latitudSuperior
+        && i.longitud >= this.longitudInferior && i.longitud <= this.longitudSuperior) {
+          this.nuevaLista.push(i);
+        }
+    }
+    this.inmuebles = [];
+    this.inmuebles = this.nuevaLista;
+  }
 
  /**
    * Obtiene la lista de departamentos

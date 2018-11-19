@@ -32,12 +32,19 @@ export class RegistroVentaComponent implements OnInit {
   img;
   mostrarEditar: Boolean;
   ventaRegistrada = false;
+  ventaEliminada = false;
+  ventaBuscada = false;
+  ventaEditada = false;
+  contratoEditado = false;
   labelFile;
   selectedPersona: Persona = new Persona();
   selectedInmueble: Inmueble = new Inmueble();
   selectedLogin: Login = new Login();
   rol: Rol = new Rol();
   respuesta: RespuestaDTO = new RespuestaDTO();
+  listadoRealizado = false;
+  camposLimpiados = false;
+  ventaVista = false;
   respuestaDelContr: RespuestaDTO = new RespuestaDTO();
   respuestaRegContrato: RespuestaDTO = new RespuestaDTO();
   respuesta2: RespuestaDTO = new RespuestaDTO();
@@ -50,6 +57,7 @@ export class RegistroVentaComponent implements OnInit {
   respVentaEditar: RespuestaDTO = new RespuestaDTO();
   respContrato: RespuestaDTO = new RespuestaDTO();
   listaMunicipios: Municipio[];
+  tablaLLena = false;
   listaTiposInmueble: TipoInmueble[];
   listaDepartamentos: Departamento[];
   listaClientes: Persona[];
@@ -311,12 +319,6 @@ cerrarMsjContratodatos(){
       });
 
       return venta;
-    // }, 10000);
-    /** while (true){
-      if (venta !== null){
-        return venta;
-      }
-    }**/
   }
 
 registrarVenta(){
@@ -488,7 +490,6 @@ limpiarCamposContratoDos(){
     return true;
   }
 
-  
   limpiarCamposInmueble() {
     this.combosPorDefecto();
     this.propietario.cedula = null;
@@ -510,6 +511,7 @@ limpiarCamposContratoDos(){
     subscribe(departamento => {
       this.listaDepartamentos = departamento;
     });
+    this.listadoRealizado = true;
   }
 
   listarMunicipios() {
@@ -517,6 +519,7 @@ limpiarCamposContratoDos(){
     subscribe(municipio => {
       this.listaMunicipios = municipio;
     });
+    this.listadoRealizado = true;
   }
   listarClientes() {
     this.clienteService.listarClientes()
@@ -524,6 +527,7 @@ limpiarCamposContratoDos(){
       this.listaClientes = personas;
       this.rolesMunicipios();
     });
+    this.listadoRealizado = true;
   }
 
   rolesMunicipios() {
@@ -546,6 +550,7 @@ limpiarCamposContratoDos(){
     this.selectedDepartamento.id = 0;
     this.selectedMunicipio.id = 0;
     this.selectedPersona.genero = 0;
+    this.camposLimpiados = true;
   }
 
   validarCampos():boolean{
@@ -571,13 +576,14 @@ limpiarCamposContratoDos(){
       .subscribe(res => {
         this.ventas = res;
     });
-
+    this.tablaLLena = true;
   }
 
   llenarTablaContrato(){
     this.ventaService.listarContratos().subscribe(res =>{
       this.contratos = res;
-    })
+    });
+    this.tablaLLena = true;
   }
 
   verVenta(venta: VentaDTO){
@@ -585,7 +591,11 @@ limpiarCamposContratoDos(){
     this.buscarClienteVer(venta.cliente_cedula);
     this.buscarInmuebleVer(venta.matricula);
               this.scrollHelper.scrollToFirst('bandera');
-           
+    this.ventaVista = true;
+  }
+
+  verEliminacion(): boolean {
+    return this.ventaEliminada;
   }
 
   verContrato(contrato: Contrato){
@@ -596,6 +606,10 @@ limpiarCamposContratoDos(){
     this.labelFile = contrato.contrato;
     this.mostrarEditar = true;
     this.scrollHelper.scrollToFirst('banderDos');
+  }
+
+  verVentaEditada() {
+    return this.ventaEditada;
   }
 
   editarVenta()  {
@@ -626,6 +640,7 @@ limpiarCamposContratoDos(){
                       this.respuesta = JSON.parse(JSON.stringify(resVentEdit));
                       this.showEditarVenta = this.respuesta.id; 
                       this.llenarTabla();
+                      this.ventaEditada = true;
                   });
                 
               }
@@ -651,6 +666,7 @@ limpiarCamposContratoDos(){
                                 this.respuesta = JSON.parse(JSON.stringify(resVentEdit));
                                 this.showEditarVenta = this.respuesta.id; 
                                 this.llenarTabla();
+                                this.ventaEditada = true;
                             });
                            
                           }
@@ -715,18 +731,25 @@ eliminarContrato(contrato: Contrato){
     })
 }
 
-limpiarCamposContrato(){
+verBusqueda() {
+  return this.ventaBuscada;
+}
+
+limpiarCamposContrato(): boolean {
   this.selectedCont = new Contrato();
+  return true;
 }
 
 editarContrato(){
 if(this.selectedFile === null){
      alert('debe seleccionar un archivo');
+     return false;
 }else{
   if(this.selectedContrato.descripcion ===undefined 
     ||this.selectedContrato.precio === undefined||
     this.selectedContrato.fecha ===undefined){
-      alert('no hay datos para modificar')
+      alert('no hay datos para modificar');
+      return false;
   }else{
     console.log(this.selectedFile);
     this.crearArchivo();
@@ -740,17 +763,19 @@ if(this.selectedFile === null){
       this.respuesta = JSON.parse(JSON.stringify(res));
       this.showEditarContrato = this.respuesta.id;
     });
+    return true;
   }
 }
 
 
 }
 
-validarVentaexist(): boolean {
+verVentaRegistrada(): boolean {
   return this.ventaRegistrada;
 }
 
 ngAfterViewChecked() {
   this.scrollHelper.doScroll();
+  return true;
 }
 }
