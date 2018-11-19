@@ -1,3 +1,4 @@
+import { GestionVisitasComponent } from './pages/publico/gestion-visitas/gestion-visitas.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 import { AgmCoreModule } from '@agm/core';
@@ -24,6 +25,7 @@ import { GestionArriendoComponent } from './pages/seguro/empleado/arriendo/gesti
 import { RegistroVentaComponent } from './pages/seguro/empleado/registro-venta/registro-venta.component';
 import { GestionVisitaComponent } from './pages/seguro/cliente/gestion-visita/gestion-visita.component';
 import { VerVisitasComponent } from './pages/seguro/empleado/ver-visitas/ver-visitas.component';
+import { ReportesComponent } from './pages/seguro/administrador/reportes/reportes.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { VerVisitasComponent } from './pages/seguro/empleado/ver-visitas/ver-vis
     GestionArriendoComponent,
     RegistroVentaComponent,
     GestionVisitaComponent,
-    VerVisitasComponent
+    VerVisitasComponent,
+    GestionVisitasComponent,
+    ReportesComponent
   ],
   imports: [
     BrowserModule,

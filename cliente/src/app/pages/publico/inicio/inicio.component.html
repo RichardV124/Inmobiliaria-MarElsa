@@ -67,17 +67,26 @@
                   <option [ngValue]="1">Arriendo</option>
                   <option [ngValue]="2">Venta</option>
                 </select>
-
               </div>
 
+              <div class="col-md-2"><label>habitaciones</label></div>
+              <div class="col-md-4">
+                <input type="number" min="1" [(ngModel)]="inmueble.num_habitaciones" class="form-control">
+              </div>
+
+
             </div>
-            <div class="col-md-2" style="margin-left: 42%;">
+
+            <div style="margin-left: 35%;">
               <button (click)="filtrar()" class="btn south-btn btn-2 m-1">
                 Filtrar
               </button>
+              <button (click)="eliminarFiltro()" class="btn south-btn btn-2 m-1">
+                Quitar Filtro
+              </button>
             </div>
-
           </div>
+
         </div>
       </div>
     </div>
@@ -100,7 +109,8 @@
         </agm-info-window>
       </agm-marker>
     </agm-map>
-    <button *ngIf="marcadorAgregado" class="btn south-btn active m-1" (click)="ocultarMarcador()">eliminar filtro</button>
+    <button *ngIf="marcadorAgregado" class="btn south-btn active m-1" (click)="ocultarMarcador()">eliminar
+      filtro</button>
   </div>
 </div>
 
@@ -150,7 +160,7 @@
             </div>
             <br>
             <div class="col-md-2" style="margin-left: 15%; width: 15px;">
-              <button (click)="verMas()" class="btn south-btn btn-2 m-1">
+              <button (click)="verMas(i)" class="btn south-btn btn-2 m-1">
                 ver mas
               </button>
             </div>

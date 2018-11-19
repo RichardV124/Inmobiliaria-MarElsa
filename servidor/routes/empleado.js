@@ -78,7 +78,7 @@ exports.searchEmpleado = function(req, res){
       
     var input = JSON.parse(JSON.stringify(req.body));
     
-console.log(input);
+    console.log(input);
 
     req.getConnection(function (err, connection) {
 
@@ -117,34 +117,40 @@ console.log(input);
         var query = connection.query("INSERT INTO persona set ? ",persona, function(err, rows)
         {
   
-          if (err)
-              console.log("Error inserting : %s ",err );
-         
-          //res.send('{"id": 505,"msj": "Se registró correctamente el cliente"}');
+          if (err) {
+          res.send('{"id": 404,"msj": "La cédula ya se encuentra registrada"}');
+          } else {
+
+            
+                var query2 = connection.query("INSERT INTO login set ? ",login, function(err, rows)
+                {
+                    console.log(query2.sql);
+                    if (err) {
+                        res.send('{"id": 404,"msj": "El username ya se encuentra registrado"}');
+                        var query3 = connection.query("DELETE FROM persona WHERE cedula = ? ",persona.cedula, function(err, rows)
+                        {
+            
+                            if (err)
+                            res.send('{"id": 404,"msj": "El username ya se encuentra registrado"}');
+                            res.send('{"id": 404,"msj": "El username ya se encuentra registrado"}');       
+                        });
+                        console.log(query3.sql);
+                    } else {
+                        
+                            var query4 = connection.query("INSERT INTO empleado set ? ",empleado, function(err, rows)
+                            {
+                                console.log(query4.sql);
+                                if (err)
+                                console.log("Error inserting : %s ",err );
+                            res.send('{"id": 505,"msj": "Se registró correctamente"}');            
+                            });
+                    }
+
+                });
+
+          }
           
         });
-
-        var query2 = connection.query("INSERT INTO login set ? ",login, function(err, rows)
-        {
-            if (err)
-            console.log("Error inserting : %s ",err );
-       
-       // res.send('{"id": 505,"msj": "Se registró correctamente"}');
-        
-      });
-
-      var query3 = connection.query("INSERT INTO empleado set ? ",empleado, function(err, rows)
-      {
-          if (err)
-          console.log("Error inserting : %s ",err );
-     
-      res.send('{"id": 505,"msj": "Se registró correctamente"}');
-      
-    });
-     
-        console.log(query.sql); //get raw query
-        console.log(query2.sql);
-        console.log(query3.sql);
     });
 };
 

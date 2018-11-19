@@ -58,6 +58,7 @@ export class RegistroVentaComponent implements OnInit {
   respContrato: RespuestaDTO = new RespuestaDTO();
   listaMunicipios: Municipio[];
   tablaLLena = false;
+  listaTiposInmueble: TipoInmueble[];
   listaDepartamentos: Departamento[];
   listaClientes: Persona[];
   selectedMunicipio: Municipio = new Municipio();
@@ -188,6 +189,7 @@ export class RegistroVentaComponent implements OnInit {
           this.respuesta2.msj = 'Despliegue los datos del inmueble';
           this.showInm = 2;
           this.selectedInmueble = inmueble;
+          this.listarTiposInmueble();
           this.obtenerDatosCombosBusqueda();
           this.obtenerPublicacionInmueble();
         }
@@ -270,6 +272,17 @@ cerrarMsjContratodatos(){
 
   }
 
+    /**
+   * Obtiene la lista de tipos de inmuebles
+   */
+  listarTiposInmueble() {
+    this.inmuebleServie.listarTiposInmueble()
+    .subscribe(tipoInmueble => {
+      this.listaTiposInmueble = tipoInmueble;
+
+    });
+  }
+
   /**
    * Obtiene los datos de la publicación del inmueble
    */
@@ -331,7 +344,7 @@ if(this.validarCampos()=== false || (this.validarCamposContrato() === false)
       this.arriendoService.buscarInmuebleArrendado(this.selectedInmueble.id).subscribe(inmArrendado =>{
         if(inmArrendado === undefined){
           if(inmueble === undefined){
-            if(visitas === undefined){
+            if(visitas === undefined){ 
               // console.log(this.selectedVenta);
               this.selectedVenta.visita_id = new Visita();
               this.ventaService.registroVenta(this.selectedVenta).subscribe(resAdd => {

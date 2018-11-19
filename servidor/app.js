@@ -211,7 +211,7 @@ app.post('/venta/deleteContratobyVenta/', venta.delete_contrato_by_venta);
 app.get('/venta/buscarVisitaId/:visita_id', venta.buscarVisitaId);
 app.get('/venta/buscarContratoIdVenta/:venta_id', venta.buscarContratobyIdVenta);
 app.get('/venta/buscarVisitaIdInmueble/:visita_id', venta.buscarVisitaIdInmueble);
-app.get('/venta/contrato/search/:venta_id', venta.buscarContrato);
+app.get('/venta/contrato/search/:venta_id', venta.buscarContrato); 
 
 // ------- Servicios de roles y accesos ------- //
 app.get('/rol/listar', roles.listar);
@@ -235,6 +235,7 @@ app.get('/visita/listarPorEstado/:estado', visita.listarPorEstado);
 app.post('/visita/asignarVisita', visita.asignarVisita);
 app.post('/visita/cambiarEstadoVisitaAsignada', visita.cambiarEstadoVisitaAsignada);
 app.post('/visita/save-visita-cliente', visita.saveVisitaCliente);
+app.post('/visita/save-solicitar-visita-cliente', visita.saveSolicitarVisitaCliente);
 app.get('/visita/listarPorClienteAndEstado/:cliente/:estado', visita.listarPorClienteAndEstado);
 app.get('/visita/listarPorEmpleadoAndEstado/:empleado/:estado', visita.listarPorEmpleadoAndEstado);
 app.get('/visita/delete/:id', visita.delete);

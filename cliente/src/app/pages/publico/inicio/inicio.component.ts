@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { LoginService } from 'src/app/services/login/login.service';
+import { Login } from './../../../modelo/login';
+import { Router } from '@angular/router';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { MunicipioService } from 'src/app/services/municipio/municipio.service';
 import { Departamento } from 'src/app/modelo/departamento';
 import { Municipio } from 'src/app/modelo/municipio';
@@ -12,6 +15,8 @@ import { GenericoService } from 'src/app/services/generico/generico.service';
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
+
+@Injectable()
 export class InicioComponent implements OnInit {
 
   arriendo: any;
@@ -25,6 +30,9 @@ export class InicioComponent implements OnInit {
   longitudSuperior = 0;
   longitudInferior = 0;
   marcadorAgregado = false;
+  inmuebleSeleccionado: Inmueble;
+  inmuebleMatricula: string;
+  user: Login = new Login();
 
   /**
    * Listado de inmuebles
@@ -41,11 +49,15 @@ export class InicioComponent implements OnInit {
   // fin combox
   selectedDepartamento: Departamento = new Departamento();
   inmueble: Inmueble = new Inmueble(); // el inmueble con los datos para filtrar
-  constructor(private genericoService: GenericoService,private municipioService: MunicipioService,private inmuebleServie: InmuebleService) {
+  constructor(private genericoService: GenericoService,
+    private municipioService: MunicipioService,
+    private inmuebleServie: InmuebleService,
+    private servicios: LoginService,
+    private router: Router) {
     this.listarDepartamentos();
     this.listarMunicipios();
-    this.listarTiposInmueble() 
-   
+    this.listarTiposInmueble();
+    this.inmueble.activo = 1;
   }
   ngOnInit() {
     // validamos si hay parametros para filtrar
@@ -58,6 +70,7 @@ export class InicioComponent implements OnInit {
       // listamos los inmuebles
       this.listarInmuebles();
     }
+    this.user = this.servicios.getUsuario();
   }
 
   /**
@@ -110,7 +123,7 @@ export class InicioComponent implements OnInit {
     this.inmuebles = [];
     this.inmuebles = this.nuevaLista;
   }
-  
+
  /**
    * Obtiene la lista de departamentos
    */
@@ -133,7 +146,7 @@ export class InicioComponent implements OnInit {
 
  /**
    * Obtiene la lista de tipos de inmuebles
-   */ 
+   */
   listarTiposInmueble() {
     console.log(TipoInmueble);
     this.inmuebleServie.listarTiposInmueble()
@@ -150,7 +163,6 @@ export class InicioComponent implements OnInit {
     this.genericoService.listar('inmueble', {'activo': 1}).subscribe(r => {
       if (r != null) {
         this.inmuebles = r;
-        
         console.log(this.inmuebles);
         // Agregamos los datos (objetos) adicionales a cada inmueble
         this.agregarObjetos(this.inmuebles);
@@ -164,6 +176,7 @@ export class InicioComponent implements OnInit {
   listarByParametros(objeto) {
     // convertimos el texto a objeto json
     const json = JSON.parse(objeto);
+
     // Obtenemos la lista de inmuebles
     this.genericoService.listar('inmueble', json).subscribe(r => {
       if (r != null) {
@@ -189,7 +202,7 @@ export class InicioComponent implements OnInit {
           i.tipo_inmueble_id = tipoInmueble;
         });
     });
-   
+
     }
   }
   /**
@@ -202,7 +215,20 @@ export class InicioComponent implements OnInit {
     location.href = '/?objeto=' + json;
   }
 
-  verMas(){
+  eliminarFiltro() {
+      this.router.navigate(['/']);
+      window.location.reload();
+}
+  verMas(inmueble: Inmueble) {
 
+    if ( this.user === null) {
+      confirm('Debe iniciar sesion');
+  } else {
+    this.inmuebleMatricula = inmueble.matricula;
+    this.inmuebleSeleccionado = inmueble;
+    this.router.navigate(['gestion-visitas-cliente']);
+    localStorage.setItem('matricula', this.inmuebleMatricula);
+    localStorage.setItem('inmueble', JSON.stringify(this.inmuebleSeleccionado));
+  }
   }
 }

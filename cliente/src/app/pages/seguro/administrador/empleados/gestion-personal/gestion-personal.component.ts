@@ -140,9 +140,8 @@ this.contador++;
     }
 
   registrar() {
-console.log(this.validarCampos);
 
-    if ( this.selectedPersona.cedula == null || this.validarCampos()) {
+    if (!this.validarCampos()) {
       console.log('ENTROOO MANO');
       this.show = 1;
           this.respuesta.msj = 'Debe completar todos los campos';
@@ -171,13 +170,15 @@ console.log(this.validarCampos);
       this.empleadoService.registrarEmpleado(this.empleadoDTO)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
-        console.log(this.respuesta.msj + ' SAVE');
+        if (this.respuesta.id === 404) {
+          this.show = 1;
+        } else {
         console.log(this.selectedPersona.nombre);
         this.limpiarCampos();
         this.show = 2;
         this.listarEmpleados();
         this.registrado = true;
-
+        }
       });
     }
   }
@@ -304,7 +305,8 @@ this.experienciaSeleccionada = new Experiencia();
     if (this.selectedPersona.nombre == null || this.selectedPersona.apellido == null
       || this.selectedPersona.fecha_nacimiento == null || this.selectedPersona.cedula == null
       || this.selectedPersona.telefono == null || this.selectedPersona.direccion == null
-      || this.selectedPersona.correo == null || this.selectedLogin.username || this.selectedLogin.contrasenia) {
+      || this.selectedPersona.correo == null || this.selectedLogin.username == null
+      || this.selectedLogin.contrasenia == null ) {
         return false;
     } else {
       return true;
@@ -478,7 +480,7 @@ this.experienciaSeleccionada = new Experiencia();
 
   editar() {
 
-    if (this.validarCampos()) {
+    if (!this.validarCampos()) {
       this.show = 1;
           this.respuesta.msj = 'Debe completar todos los campos';
           this.editado = false;
@@ -500,10 +502,15 @@ this.experienciaSeleccionada = new Experiencia();
       this.empleadoService.editarEmpleado(this.empleadoDTO)
       .subscribe(res => {
         this.respuesta = JSON.parse(JSON.stringify(res));
-        console.log(this.respuesta.msj + ' EDIT');
-        this.limpiarCampos();
-        this.show = 2;
-        this.editado = true;
+        if (this.respuesta.id === 404) {
+          this.show = 1;
+          this.editado = false;
+        } else {
+          this.limpiarCampos();
+          this.show = 2;
+          this.editado = true;
+          this.listarEmpleados();
+        }
       });
     }
 }

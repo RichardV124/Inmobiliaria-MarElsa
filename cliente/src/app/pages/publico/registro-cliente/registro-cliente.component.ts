@@ -50,7 +50,7 @@ export class RegistroClienteComponent implements OnInit {
     this.show = 0;
    }
 
-  ngOnInit() { 
+  ngOnInit() {
   }
 
   cerrarMsj() {
